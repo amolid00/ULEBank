@@ -1,0 +1,6 @@
+/aw_passive_operations/nbproject/private/
+/aw_passive_operations/build/
+/aw_passive_operations/dist/
+/target*
+*.jar
+*.class
