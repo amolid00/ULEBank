@@ -11,20 +11,18 @@ import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
-import es.unileon.ulebank.exceptions.CardNotFoundException;
-import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.exceptions.CommissionException;
-import es.unileon.ulebank.exceptions.IncorrectLimitException;
 import es.unileon.ulebank.fees.InvalidFeeException;
-import es.unileon.ulebank.handler.CardHandler;
-import es.unileon.ulebank.handler.CommandHandler;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.CardHandler;
+import es.unileon.ulebank.payments.CardNotFoundException;
 import es.unileon.ulebank.payments.CreditCard;
+import es.unileon.ulebank.payments.IncorrectLimitException;
 
 public class ModifyCashLimitCommandTest {
     private Card testCard;

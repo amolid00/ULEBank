@@ -1,8 +1,7 @@
 package es.unileon.ulebank.command;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.exceptions.ClientNotFoundException;
-import es.unileon.ulebank.handler.CommandHandler;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 

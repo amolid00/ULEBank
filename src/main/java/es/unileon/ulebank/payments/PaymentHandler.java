@@ -1,7 +1,10 @@
-package es.unileon.ulebank.handler;
+package es.unileon.ulebank.payments;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.handler.MalformedHandlerException;
 
 /**
  * Class of Payment Handler

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.exceptions.TransactionException;
-import es.unileon.ulebank.exceptions.TransferException;
 import es.unileon.ulebank.history.TransferTransaction;
 
 /**

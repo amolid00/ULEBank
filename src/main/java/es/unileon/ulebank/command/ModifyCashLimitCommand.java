@@ -4,12 +4,10 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import org.apache.log4j.Logger;
 
-import es.unileon.ulebank.exceptions.CardNotFoundException;
-import es.unileon.ulebank.exceptions.CommandException;
-import es.unileon.ulebank.exceptions.IncorrectLimitException;
-import es.unileon.ulebank.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.CardNotFoundException;
+import es.unileon.ulebank.payments.IncorrectLimitException;
 
 /**
  * @author Israel

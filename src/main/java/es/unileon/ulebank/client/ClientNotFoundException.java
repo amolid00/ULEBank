@@ -1,4 +1,4 @@
-package es.unileon.ulebank.exceptions;
+package es.unileon.ulebank.client;
 
 /**
  * @author Israel Garcia Centeno Excepcion que se lanza cuando el cliente no se

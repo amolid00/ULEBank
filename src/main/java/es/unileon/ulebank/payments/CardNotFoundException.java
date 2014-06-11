@@ -1,4 +1,4 @@
-package es.unileon.ulebank.exceptions;
+package es.unileon.ulebank.payments;
 
 /**
  * Exception thrown when Card is not found

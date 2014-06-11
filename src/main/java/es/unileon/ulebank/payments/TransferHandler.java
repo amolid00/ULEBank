@@ -1,7 +1,9 @@
-package es.unileon.ulebank.handler;
+package es.unileon.ulebank.payments;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import es.unileon.ulebank.handler.Handler;
 
 /**
  * Class of Transfer Handler

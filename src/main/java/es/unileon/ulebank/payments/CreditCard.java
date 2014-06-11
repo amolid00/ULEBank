@@ -6,7 +6,6 @@ import java.util.List;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.exceptions.CommissionException;
-import es.unileon.ulebank.exceptions.PaymentException;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.fees.LinearFee;

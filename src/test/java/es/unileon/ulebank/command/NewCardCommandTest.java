@@ -12,14 +12,13 @@ import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
-import es.unileon.ulebank.handler.CardHandler;
-import es.unileon.ulebank.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
-import es.unileon.ulebank.handler.OfficeHandler;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
+import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.CardHandler;
 import es.unileon.ulebank.payments.CardType;
 
 public class NewCardCommandTest {

@@ -1,8 +1,10 @@
-package es.unileon.ulebank.handler;
+package es.unileon.ulebank.command;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import es.unileon.ulebank.handler.Handler;
 
 /**
  * CommandHandler class

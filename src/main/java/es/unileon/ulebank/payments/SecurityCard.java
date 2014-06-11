@@ -3,7 +3,6 @@ package es.unileon.ulebank.payments;
 import java.io.IOException;
 import java.util.Random;
 
-import es.unileon.ulebank.exceptions.SecurityCardException;
 import es.unileon.ulebank.utils.CardProperties;
 
 /**

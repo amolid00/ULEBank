@@ -5,9 +5,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.exceptions.ClientNotFoundException;
-import es.unileon.ulebank.exceptions.CommandException;
-import es.unileon.ulebank.handler.CommandHandler;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;

@@ -473,15 +473,29 @@ public class Account {
         return this.id;
     }
 
+    /**
+     * Adds card into the card list
+     * @param card
+     */
     public void addCard(Card card) {
         this.cards.add(card);
     }
 
+    /**
+     * Deletes card with received card ID
+     * @param cardId
+     * @return
+     */
     public boolean removeCard(Handler cardId) {
         final Card card = this.searchCard(cardId);
         return this.cards.remove(card);
     }
 
+    /**
+     * Searches card with received card ID
+     * @param cardId
+     * @return
+     */
     public Card searchCard(Handler cardId) {
         final Iterator<Card> iterator = this.cards.iterator();
         Card card = null;
@@ -501,11 +515,27 @@ public class Account {
         return card;
     }
 
+    /**
+     * Return card list
+     * @return
+     */
     public List<Card> getCards() {
         return this.cards;
     }
 
+    /**
+     * Returns card list amount
+     * @return
+     */
     public int getCardAmount() {
         return this.cards.size();
+    }
+    
+    /**
+     * Changes balance with received balance
+     * @param balance
+     */
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

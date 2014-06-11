@@ -3,11 +3,14 @@
 
 package es.unileon.ulebank.history.conditions;
 
+
 /**
  *
  * @author runix
  */
 public class WrongArgsException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      *

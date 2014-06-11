@@ -1,4 +1,4 @@
-package es.unileon.ulebank.exceptions;
+package es.unileon.ulebank.command;
 
 /**
  * @author Israel Excepcion que se lanza cuando un comando no se ejecuta

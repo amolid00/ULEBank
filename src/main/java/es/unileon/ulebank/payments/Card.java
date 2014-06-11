@@ -10,8 +10,6 @@ import java.util.regex.Pattern;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.exceptions.IncorrectLimitException;
-import es.unileon.ulebank.exceptions.PaymentException;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.fees.FeeStrategy;
 import es.unileon.ulebank.handler.Handler;

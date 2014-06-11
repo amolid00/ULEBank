@@ -1,4 +1,4 @@
-package es.unileon.ulebank.exceptions;
+package es.unileon.ulebank.payments;
 
 /**
  * TransferException Class

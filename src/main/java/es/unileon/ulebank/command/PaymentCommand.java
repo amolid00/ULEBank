@@ -8,15 +8,14 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.exceptions.PaymentException;
 import es.unileon.ulebank.exceptions.TransactionException;
-import es.unileon.ulebank.exceptions.TransferException;
-import es.unileon.ulebank.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CardType;
+import es.unileon.ulebank.payments.PaymentException;
 import es.unileon.ulebank.payments.Transfer;
+import es.unileon.ulebank.payments.TransferException;
 
 /**
  * Payment Command Class
