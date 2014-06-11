@@ -10,6 +10,7 @@ public class InvalidCondition extends Exception {
 
     /**
      * Create a new Exception
+     * 
      * @param msg
      */
     public InvalidCondition(String msg) {

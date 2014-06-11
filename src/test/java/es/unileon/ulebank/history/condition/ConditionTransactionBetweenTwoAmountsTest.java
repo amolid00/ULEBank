@@ -34,7 +34,7 @@ public class ConditionTransactionBetweenTwoAmountsTest {
 
     @Test
     public void testBetweenNotOk() throws WrongArgsException,
-    TransactionException {
+            TransactionException {
         ConditionTransactionBetweenTwoAmounts condition = new ConditionTransactionBetweenTwoAmounts<Transaction>(
                 100, 100);
         Assert.assertFalse(condition.test(this.getTransaction(101)));

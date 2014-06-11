@@ -16,7 +16,7 @@ import es.unileon.ulebank.iterator.ConditionalIterator;
  * @param <T>
  */
 public class IteratorBetweenTwoAmounts<T extends Transaction> extends
-ConditionalIterator<T> {
+        ConditionalIterator<T> {
 
     public IteratorBetweenTwoAmounts(List<T> elements, double min, double max)
             throws WrongArgsException {

@@ -35,7 +35,7 @@ public class DoubleFeatureExtractorDirectDebitsNumberTest {
 
     @Before
     public void setUp() throws MalformedHandlerException, WrongArgsException,
-    InvalidCondition, TransactionException {
+            InvalidCondition, TransactionException {
         this.bank = new Bank(new GenericHandler("1234"));
         this.office = new Office(new GenericHandler("1234"), this.bank);
         this.titular = new Person(74484986, 'S');

@@ -47,7 +47,7 @@ public class HistoryTest {
      */
     @Test
     public void testGetTransactions() throws ParseException,
-    TransactionException {
+            TransactionException {
 
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         final Date date1 = sdf.parse("01/01/2014");

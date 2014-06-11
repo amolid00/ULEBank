@@ -54,7 +54,7 @@ public class GenericLiquidationFeeTest {
 
     @Before
     public void setUp() throws MalformedHandlerException, WrongArgsException,
-    InvalidCondition, TransactionException {
+            InvalidCondition, TransactionException {
         this.bank = new Bank(new GenericHandler("1234"));
         this.office = new Office(new GenericHandler("1234"), this.bank);
         this.titular = new Person(74484986, 'S');
@@ -72,7 +72,7 @@ public class GenericLiquidationFeeTest {
         this.feeCase = new DoubleFeeCase(this.features, this.amountFormula,
                 this.subject, this.account);
         this.feeCase
-        .addConditionEquation("pago domiciliado mas alto", '>', "4");
+                .addConditionEquation("pago domiciliado mas alto", '>', "4");
 
         this.feeCase2 = new DoubleFeeCase(this.features, this.amountFormula2,
                 this.subject, this.account);
@@ -113,7 +113,7 @@ public class GenericLiquidationFeeTest {
 
     @Test
     public void testCalculateFeeNotFound() throws TransactionException,
-    InvalidCondition {
+            InvalidCondition {
         this.feeCase = new DoubleFeeCase(this.features, this.amountFormula,
                 this.subject, this.account);
         this.feeCase.addConditionEquation("1", '>', "4");

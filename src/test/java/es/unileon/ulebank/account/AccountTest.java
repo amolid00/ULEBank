@@ -265,20 +265,20 @@ public class AccountTest {
 
     @Test(expected = WrongArgsException.class)
     public void testNullClient() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         new Account(this.office, this.bank, this.accountNumber, null);
     }
 
     @Test(expected = MalformedHandlerException.class)
     public void testMoreAccountnumberLength() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         this.account = new Account(this.office, this.bank, "000000000000",
                 this.titular1);
     }
 
     @Test(expected = MalformedHandlerException.class)
     public void testLessAccountnumberLength() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         this.account = new Account(this.office, this.bank, "000000",
                 this.titular1);
     }
@@ -498,7 +498,7 @@ public class AccountTest {
 
     @Test
     public void testGetID() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         Handler accountNumber = new AccountHandler(this.office.getIdOffice(),
                 this.bank.getID(), this.accountNumber);
         Assert.assertTrue(accountNumber.compareTo(this.account.getID()) == 0);

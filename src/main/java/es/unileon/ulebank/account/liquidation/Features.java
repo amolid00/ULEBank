@@ -56,6 +56,7 @@ public class Features<T> {
 
     /**
      * Generate a random features
+     * 
      * @return
      */
     public Map<String, T> generateRandomFeatures() {
@@ -69,6 +70,7 @@ public class Features<T> {
 
     /**
      * Get the feature names
+     * 
      * @return
      */
     public String[] getFeaturesNames() {
@@ -82,6 +84,7 @@ public class Features<T> {
 
     /**
      * Update the features
+     * 
      * @param account
      * @param min
      * @param max

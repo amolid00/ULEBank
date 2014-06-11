@@ -1313,9 +1313,9 @@ public class AccountHandlerTest {
     public void testParsingHandlerOk() throws MalformedHandlerException {
         final AccountHandler ac = new AccountHandler(new GenericHandler(
                 this.bank.getID().toString() + AccountHandler.SEPARATOR
-                + this.office.getIdOffice().toString()
-                + AccountHandler.SEPARATOR + this.dc
-                + AccountHandler.SEPARATOR + this.accountNumber));
+                        + this.office.getIdOffice().toString()
+                        + AccountHandler.SEPARATOR + this.dc
+                        + AccountHandler.SEPARATOR + this.accountNumber));
         Assert.assertTrue(ac.getBankHandler().toString()
                 .equals(this.bank.getID().toString()));
         Assert.assertTrue(ac.getOfficeHandler().toString()
@@ -1346,9 +1346,9 @@ public class AccountHandlerTest {
         Assert.assertEquals(handler.compareTo(this.accountHandler1), 0);
         final Handler handlerFromRaw = new AccountHandler(new GenericHandler(
                 this.office.getIdOffice().toString() + AccountHandler.SEPARATOR
-                + this.bank.getID().toString()
-                + AccountHandler.SEPARATOR + this.dc
-                + AccountHandler.SEPARATOR + this.accountNumber));
+                        + this.bank.getID().toString()
+                        + AccountHandler.SEPARATOR + this.dc
+                        + AccountHandler.SEPARATOR + this.accountNumber));
         Assert.assertEquals(this.accountHandler1.compareTo(handlerFromRaw), 0);
 
         final Handler generic = new GenericHandler(handler.toString());
@@ -1368,9 +1368,9 @@ public class AccountHandlerTest {
         Assert.assertNotSame(handler.compareTo(this.accountHandler1), 0);
         final Handler handlerFromRaw = new AccountHandler(new GenericHandler(
                 new GenericHandler("9999") + AccountHandler.SEPARATOR
-                + this.bank.getID().toString()
-                + AccountHandler.SEPARATOR + "90"
-                + AccountHandler.SEPARATOR + this.accountNumber));
+                        + this.bank.getID().toString()
+                        + AccountHandler.SEPARATOR + "90"
+                        + AccountHandler.SEPARATOR + this.accountNumber));
         Assert.assertNotSame(this.accountHandler1.compareTo(handlerFromRaw), 0);
         final Handler generic = new GenericHandler(handler.toString() + ".");
         Assert.assertNotSame(this.accountHandler1.compareTo(generic), 0);

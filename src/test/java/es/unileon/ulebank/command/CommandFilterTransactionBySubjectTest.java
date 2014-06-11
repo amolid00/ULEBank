@@ -49,7 +49,7 @@ public class CommandFilterTransactionBySubjectTest {
         for (int i = 0; i < 10; i++) {
             this.invalidElements.add(this.getTransaction("handler->"
                     + TransactionHandlerProvider.getTransactionHandler()
-                    .toString()));
+                            .toString()));
         }
 
         for (int i = 10; i < 10; i++) {

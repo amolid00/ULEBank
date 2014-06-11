@@ -30,10 +30,10 @@ public class ConditionalTransactionBetweenTwoDays {
     public void setup() throws Exception {
         this.min = new Date(
                 (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP * 10)
-                - (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP / 2));
+                        - (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP / 2));
         this.max = new Date(
                 (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP * 20)
-                + (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP / 2));
+                        + (ConditionalTransactionBetweenTwoDays.DAY_TIMESTAMP / 2));
         this.conditionBetween = new ConditionTransactionBetweenTwoDates<Transaction>(
                 this.min, this.max);
     }

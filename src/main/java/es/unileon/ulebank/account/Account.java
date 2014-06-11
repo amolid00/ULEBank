@@ -245,7 +245,7 @@ public class Account {
             }
             if (!found) {
                 err.append("Cannot remove the titular ").append(id.toString())
-                .append(" because it doesn't exist");
+                        .append(" because it doesn't exist");
             }
         }
         if (err.length() > 1) {
@@ -421,8 +421,8 @@ public class Account {
                         .getInstance().getTime()));
                 final Transaction tNegate = new GenericTransaction(
                         -t.getAmount(), t.getDate(), t.getSubject()
-                        + "Accoun : " + this.getID().toString()
-                        + "id = " + t.getId());
+                                + "Accoun : " + this.getID().toString()
+                                + "id = " + t.getId());
                 this.doTransaction(t);
                 office.getOfficeAccount().doTransaction(tNegate);
                 // TODO
@@ -478,15 +478,15 @@ public class Account {
     }
 
     public boolean removeCard(Handler cardId) {
-        Card card = searchCard(cardId);
+        final Card card = this.searchCard(cardId);
         return this.cards.remove(card);
     }
 
     public Card searchCard(Handler cardId) {
-        Iterator<Card> iterator = cards.iterator();
+        final Iterator<Card> iterator = this.cards.iterator();
         Card card = null;
 
-        if (cards.isEmpty()) {
+        if (this.cards.isEmpty()) {
             throw new NullPointerException("Card list is empty.");
         }
 

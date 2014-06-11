@@ -205,7 +205,7 @@ public class OfficeTest {
 
     @Test
     public void testDeleteAccount() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         final Account newAccount = new Account(this.office, this.bank,
                 this.office.getNewAccountNumber(), this.titular);
         Assert.assertFalse(this.office.deleteAccount(new GenericHandler(
@@ -220,7 +220,7 @@ public class OfficeTest {
 
     @Test
     public void testSearchAccount() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         this.office.addAccount(this.account);
         final Account newAccount = new Account(this.office, this.bank,
                 this.office.getNewAccountNumber(), this.titular);
@@ -233,7 +233,7 @@ public class OfficeTest {
 
     @Test
     public void testSearchClinet() throws MalformedHandlerException,
-    WrongArgsException {
+            WrongArgsException {
         this.office.addClient(this.titular);
         final Client c = new Person(89051755, 'X');
         this.office.addClient(c);

@@ -15,7 +15,7 @@ import es.unileon.ulebank.iterator.ConditionalIterator;
  * @param <T>
  */
 public class IteratorSubject<T extends Transaction> extends
-ConditionalIterator<T> {
+        ConditionalIterator<T> {
 
     public IteratorSubject(Iterator<T> iterator, String subject,
             boolean includeSubject) {

@@ -29,8 +29,8 @@ public class CifControl {
         boolean result = false;
         final char entityLetterRaw = Character.toUpperCase(entityLetter);
         if (Character.isLetter(entityLetterRaw)
-                && checkRangeProvinceRange(provinceCode)
-                && Integer.toString(registrationCode).length() <= 5) {
+                && CifControl.checkRangeProvinceRange(provinceCode)
+                && (Integer.toString(registrationCode).length() <= 5)) {
             final int code = (provinceCode * 100000) + registrationCode;
             final int controlObtained = CifControl.getControl(code);
             if (Character.isLetter(controlCode)) {

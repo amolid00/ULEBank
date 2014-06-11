@@ -216,8 +216,8 @@ public class AccountHandler implements Handler {
                         AccountHandler.SEPARATOR, "");
                 if (!(AccountHandler.NUMBER_PATTERN.matcher(raw).find() && (raw
                         .length() == (AccountHandler.ACCOUNT_NUMBER_LENGTH
-                                + AccountHandler.BANK_NUMBER_LENGTH
-                                + AccountHandler.OFFICE_NUMBER_LENGTH + AccountHandler.DC_NUMBER_LENGTH)))) {
+                        + AccountHandler.BANK_NUMBER_LENGTH
+                        + AccountHandler.OFFICE_NUMBER_LENGTH + AccountHandler.DC_NUMBER_LENGTH)))) {
                     error.append("There are letters in the handler, only numbers are allowed\n");
                 }
             }

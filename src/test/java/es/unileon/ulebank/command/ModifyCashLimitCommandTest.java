@@ -1,12 +1,8 @@
 package es.unileon.ulebank.command;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,164 +27,199 @@ import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
 
 public class ModifyCashLimitCommandTest {
-	private Card testCard;
-	private Handler handler;
-	private Office office;
-	private Client client;
-	private Account account;
-	private ModifyCashLimitCommand test;
-	private ModifyCashLimitCommand test2;
-	private Bank bank;
+    private Card testCard;
+    private Handler handler;
+    private Office office;
+    private Client client;
+    private Account account;
+    private ModifyCashLimitCommand test;
+    private ModifyCashLimitCommand test2;
+    private Bank bank;
 
-	private String accountNumber = "0000000000";
+    private final String accountNumber = "0000000000";
 
-	@Before
-	public void setUp() throws CommissionException, InvalidFeeException, MalformedHandlerException, WrongArgsException {
-		Handler bankHandler = new BankHandler("1234");
-		this.bank = new Bank(bankHandler);
-		this.handler = new CardHandler(bankHandler, "01", "987654321");
-		this.office = new Office(new GenericHandler("1234"), this.bank);
-		client = new Person(71557005, 'A');
-		this.office.addClient(client);
-		account = new Account(office, bank, accountNumber, client);
-		this.client.add(account);
-		testCard = new CreditCard(handler, client, account, 400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
-		account.addCard(testCard);
-	}
+    @Before
+    public void setUp() throws CommissionException, InvalidFeeException,
+            MalformedHandlerException, WrongArgsException {
+        final Handler bankHandler = new BankHandler("1234");
+        this.bank = new Bank(bankHandler);
+        this.handler = new CardHandler(bankHandler, "01", "987654321");
+        this.office = new Office(new GenericHandler("1234"), this.bank);
+        this.client = new Person(71557005, 'A');
+        this.office.addClient(this.client);
+        this.account = new Account(this.office, this.bank, this.accountNumber,
+                this.client);
+        this.client.add(this.account);
+        this.testCard = new CreditCard(this.handler, this.client, this.account,
+                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
+        this.account.addCard(this.testCard);
+    }
 
-	@Test
-	public void testCommandNotNull() throws AccountNotFoundException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 100.0, "diary");
-		assertNotNull(test);
-	}
+    @Test
+    public void testCommandNotNull() throws AccountNotFoundException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                100.0, "diary");
+        Assert.assertNotNull(this.test);
+    }
 
-	@Test
-	public void testCommandNull() throws AccountNotFoundException {
-		assertNull(test);
-	}
+    @Test
+    public void testCommandNull() throws AccountNotFoundException {
+        Assert.assertNull(this.test);
+    }
 
-	@Test
-	public void testCommandId() throws AccountNotFoundException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 200.0, "diary");
-		CommandHandler commandId = (CommandHandler) test.getID();
-		String date = commandId.getDate();
-		assertTrue(0 == test.getID().toString().compareTo(handler.toString() + " " + date));
-	}
+    @Test
+    public void testCommandId() throws AccountNotFoundException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                200.0, "diary");
+        final CommandHandler commandId = (CommandHandler) this.test.getID();
+        final String date = commandId.getDate();
+        Assert.assertTrue(0 == this.test.getID().toString()
+                .compareTo(this.handler.toString() + " " + date));
+    }
 
-	@Test
-	public void testLimitDiaryModified() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 200.0, "Diary");
-		assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
-		test.execute();
-		assertEquals(200.0, testCard.getCashLimitDiary(), 0.0001);
-	}
+    @Test
+    public void testLimitDiaryModified() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                200.0, "Diary");
+        Assert.assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
+        this.test.execute();
+        Assert.assertEquals(200.0, this.testCard.getCashLimitDiary(), 0.0001);
+    }
 
-	@Test (expected = IncorrectLimitException.class)
-	public void testLimitDiaryNotModified() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 1100.0, "Diary");
-		assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
-		test.execute();
-	}
+    @Test(expected = IncorrectLimitException.class)
+    public void testLimitDiaryNotModified() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                1100.0, "Diary");
+        Assert.assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
+        this.test.execute();
+    }
 
-	@Test
-	public void testLimitMonthlyModified() throws AccountNotFoundException, CardNotFoundException, IncorrectLimitException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 2000.0, "Monthly");
-		assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
-		test.execute();
-		assertEquals(2000.0, this.testCard.getCashLimitMonthly(), 0.0001);
-	}
+    @Test
+    public void testLimitMonthlyModified() throws AccountNotFoundException,
+            CardNotFoundException, IncorrectLimitException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                2000.0, "Monthly");
+        Assert.assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test.execute();
+        Assert.assertEquals(2000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+    }
 
-	@Test (expected = IncorrectLimitException.class)
-	public void testLimitMonthlyNotModified() throws AccountNotFoundException, CardNotFoundException, IncorrectLimitException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "Monthly");
-		assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
-		test.execute();
-	}
+    @Test(expected = IncorrectLimitException.class)
+    public void testLimitMonthlyNotModified() throws AccountNotFoundException,
+            CardNotFoundException, IncorrectLimitException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "Monthly");
+        Assert.assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test.execute();
+    }
 
-	@Test
-	public void testTypeOK() throws AccountNotFoundException, CardNotFoundException, IncorrectLimitException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "DIARY");
-		test.execute();
-		assertTrue(this.testCard != null);
-		assertEquals(300.0, this.testCard.getCashLimitDiary(), 0.0001);
-	}
+    @Test
+    public void testTypeOK() throws AccountNotFoundException,
+            CardNotFoundException, IncorrectLimitException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "DIARY");
+        this.test.execute();
+        Assert.assertTrue(this.testCard != null);
+        Assert.assertEquals(300.0, this.testCard.getCashLimitDiary(), 0.0001);
+    }
 
-	@Test
-	public void testTypeNotOK() throws AccountNotFoundException, CardNotFoundException, IncorrectLimitException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "");
-		test.execute();
-		//Any changes in both limits
-		assertEquals(400, testCard.getCashLimitDiary(), 0.0001);
-		assertEquals(1000, testCard.getCashLimitMonthly(), 0.0001);
-		test2 = new ModifyCashLimitCommand(this.handler, this.testCard, 500.0, "123");
-		test2.execute();
-		assertEquals(400.0, testCard.getCashLimitDiary(), 0.0001);
-		assertEquals(1000.0, testCard.getCashLimitMonthly(), 0.0001);
-	}
+    @Test
+    public void testTypeNotOK() throws AccountNotFoundException,
+            CardNotFoundException, IncorrectLimitException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "");
+        this.test.execute();
+        // Any changes in both limits
+        Assert.assertEquals(400, this.testCard.getCashLimitDiary(), 0.0001);
+        Assert.assertEquals(1000, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test2 = new ModifyCashLimitCommand(this.handler, this.testCard,
+                500.0, "123");
+        this.test2.execute();
+        Assert.assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
+        Assert.assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+    }
 
-	@Test
-	public void undoDiaryTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "diary");
-		test.execute();
-		assertEquals(300.0, testCard.getCashLimitDiary(), 0.0001);
-		test.undo();
-		assertEquals(400.0, testCard.getCashLimitDiary(), 0.0001);
-	}
+    @Test
+    public void undoDiaryTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "diary");
+        this.test.execute();
+        Assert.assertEquals(300.0, this.testCard.getCashLimitDiary(), 0.0001);
+        this.test.undo();
+        Assert.assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
+    }
 
-	@Test (expected = CommandException.class)
-	public void canNotUndoDiaryTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "diary");
-		test.undo();
-	}
+    @Test(expected = CommandException.class)
+    public void canNotUndoDiaryTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "diary");
+        this.test.undo();
+    }
 
-	@Test
-	public void redoDiaryTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "diary");
-		test.execute();
-		assertEquals(300.0, testCard.getCashLimitDiary(), 0.0001);
-		test.undo();
-		assertEquals(400.0, testCard.getCashLimitDiary(), 0.0001);
-		test.redo();
-		assertEquals(300.0, testCard.getCashLimitDiary(), 0.0001);
-	}
+    @Test
+    public void redoDiaryTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "diary");
+        this.test.execute();
+        Assert.assertEquals(300.0, this.testCard.getCashLimitDiary(), 0.0001);
+        this.test.undo();
+        Assert.assertEquals(400.0, this.testCard.getCashLimitDiary(), 0.0001);
+        this.test.redo();
+        Assert.assertEquals(300.0, this.testCard.getCashLimitDiary(), 0.0001);
+    }
 
-	@Test (expected = CommandException.class)
-	public void canNotRedoDiaryTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "diary");
-		test.execute();
-		test.redo();
-	}
+    @Test(expected = CommandException.class)
+    public void canNotRedoDiaryTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "diary");
+        this.test.execute();
+        this.test.redo();
+    }
 
-	@Test
-	public void undoMonthlyTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 3000.0, "monthly");
-		test.execute();
-		assertEquals(3000.0, testCard.getCashLimitMonthly(), 0.0001);
-		test.undo();
-		assertEquals(1000.0, testCard.getCashLimitMonthly(), 0.0001);
-	}
+    @Test
+    public void undoMonthlyTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                3000.0, "monthly");
+        this.test.execute();
+        Assert.assertEquals(3000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test.undo();
+        Assert.assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+    }
 
-	@Test (expected = CommandException.class)
-	public void canNotUndoMonthlyTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 300.0, "monthly");
-		test.undo();
-	}
+    @Test(expected = CommandException.class)
+    public void canNotUndoMonthlyTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                300.0, "monthly");
+        this.test.undo();
+    }
 
-	@Test
-	public void redoMonthlyTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 3000.0, "monthly");
-		test.execute();
-		assertEquals(3000.0, testCard.getCashLimitMonthly(), 0.0001);
-		test.undo();
-		assertEquals(1000.0, testCard.getCashLimitMonthly(), 0.0001);
-		test.redo();
-		assertEquals(3000.0, testCard.getCashLimitMonthly(), 0.0001);
-	}
+    @Test
+    public void redoMonthlyTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                3000.0, "monthly");
+        this.test.execute();
+        Assert.assertEquals(3000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test.undo();
+        Assert.assertEquals(1000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+        this.test.redo();
+        Assert.assertEquals(3000.0, this.testCard.getCashLimitMonthly(), 0.0001);
+    }
 
-	@Test (expected = CommandException.class)
-	public void canNotRedoMonthlyTest() throws CardNotFoundException, IncorrectLimitException, AccountNotFoundException, CommandException {
-		test = new ModifyCashLimitCommand(this.handler, this.testCard, 3000.0, "monthly");
-		test.execute();
-		test.redo();
-	}
+    @Test(expected = CommandException.class)
+    public void canNotRedoMonthlyTest() throws CardNotFoundException,
+            IncorrectLimitException, AccountNotFoundException, CommandException {
+        this.test = new ModifyCashLimitCommand(this.handler, this.testCard,
+                3000.0, "monthly");
+        this.test.execute();
+        this.test.redo();
+    }
 }

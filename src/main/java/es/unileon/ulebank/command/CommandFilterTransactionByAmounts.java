@@ -23,13 +23,13 @@ public class CommandFilterTransactionByAmounts implements Command {
 
     public CommandFilterTransactionByAmounts(double min, double max,
             List<Transaction> transactions, Handler commandId)
-                    throws WrongArgsException {
+            throws WrongArgsException {
         this(min, max, transactions.iterator(), commandId);
     }
 
     public CommandFilterTransactionByAmounts(double min, double max,
             Iterator<Transaction> iterator, Handler commandId)
-                    throws WrongArgsException {
+            throws WrongArgsException {
         this.commandId = commandId;
         this.iteratorFiltered = new IteratorBetweenTwoAmounts<Transaction>(
                 iterator, min, max);

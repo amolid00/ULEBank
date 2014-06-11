@@ -40,7 +40,7 @@ public class DoubleFeeCaseTest {
 
     @Before
     public void setUp() throws MalformedHandlerException, WrongArgsException,
-    InvalidCondition, TransactionException {
+            InvalidCondition, TransactionException {
         this.bank = new Bank(new GenericHandler("1234"));
         this.office = new Office(new GenericHandler("1234"), this.bank);
         this.titular = new Person(74484986, 'S');
@@ -48,7 +48,7 @@ public class DoubleFeeCaseTest {
                 this.office.getNewAccountNumber(), this.titular);
         this.features = new Features<Double>();
         this.features
-        .addFeature(new DoubleFeatureExtractorDirectDebitMaxAmount());
+                .addFeature(new DoubleFeatureExtractorDirectDebitMaxAmount());
         this.amountFormula = "2*3";
         this.subject = "subject";
         this.feeCase = new DoubleFeeCase(this.features, this.amountFormula,
@@ -83,9 +83,9 @@ public class DoubleFeeCaseTest {
     @Test
     public void testTriggerWithVariable() throws InvalidCondition {
         this.feeCase
-        .addConditionEquation("pago domiciliado mas alto", '>', "1");
+                .addConditionEquation("pago domiciliado mas alto", '>', "1");
         this.feeCase
-        .addConditionEquation("1", '>', "pago domiciliado mas alto");
+                .addConditionEquation("1", '>', "pago domiciliado mas alto");
     }
 
     @Test(expected = InvalidCondition.class)
@@ -113,7 +113,7 @@ public class DoubleFeeCaseTest {
 
     @Test
     public void testCalculateAmountNotTrigger() throws TransactionException,
-    InvalidCondition {
+            InvalidCondition {
         this.feeCase.addConditionEquation("1", '>', "2");
         Assert.assertFalse(this.feeCase.triggerCase());
         final Transaction t = this.feeCase.calculateAmount();

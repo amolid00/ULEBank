@@ -23,13 +23,13 @@ public interface Command {
     public void execute() throws Exception;
 
     /**
-     * @throws Exception 
+     * @throws Exception
      *
      */
     public void undo() throws Exception;
 
     /**
-     * @throws Exception 
+     * @throws Exception
      *
      */
     public void redo() throws Exception;

@@ -17,7 +17,7 @@ import es.unileon.ulebank.history.iterator.IteratorBetweenTwoDates;
  * @author runix
  */
 public class CommandFilterTransactionByDates<T extends Transaction> implements
-Command {
+        Command {
 
     private Iterator<T> iteratorFiltered;
     private List<T> result;

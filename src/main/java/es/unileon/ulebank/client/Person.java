@@ -212,17 +212,19 @@ public class Person extends Client {
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
-    
+
     /**
      * Returns person age
+     * 
      * @return
      */
     public int getAge() {
         return this.age;
     }
-    
+
     /**
      * Changes person age with received age
+     * 
      * @param age
      */
     public void setAge(int age) {

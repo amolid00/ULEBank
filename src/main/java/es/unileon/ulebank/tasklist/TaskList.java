@@ -134,7 +134,7 @@ public class TaskList {
     /**
      *
      * @param id
-     * @throws Exception 
+     * @throws Exception
      */
     public boolean undoTask(Handler id) throws Exception {
         int i = -1;
@@ -150,13 +150,13 @@ public class TaskList {
     }
 
     /**
-     * @throws Exception 
+     * @throws Exception
      *
      */
     public synchronized void executeTasks() throws Exception {
         while (!this.tasks.isEmpty()
                 && (this.tasks.get(0).getEffectiveDate().getTime() <= this.time
-                .getTime())) {
+                        .getTime())) {
             final Task c = this.tasks.get(0);
             c.execute();
             this.tasks.remove(0);

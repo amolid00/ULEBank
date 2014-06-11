@@ -52,7 +52,7 @@ public class Enterprise extends Client {
      */
     public Enterprise(char cifLetter, int cifNumber, char cifControl,
             String enterpriseName, Address address)
-                    throws MalformedHandlerException {
+            throws MalformedHandlerException {
         super(new EnterpriseHandler(cifLetter, cifNumber, cifControl));
         this.authorizedPersons = new ArrayList<Person>();
         this.enterpriseName = enterpriseName;

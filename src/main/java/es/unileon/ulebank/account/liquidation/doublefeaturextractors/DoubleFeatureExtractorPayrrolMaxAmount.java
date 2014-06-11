@@ -16,7 +16,7 @@ import es.unileon.ulebank.history.DirectDebitTransaction;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 
 public class DoubleFeatureExtractorPayrrolMaxAmount implements
-AbstractFeatureExtractor<Double> {
+        AbstractFeatureExtractor<Double> {
     private double value;
     private static final Logger LOG = Logger
             .getLogger(DoubleFeatureExtractorPayrrolMaxAmount.class);

@@ -11,7 +11,7 @@ import es.unileon.ulebank.iterator.Condition;
  * @param <T>
  */
 public class ConditionTransactionBetweenTwoAmounts<T extends Transaction>
-implements Condition<T> {
+        implements Condition<T> {
 
     private final double min;
     private final double max;

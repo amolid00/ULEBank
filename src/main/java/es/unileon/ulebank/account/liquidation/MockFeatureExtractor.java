@@ -101,6 +101,7 @@ public class MockFeatureExtractor<T> implements AbstractFeatureExtractor<T> {
 
     /**
      * Get the account
+     * 
      * @return
      */
     public Account getAccountUpdated() {
@@ -109,6 +110,7 @@ public class MockFeatureExtractor<T> implements AbstractFeatureExtractor<T> {
 
     /**
      * Get the min date
+     * 
      * @return
      */
     public Date getMin() {
@@ -117,6 +119,7 @@ public class MockFeatureExtractor<T> implements AbstractFeatureExtractor<T> {
 
     /**
      * Get the max date
+     * 
      * @return
      */
     public Date getMax() {

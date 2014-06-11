@@ -13,7 +13,7 @@ import es.unileon.ulebank.iterator.Condition;
  * @param <T>
  */
 public class ConditionTransactionBetweenTwoDates<T extends Transaction>
-implements Condition<T> {
+        implements Condition<T> {
 
     private final long timestampMin;
     private final long timestampMax;

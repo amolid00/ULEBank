@@ -17,7 +17,7 @@ import es.unileon.ulebank.iterator.ConditionalIterator;
  * @param <T>
  */
 public class IteratorBetweenTwoDates<T extends Transaction> extends
-ConditionalIterator<T> {
+        ConditionalIterator<T> {
 
     public IteratorBetweenTwoDates(List<T> elements, long minDate, long maxDate)
             throws WrongArgsException {

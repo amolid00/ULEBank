@@ -149,9 +149,9 @@ public class TaskListTest {
         this.taskList.executeTasks();
         final Iterator<Task> todo = this.taskList.getTaskList().iterator();
         Assert.assertEquals(todo.next(), c1);
-
+        Time.getInstance().setTime(10000);
         Assert.assertFalse(this.taskList.addTask(c));
-        c = this.getTask(new Date(10003));
+        c = this.getTask(new Date(9999));
         Assert.assertTrue(this.taskList.addDoneTask(c));
         Assert.assertFalse(this.taskList.addDoneTask(c));
     }
