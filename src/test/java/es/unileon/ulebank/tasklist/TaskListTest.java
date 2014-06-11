@@ -46,7 +46,7 @@ public class TaskListTest {
     // so, if something is change in one test it might affect
     // the others
     @Test
-    public void testTaskList() {
+    public void testTaskList() throws Exception {
         final List<Task> tasks = new ArrayList<Task>();
         tasks.addAll(this.taskDone);
         tasks.addAll(this.taskToDo);

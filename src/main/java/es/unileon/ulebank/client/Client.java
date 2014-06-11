@@ -88,10 +88,41 @@ public class Client {
     }
 
     /**
+     * Search account with received handler into the list
+     * @param handler
+     * @return
+     */
+    public Account searchAccount(Handler handler) {
+        Iterator<Account> iterator = accounts.iterator();
+        Account account = null;
+        
+        if (this.accounts.isEmpty()) {
+            throw new NullPointerException("Account list is empty.");
+        }
+        
+        while (iterator.hasNext()) {
+            account = iterator.next();
+            
+            if (account.getID().compareTo(handler) == 0) {
+                break;
+            }
+        }
+        
+        return account;
+    }
+    
+    /**
+     * Returns account list
+     * @return
+     */
+    public List<Account> getAccounts() {
+        return this.accounts;
+    }
+
+    /**
      * @return id of the client
      */
     public Handler getId() {
-        return this.id;
+        return id;
     }
-
 }

@@ -46,22 +46,25 @@ public class Task {
 
     /**
      * Execute the command
+     * @throws Exception 
      */
-    public void execute() {
+    public void execute() throws Exception {
         this.command.execute();
     }
 
     /**
      * Undo the command
+     * @throws Exception 
      */
-    public void undo() {
+    public void undo() throws Exception {
         this.command.undo();
     }
 
     /**
      * Redo the command
+     * @throws Exception 
      */
-    public void redo() {
+    public void redo() throws Exception {
         this.command.redo();
     }
 

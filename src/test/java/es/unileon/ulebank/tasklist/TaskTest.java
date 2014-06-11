@@ -26,19 +26,19 @@ public class TaskTest {
     }
 
     @Test
-    public void testUndo() {
+    public void testUndo() throws Exception {
         this.task.undo();
         Assert.assertEquals(this.command.getState(), MockCommand.STATE_UNDO);
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() throws Exception {
         this.task.execute();
         Assert.assertEquals(this.command.getState(), MockCommand.STATE_EXECUTE);
     }
 
     @Test
-    public void testRedo() {
+    public void testRedo() throws Exception {
         this.task.redo();
         Assert.assertEquals(this.command.getState(), MockCommand.STATE_REDO);
     }
@@ -49,7 +49,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testCombined() {
+    public void testCombined() throws Exception {
         this.task.undo();
         Assert.assertEquals(this.command.getState(), MockCommand.STATE_UNDO);
         this.task.execute();

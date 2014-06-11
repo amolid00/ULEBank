@@ -17,17 +17,20 @@ public interface Command {
     public Handler getID();
 
     /**
+     * @throws Exception
      *
      */
-    public void execute();
+    public void execute() throws Exception;
 
     /**
+     * @throws Exception 
      *
      */
-    public void undo();
+    public void undo() throws Exception;
 
     /**
+     * @throws Exception 
      *
      */
-    public void redo();
+    public void redo() throws Exception;
 }

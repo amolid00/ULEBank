@@ -47,6 +47,10 @@ public class Person extends Client {
      * birth date of the person
      */
     private Date birthDate;
+    /**
+     * Person age
+     */
+    private int age;
 
     /**
      * creates a new Person instance with only the dni
@@ -207,5 +211,21 @@ public class Person extends Client {
      */
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+    
+    /**
+     * Returns person age
+     * @return
+     */
+    public int getAge() {
+        return this.age;
+    }
+    
+    /**
+     * Changes person age with received age
+     * @param age
+     */
+    public void setAge(int age) {
+        this.age = age;
     }
 }

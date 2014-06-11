@@ -8,6 +8,8 @@ package es.unileon.ulebank.exceptions;
  */
 public class TransactionException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      *
      * @param msg

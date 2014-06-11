@@ -2,6 +2,7 @@ package es.unileon.ulebank.account;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import es.unileon.ulebank.history.History;
 import es.unileon.ulebank.history.Transaction;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
+import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.time.Time;
 
 /**
@@ -52,6 +54,10 @@ public class Account {
      * The account authorizeds
      */
     private final List<Client> authorizeds;
+    /**
+     * The cards for this account
+     */
+    private List<Card> cards;
     /**
      * The account's history
      */
@@ -122,6 +128,7 @@ public class Account {
             this.directDebits = new AccountDirectDebits();
             this.liquidationFees = new ArrayList<AbstractLiquidationFee>();
             this.failedTransactionsHistory = new History<Transaction>();
+            this.cards = new ArrayList<Card>();
         }
         Account.LOG.info("Create a new account with number " + accountnumber
                 + " office " + office.getIdOffice().toString() + " bank "
@@ -464,5 +471,41 @@ public class Account {
      */
     public final Handler getID() {
         return this.id;
+    }
+
+    public void addCard(Card card) {
+        this.cards.add(card);
+    }
+
+    public boolean removeCard(Handler cardId) {
+        Card card = searchCard(cardId);
+        return this.cards.remove(card);
+    }
+
+    public Card searchCard(Handler cardId) {
+        Iterator<Card> iterator = cards.iterator();
+        Card card = null;
+
+        if (cards.isEmpty()) {
+            throw new NullPointerException("Card list is empty.");
+        }
+
+        while (iterator.hasNext()) {
+            card = iterator.next();
+
+            if (card.getId().compareTo(cardId) == 0) {
+                break;
+            }
+        }
+
+        return card;
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
+
+    public int getCardAmount() {
+        return this.cards.size();
     }
 }
