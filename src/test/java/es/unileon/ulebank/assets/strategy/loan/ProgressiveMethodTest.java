@@ -55,9 +55,9 @@ public class ProgressiveMethodTest {
 		this.description2 = "Compra moto";
 		
 		this.loan1 = new Loan(this.financialProduct1, 100000, 0.08,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description1);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description1);
 		this.loan2 = new Loan(this.financialProduct2, 50000, 0.1,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description2);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description2);
 		this.progressiveMethod1 = new ProgressiveMethod(loan1, 5);
 		this.progressiveMethod2 = new ProgressiveMethod(loan2, 5);
 

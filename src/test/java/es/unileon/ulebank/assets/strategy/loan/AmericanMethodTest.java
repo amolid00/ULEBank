@@ -74,13 +74,13 @@ public class AmericanMethodTest {
 		this.description4 = "Compra local";
 		
 		this.loan1 = new Loan(this.handlerLoan1,
-				10000000, 0.10, PaymentPeriod.ANNUAL, 5, this.commercialAccount1,description1);
+				10000000, 0.10, PaymentPeriod.ANNUAL, 5, this.commercialAccount1,this.authorized1,description1);
 		this.loanTest = new Loan(handlerLoan2, 100000,
-				0.08, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,description2);
+				0.08, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,this.authorized1,description2);
 		this.loanTest2 = new Loan(handlerLoan3, 50000,
-				0.10, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,description3);
+				0.10, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,this.authorized1,description3);
 		this.loanOpenTest = new Loan(handlerLoan4, 100000,
-				0.08, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,description4);
+				0.08, PaymentPeriod.MONTHLY, 10,this.commercialAccount1,this.authorized1,description4);
 
 		this.americanMethod = new AmericanMethod(this.loan1, 12);
 		this.test = new AmericanMethod(this.loanTest, 12);

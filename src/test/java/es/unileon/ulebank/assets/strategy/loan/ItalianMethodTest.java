@@ -66,21 +66,21 @@ public class ItalianMethodTest {
 		StrategyCommission studyCommission = new LockValueCommission(0.2);
 
 		loan2 = new Loan(this.financialProduct1, 100000, 0.08,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description1);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description1);
 		loan = new ItalianMethod(loan2);
 		newLoan = new Loan(this.financialProduct2, 50000, 0.1,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description2);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description2);
 		newLoan2 = new ItalianMethod(newLoan);
 
 		loan.doCalculationOfPayments();
 		newLoan2.doCalculationOfPayments();
 
 		loan1 = new Loan(this.financialProduct1, 3200, 0.07,
-				PaymentPeriod.MONTHLY, 12, this.commercialAccount,description1);
+				PaymentPeriod.MONTHLY, 12, this.commercialAccount,this.authorized1,description1);
 		italianMethod1 = new ItalianMethod(loan1);
 
 		loan2 = new Loan(this.financialProduct2, 50000, 0.1,
-				PaymentPeriod.MONTHLY, 12, this.commercialAccount,description2);
+				PaymentPeriod.MONTHLY, 12, this.commercialAccount,this.authorized1,description2);
 		italianMethod2 = new ItalianMethod(loan2);
 
 		this.italianMethod1.doCalculationOfPayments();

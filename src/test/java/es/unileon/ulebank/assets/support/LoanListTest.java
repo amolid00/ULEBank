@@ -65,10 +65,10 @@ public class LoanListTest {
 		this.description1 = "Compra BMW-M3";
 		this.description2 = "Compra moto";
 		this.loan1 = new Loan(new GenericLoanHandler("LN-4-2014-ES-VF3TK-5"),
-				10000, 0.14, PaymentPeriod.MONTHLY, 24, this.account1,description1);
+				10000, 0.14, PaymentPeriod.MONTHLY, 24, this.account1,this.authorized1,description1);
 
 		this.loan2 = new Loan(new GenericLoanHandler("LN-4-2014-ES-8T27V-0"),
-				15000, 0.24, PaymentPeriod.ANNUAL, 4, this.account2,description2);
+				15000, 0.24, PaymentPeriod.ANNUAL, 4, this.account2,this.authorized2,description2);
 
 		this.loanList = new LoanList<Loan>();
 
@@ -95,7 +95,7 @@ public class LoanListTest {
 	public void addLoan() throws LoanException, MalformedHandlerException {
 		assertEquals(2, this.loanList.numberOfLoans());
 		boolean isNotAdd = this.loanList.addLoan(new Loan(new GenericLoanHandler("LN-4-2014-ES-VF3TK-5"),
-				10000, 0.14, PaymentPeriod.MONTHLY, 24, this.account1,description1));
+				10000, 0.14, PaymentPeriod.MONTHLY, 24, this.account1,this.authorized2,description1));
 		assertFalse(isNotAdd);
 		assertEquals(2, this.loanList.numberOfLoans());
 	}

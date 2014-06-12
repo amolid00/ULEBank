@@ -17,6 +17,7 @@ import es.unileon.ulebank.assets.strategy.loan.FrenchMethod;
 import es.unileon.ulebank.assets.strategy.loan.ScheduledPayment;
 import es.unileon.ulebank.assets.strategy.loan.StrategyLoan;
 import es.unileon.ulebank.assets.support.PaymentPeriod;
+import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.fees.FeeStrategy;
 import es.unileon.ulebank.fees.InvalidFeeException;
@@ -111,6 +112,10 @@ public class Loan implements FinancialProduct {
      * Account where we must charge the different payments of the loan
      */
     private Account account;
+    /**
+     * Client that 
+     */
+    protected static Client client;
 
     /**
      * List where we store the payments for every loans
@@ -158,7 +163,7 @@ public class Loan implements FinancialProduct {
      * @throws LoanException
      */
     public Loan(Handler idLoan, double initialCapital, double interest,
-            PaymentPeriod paymentPeriod, int amortizationTime, Account account,
+            PaymentPeriod paymentPeriod, int amortizationTime, Account account,Client client,
             String description) throws LoanException {
         StringBuilder exceptionMessage = new StringBuilder();
 
@@ -198,6 +203,7 @@ public class Loan implements FinancialProduct {
         this.initialCapital = this.debt;
         this.strategy = new FrenchMethod(this);
         this.account = account;
+        this.client = client;
         this.description = description;
         this.payments = this.strategy.doCalculationOfPayments();
         this.loanHistory.addAllPayments(this.payments);
@@ -224,10 +230,10 @@ public class Loan implements FinancialProduct {
      */
     public Loan(Handler idLoan, double initialCapital,
             InterestRate interestRate, PaymentPeriod paymentPeriod,
-            int amortizationTime, Account account, String description)
+            int amortizationTime, Account account,Client client, String description)
             throws LoanException {
         this(idLoan, initialCapital, interestRate.getInterestRate(),
-                paymentPeriod, amortizationTime, account, description);
+                paymentPeriod, amortizationTime, account,client, description);
 
     }
 

@@ -60,12 +60,12 @@ public class FrenchMethodTest {
 		this.description2 = "Compra moto";
 		this.description3 = "Hipoteca";
 		loan2 = new Loan(this.financialProduct1, 100000, 0.8,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description1);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description1);
 		loan1 = new Loan(this.financialProduct2, 50000, 0.1,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description2);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description2);
 
 		testLoanOpening = new Loan(financialProduct3, 100000, 0.08,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,description3);
+				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description3);
 
 		testLoanOpening2 = new FrenchMethod(testLoanOpening);
 

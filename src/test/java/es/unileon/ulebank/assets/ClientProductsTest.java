@@ -69,16 +69,16 @@ public class ClientProductsTest {
 		// we create a loan of 100000 euros linked to the account
 		this.loanCancel = new Loan(handlerLoanCancel,
 				100000, 0.15, PaymentPeriod.MONTHLY, 23,
-				this.commercialAccount1, description1);
+				this.commercialAccount1, this.authorized1,description1);
 		this.genericLoan = new Loan(handlerGenericLoan,
 				200000, 0.15, PaymentPeriod.MONTHLY, 23,
-				this.commercialAccount1, description3);
+				this.commercialAccount1, this.authorized1, description3);
 		
 	
 		
 		this.loanAmortize = new Loan(handlerLoanAmortize,
 				168000, 0.20, PaymentPeriod.ANNUAL, 72,
-				this.commercialAccount2, description2);
+				this.commercialAccount2,this.authorized2, description2);
 		this.clientProducts =new ClientProducts();
 
 	}

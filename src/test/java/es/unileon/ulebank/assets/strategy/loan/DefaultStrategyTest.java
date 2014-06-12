@@ -51,9 +51,9 @@ public class DefaultStrategyTest {
 		this.description2 = "Compra moto";
 		// inicializo una loan con una deuda de 3000
 		loanBig = new Loan(idLoan, 3000, 0.01, PaymentPeriod.MONTHLY, 30,
-				commercialAccount1,description1);
+				commercialAccount1,this.authorized1,description1);
 		loanSmall = new Loan(idLoan, 2, 0.01, PaymentPeriod.MONTHLY, 1,
-				commercialAccount1,description2);
+				commercialAccount1,this.authorized1,description2);
 
 		DefaultLoanStrategy strategy = new DefaultLoanStrategy(loanBig);
 		loanBig.setStrategy(strategy);

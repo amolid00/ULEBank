@@ -33,7 +33,7 @@ public class VariableLoan extends Loan{
 			InterestRate interestRate, PaymentPeriod recalcOfInterset)
 			throws LoanException {
 		super(idLoan, initialCapital, interest, paymentPeriod, amortizationTime,
-				account,description);
+				account,client,description);
 		
 		this.interestOfRate=interestRate;
 		this.recalcOfInterest=recalcOfInterset;

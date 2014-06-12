@@ -49,7 +49,7 @@ public class GeneratePDFDocumentTest {
         String description = "Compra BMW-M3";
         
 		loan2 = new Loan(financialProduct1, 100000, 0.08,
-				PaymentPeriod.MONTHLY, 10, commercialAccount,description);
+				PaymentPeriod.MONTHLY, 10, commercialAccount,authorized1,description);
 		loan = new FrenchMethod(loan2);
 		loan.doCalculationOfPayments();
 		

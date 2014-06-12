@@ -43,7 +43,7 @@ public class LoanIteratorDatesTest {
 		this.commercialAccount = new Account(office, bank, "0000000000", authorized1);
 		this.description = "Compra BMW-M3";
 		this.loan = new Loan(new FinancialProductHandler("LN", "ES"), 100000,
-				0.15, PaymentPeriod.MONTHLY, 24, this.commercialAccount,description);
+				0.15, PaymentPeriod.MONTHLY, 24, this.commercialAccount,this.authorized1,description);
 
 		this.dateWrapStart = Calendar.getInstance();
 		this.dateWrapEnd = Calendar.getInstance();

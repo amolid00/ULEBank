@@ -40,10 +40,10 @@ public class LoanIteratorTest {
 		this.description = "Compra BMW-M3";
 		this.description2 = "Hipoteca";
 		this.loanIter = new Loan(new FinancialProductHandler("LN", "ES"), 100000,
-				0.15, PaymentPeriod.MONTHLY, 24, this.commercialAccount,description);
+				0.15, PaymentPeriod.MONTHLY, 24, this.commercialAccount,this.authorized1,description);
 		
 		this.loanIterZero = new Loan(new FinancialProductHandler("LN", "ES"), 0,
-				0.15, PaymentPeriod.MONTHLY, 0, this.commercialAccount,description2);
+				0.15, PaymentPeriod.MONTHLY, 0, this.commercialAccount,this.authorized1,description2);
 
 	}
 

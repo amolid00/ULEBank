@@ -3,12 +3,13 @@ package es.unileon.ulebank.assets.command;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.assets.Loan;
 import es.unileon.ulebank.assets.exceptions.LoanException;
-import es.unileon.ulebank.handler.*;
 import es.unileon.ulebank.assets.strategy.commission.PercentCommission;
 import es.unileon.ulebank.assets.strategy.commission.StrategyCommission;
 import es.unileon.ulebank.assets.support.LoanList;
 import es.unileon.ulebank.assets.support.PaymentPeriod;
+import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.command.Command;
+import es.unileon.ulebank.handler.Handler;
 
 public class CreateLoanCommand implements Command {
 
@@ -24,6 +25,7 @@ public class CreateLoanCommand implements Command {
 	private int amortizationTime;
 	private Account account;
 	private String description;
+	private Client client;
 	private Loan loan;
 
 	private LoanList<Loan> loanList;
@@ -52,7 +54,7 @@ public class CreateLoanCommand implements Command {
 		try {
 			this.loan = new Loan(this.idLoan, this.initialCapital,
 					this.interest, this.paymentPeriod, this.amortizationTime,
-					this.account,this.description);
+					this.account,this.client,this.description);
 		} catch (LoanException e) {
 		}
 
