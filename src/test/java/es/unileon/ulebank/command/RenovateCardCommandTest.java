@@ -12,7 +12,6 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
 import es.unileon.ulebank.command.exceptions.CommandException;
@@ -48,7 +47,7 @@ public class RenovateCardCommandTest {
     @Before
     public void setUp() throws NumberFormatException, CommissionException,
             IOException, InvalidFeeException, MalformedHandlerException,
-            WrongArgsException, ClientNotFoundException {
+            WrongArgsException {
         final CardProperties properties = new CardProperties();
         properties.setCvvSize(3);
         final Handler bankHandler = new BankHandler("1234");

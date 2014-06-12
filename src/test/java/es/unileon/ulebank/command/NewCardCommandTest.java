@@ -10,7 +10,6 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
 import es.unileon.ulebank.command.exceptions.CommandException;
@@ -48,7 +47,7 @@ public class NewCardCommandTest {
     private final String accountNumber = "0000000000";
 
     @Before
-    public void setUp() throws MalformedHandlerException, WrongArgsException, ClientNotFoundException {
+    public void setUp() throws MalformedHandlerException, WrongArgsException {
         this.bankHandler = new BankHandler("1234");
         this.bank = new Bank(this.bankHandler);
         this.office = new Office(new OfficeHandler("1234"), this.bank);

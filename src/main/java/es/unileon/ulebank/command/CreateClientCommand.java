@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import es.unileon.ulebank.client.Address;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -99,8 +98,6 @@ public class CreateClientCommand implements Command {
         } catch (final MalformedHandlerException ex) {
             Logger.getLogger(CreateClientCommand.class.getName()).log(
                     Level.SEVERE, null, ex);
-        } catch (ClientNotFoundException ex) {
-            Logger.getLogger(CreateClientCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -120,11 +117,7 @@ public class CreateClientCommand implements Command {
     @Override
     public void undo() {
         if ((this.state & (CreateClientCommand.STATE_EXECUTED | CreateClientCommand.STATE_REDO)) != 0) {
-            try {
-                this.office.deleteClient(this.client.getId());
-            } catch (ClientNotFoundException e) {
-                Logger.getLogger(CreateClientCommand.class.getName()).log(Level.SEVERE, null, e);
-            }
+            this.office.deleteClient(this.client.getId());
             this.state = CreateClientCommand.STATE_UNDO;
         }
     }
@@ -135,11 +128,7 @@ public class CreateClientCommand implements Command {
     @Override
     public void redo() {
         if (this.state == CreateClientCommand.STATE_UNDO) {
-            try {
-                this.office.addClient(this.client);
-            } catch (ClientNotFoundException e) {
-                Logger.getLogger(CreateClientCommand.class.getName()).log(Level.SEVERE, null, e);
-            }
+            this.office.addClient(this.client);
             this.state = CreateClientCommand.STATE_REDO;
         }
     }

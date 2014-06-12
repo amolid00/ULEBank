@@ -8,7 +8,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.TransactionException;
@@ -86,17 +85,12 @@ public class PaymentCommand implements Command {
      */
     public PaymentCommand(Handler cardId, Office office, Handler dni,
             Handler accountHandler, double amount, String concept, CardType type) throws CommandException {
-        try {
-            this.id = new CommandHandler(cardId);
-            this.cardId = cardId;
-            this.accountSender = office.searchClient(dni).searchAccount(
-                    accountHandler);
-            this.amount = amount;
-            this.concept = concept;
-        } catch (ClientNotFoundException e) {
-            PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        }
+        this.id = new CommandHandler(cardId);
+        this.cardId = cardId;
+        this.accountSender = office.searchClient(dni).searchAccount(
+                accountHandler);
+        this.amount = amount;
+        this.concept = concept;
     }
 
     /**

@@ -1,7 +1,6 @@
 package es.unileon.ulebank.command;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
@@ -35,14 +34,10 @@ public class CancelCardCommand implements Command {
      * @throws ClientNotFoundException
      */
     public CancelCardCommand(Handler cardId, Office office, Handler dni,
-            Handler account) throws CommandException {
+            Handler account) {
         this.id = new CommandHandler(cardId);
         this.cardId = cardId;
-        try {
-            this.account = office.searchClient(dni).searchAccount(account);
-        } catch (ClientNotFoundException e) {
-            throw new CommandException(e.getMessage());
-        }
+        this.account = office.searchClient(dni).searchAccount(account);
     }
 
     /**

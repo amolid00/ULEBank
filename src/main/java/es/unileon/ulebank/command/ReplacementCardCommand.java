@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
@@ -82,15 +81,10 @@ public class ReplacementCardCommand implements Command {
      * @throws ClientNotFoundException
      */
     public ReplacementCardCommand(Handler cardId, Office office, Handler dni,
-            Handler accountHandler) throws CommandException  {
+            Handler accountHandler)  {
         this.id = new CommandHandler(cardId);
         this.cardId = cardId;
-        try {
-            this.account = office.searchClient(dni).searchAccount(accountHandler);
-        } catch (ClientNotFoundException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        }
+        this.account = office.searchClient(dni).searchAccount(accountHandler);
     }
 
     /**

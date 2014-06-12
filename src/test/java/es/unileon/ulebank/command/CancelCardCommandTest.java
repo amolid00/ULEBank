@@ -10,7 +10,6 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
 import es.unileon.ulebank.command.exceptions.CommandException;
@@ -45,7 +44,7 @@ public class CancelCardCommandTest {
     @Before
     public void setUp() throws NumberFormatException, CommissionException,
             IOException, InvalidFeeException, MalformedHandlerException,
-            WrongArgsException, ClientNotFoundException {
+            WrongArgsException {
         final Handler bankHandler = new BankHandler("1234");
         this.handler1 = new CardHandler(bankHandler, "01", "123456789");
         this.handler2 = new CardHandler(bankHandler, "01", "123456788");
@@ -74,7 +73,7 @@ public class CancelCardCommandTest {
     }
 
     @Test
-    public void testCommandNull() throws ClientNotFoundException {
+    public void testCommandNull() {
         Assert.assertNull(this.test);
     }
 

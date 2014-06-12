@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommissionException;

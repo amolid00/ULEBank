@@ -3,7 +3,6 @@ package es.unileon.ulebank.command;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.TransactionException;
@@ -67,19 +66,14 @@ public class TransferCommand implements Command {
      */
     public TransferCommand(Office office, Handler accountSender,
             Handler dniSender, Handler accountReceiver, Handler dniReceiver,
-            double amount, String concept) throws CommandException {
-        try {
-            this.id = new CommandHandler(accountSender);
-            this.accountSender = office.searchClient(dniSender).searchAccount(
-                    accountSender);
-            this.accountReceiver = office.searchClient(dniReceiver)
-                    .searchAccount(accountReceiver);
-            this.amount = amount;
-            this.concept = concept;
-        } catch (ClientNotFoundException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        }
+            double amount, String concept) {
+        this.id = new CommandHandler(accountSender);
+        this.accountSender = office.searchClient(dniSender).searchAccount(
+                accountSender);
+        this.accountReceiver = office.searchClient(dniReceiver)
+                .searchAccount(accountReceiver);
+        this.amount = amount;
+        this.concept = concept;
     }
 
     /**

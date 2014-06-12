@@ -9,7 +9,6 @@ import es.unileon.ulebank.Employee;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Enterprise;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -141,7 +140,7 @@ public class Office {
      * @return ( true if success, false otherwise )
      * @throws ClientNotFoundException 
      */
-    public synchronized boolean addClient(Client client) throws ClientNotFoundException {
+    public synchronized boolean addClient(Client client) {
         if ((client != null) && (this.searchClient(client.getId()) == null)) {
             return this.clients.add(client);
         }
@@ -156,7 +155,7 @@ public class Office {
      * @return (true if success, false otherwise )
      * @throws ClientNotFoundException 
      */
-    public synchronized boolean deleteClient(Handler id) throws ClientNotFoundException {
+    public synchronized boolean deleteClient(Handler id) {
         if ((id != null) && (this.searchClient(id) != null)) {
             return this.clients.remove(this.searchClient(id));
         }
@@ -211,17 +210,13 @@ public class Office {
         return result;
     }
 
-    public Client searchClient(Handler id) throws ClientNotFoundException {
+    public Client searchClient(Handler id) {
         Client result = null;
         int i = -1;
         while ((++i < this.clients.size()) && (result == null)) {
             if (this.clients.get(i).getId().compareTo(id) == 0) {
                 result = this.clients.get(i);
             }
-        }
-        
-        if (result == null) {
-            throw new ClientNotFoundException("Client is not registered");
         }
         
         return result;

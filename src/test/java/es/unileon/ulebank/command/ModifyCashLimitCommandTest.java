@@ -10,7 +10,6 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
@@ -41,7 +40,7 @@ public class ModifyCashLimitCommandTest {
 
     @Before
     public void setUp() throws CommissionException, InvalidFeeException,
-            MalformedHandlerException, WrongArgsException, ClientNotFoundException {
+            MalformedHandlerException, WrongArgsException {
         final Handler bankHandler = new BankHandler("1234");
         this.bank = new Bank(bankHandler);
         this.handler = new CardHandler(bankHandler, "01", "987654321");
