@@ -24,6 +24,7 @@ import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
 import es.unileon.ulebank.payments.handler.CardHandler;
+import es.unileon.ulebank.utils.CardProperties;
 
 public class ModifyCashLimitCommandTest {
     private Card testCard;
@@ -39,7 +40,9 @@ public class ModifyCashLimitCommandTest {
 
     @Before
     public void setUp() throws CommissionException, InvalidFeeException,
-    MalformedHandlerException, WrongArgsException {
+    MalformedHandlerException, WrongArgsException, IncorrectLimitException {
+        CardProperties properties = new CardProperties();
+        properties.setMinimumLimit(200.0);
         final Handler bankHandler = new BankHandler("1234");
         this.bank = new Bank(bankHandler);
         this.handler = new CardHandler(bankHandler, "01", "987654321");
@@ -49,8 +52,11 @@ public class ModifyCashLimitCommandTest {
         this.account = new Account(this.office, this.bank, this.accountNumber,
                 this.client);
         this.client.add(this.account);
-        this.testCard = new CreditCard(this.handler, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
+        this.testCard = new CreditCard(this.handler, this.client, this.account);
+        this.testCard.setBuyLimitMonthly(1000.0);
+        this.testCard.setBuyLimitDiary(400.0);
+        this.testCard.setCashLimitMonthly(1000.0);
+        this.testCard.setCashLimitDiary(400.0);
         this.account.addCard(this.testCard);
     }
 

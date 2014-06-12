@@ -46,34 +46,6 @@ public class NewCardCommand implements Command {
      */
     private final Handler cardHandler;
     /**
-     * Limite de compra diario para la tarjeta
-     */
-    private final double buyLimitDiary;
-    /**
-     * Limite de compra mensual para la tarjeta
-     */
-    private final double buyLimitMonthly;
-    /**
-     * Limite de extraccion en cajero diario para la tarjeta
-     */
-    private final double cashLimitDiary;
-    /**
-     * Limite de extraccion en cajero mensual para la tarjeta
-     */
-    private final double cashLimitMonthly;
-    /**
-     * Comision de emision de la tarjeta
-     */
-    private final double commissionEmission;
-    /**
-     * Comision de mantenimiento de la tarjeta
-     */
-    private final double commissionMaintenance;
-    /**
-     * Comision de renovacion de la tarjeta
-     */
-    private final double commissionRenovate;
-    /**
      * Duegno de la tarjeta
      */
     private final Client client;
@@ -97,11 +69,7 @@ public class NewCardCommand implements Command {
      * @throws MalformedHandlerException
      */
     public NewCardCommand(Office office, Client client, Account account,
-            CardType cardType, String string, String officeId, String cardId,
-            double buyLimitDiary, double buyLimitMonthly,
-            double cashLimitDiary, double cashLimitMonthly,
-            double commissionEmission, double commissionMaintenance,
-            double commissionRenovate) throws CommandException {
+            CardType cardType, String officeId, String cardId) throws CommandException {
         this.office = office;
         this.account = account;
         this.client = client;
@@ -112,13 +80,6 @@ public class NewCardCommand implements Command {
         }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);
-        this.buyLimitDiary = buyLimitDiary;
-        this.buyLimitMonthly = buyLimitMonthly;
-        this.cashLimitDiary = cashLimitDiary;
-        this.cashLimitMonthly = cashLimitMonthly;
-        this.commissionEmission = commissionEmission;
-        this.commissionMaintenance = commissionMaintenance;
-        this.commissionRenovate = commissionRenovate;
     }
 
     /**
@@ -136,16 +97,10 @@ public class NewCardCommand implements Command {
         try {
             if ("CREDIT".equalsIgnoreCase(this.cardType)) {
                 this.card = new CreditCard(this.cardHandler, this.client,
-                        this.account, this.buyLimitDiary, this.buyLimitMonthly,
-                        this.cashLimitDiary, this.cashLimitMonthly,
-                        this.commissionEmission, this.commissionMaintenance,
-                        this.commissionRenovate);
+                        this.account);
             } else if ("DEBIT".equalsIgnoreCase(this.cardType)) {
                 this.card = new DebitCard(this.cardHandler, this.client,
-                        this.account, this.buyLimitDiary, this.buyLimitMonthly,
-                        this.cashLimitDiary, this.cashLimitMonthly,
-                        this.commissionEmission, this.commissionMaintenance,
-                        this.commissionRenovate);
+                        this.account);
             } 
         } catch (InvalidFeeException e) {
             throw new CommandException(e.getMessage());

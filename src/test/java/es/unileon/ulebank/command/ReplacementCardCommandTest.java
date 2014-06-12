@@ -66,10 +66,8 @@ public class ReplacementCardCommandTest {
                 this.client);
         this.accountHandler = this.account.getID();
         this.client.add(this.account);
-        this.card1 = new DebitCard(this.handler1, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
-        this.card2 = new CreditCard(this.handler2, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
+        this.card1 = new DebitCard(this.handler1, this.client, this.account);
+        this.card2 = new CreditCard(this.handler2, this.client, this.account);
         this.account.addCard(this.card1);
         this.account.addCard(this.card2);
         try {

@@ -51,7 +51,14 @@ public class CreditCardTest {
 		FeeStrategy commissionEmission = new LinearFee(0, 25);
 		FeeStrategy commissionMaintenance = new LinearFee(0, 0);
 		FeeStrategy commissionRenovate = new LinearFee(0, 0);
-		testCard = new CreditCard(handler, client, account, 400.0, 1000.0, 400.0, 1000.0, commissionEmission.getFee(0), commissionMaintenance.getFee(0), commissionRenovate.getFee(0));
+		testCard = new CreditCard(handler, client, account);
+		testCard.setBuyLimitMonthly(1000.0);
+		testCard.setBuyLimitDiary(400.0);
+		testCard.setCashLimitMonthly(1000.0);
+		testCard.setCashLimitDiary(400.0);
+		testCard.setCommissionEmission(commissionEmission);
+		testCard.setCommissionMaintenance(commissionMaintenance);
+		testCard.setCommissionRenovate(commissionRenovate);
 	}
 
 	@Test

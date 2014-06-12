@@ -38,7 +38,7 @@ public class SecurityCardTest {
 		properties.setExpirationYear(3);
 		properties.setDimensionColumns(10);
 		properties.setDimensionRow(4);
-		this.card = new CreditCard(new CardHandler("123401123456789"), new Person(71034506,'H'), null, 0, 0, 0, 0, 0, 0, 0);
+		this.card = new CreditCard(new CardHandler("123401123456789"), new Person(71034506,'H'), null);
 		this.card.setPin("0000");
 		this.secCard = new SecurityCard(this.card);
 	}

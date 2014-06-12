@@ -48,9 +48,10 @@ public class RenovateCardCommandTest {
     public void setUp() throws NumberFormatException, CommissionException,
             IOException, InvalidFeeException, MalformedHandlerException,
             WrongArgsException {
-        final CardProperties properties = new CardProperties();
+        CardProperties properties = new CardProperties();
         properties.setCvvSize(3);
-        final Handler bankHandler = new BankHandler("1234");
+        properties.setExpirationYear(3);
+        Handler bankHandler = new BankHandler("1234");
         this.bank = new Bank(bankHandler);
         this.handler1 = new CardHandler(bankHandler, "01", "987654321");
         this.handler2 = new CardHandler(bankHandler, "01", "123456789");
@@ -62,18 +63,13 @@ public class RenovateCardCommandTest {
                 this.client);
         this.accountHandler = this.account.getID();
         this.client.add(this.account);
-        this.card1 = new DebitCard(this.handler1, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
-        this.card2 = new CreditCard(this.handler2, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
+        this.card1 = new DebitCard(this.handler1, this.client, this.account);
+        this.card2 = new CreditCard(this.handler2, this.client, this.account);
+        
+        this.card1.setCvv("213");
+        this.card2.setCvv("123");
         this.account.addCard(this.card1);
         this.account.addCard(this.card2);
-        try {
-            this.card1.setCvv("213");
-            this.card2.setCvv("123");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
         this.card1.setExpirationDate("04/14");
         this.card2.setExpirationDate("04/14");
     }
@@ -105,6 +101,7 @@ public class RenovateCardCommandTest {
         Assert.assertEquals("04/14", this.card2.getExpirationDate());
         Assert.assertEquals("123", this.card2.getCvv());
         this.test.execute();
+        System.out.println(this.card2.getExpirationDate());
         Assert.assertTrue(!this.card2.getExpirationDate().equals("04/14"));
         Assert.assertTrue(!this.card2.getCvv().equals("123"));
     }

@@ -106,26 +106,15 @@ public abstract class Card implements Serializable {
      * @param commissionMaintenance
      * @param commissionRenovate
      */
-    public Card(Handler cardId, String type, Account account, Client client,
-            double buyLimitDiary, double buyLimitMonthly,
-            double cashLimitDiary, double cashLimitMonthly,
-            FeeStrategy commissionEmission, FeeStrategy commissionMaintenance,
-            FeeStrategy commissionRenovate) {
+    public Card(Handler cardId, String type, Account account, Client client) {
         this.id = cardId;
         this.cardType = type;
         this.account = account;
         this.owner = client;
         this.pin = this.generatePinCode();
-        this.buyLimitDiary = buyLimitDiary;
-        this.buyLimitMonthly = buyLimitMonthly;
-        this.cashLimitDiary = cashLimitDiary;
-        this.cashLimitMonthly = cashLimitMonthly;
         this.emissionDate = this.generateEmissionDate();
         this.expirationDate = this.generateExpirationDate();
         this.cvv = this.generateCVV();
-        this.commissionEmission = commissionEmission;
-        this.commissionMaintenance = commissionMaintenance;
-        this.commissionRenovate = commissionRenovate;
     }
 
     /**
@@ -207,14 +196,6 @@ public abstract class Card implements Serializable {
 
         return result.toString();
     }
-
-    // /**
-    // * Devuelve el identificador de la tarjeta
-    // * @return String
-    // */
-    // public Handler getCardHandler() {
-    // return this.id;
-    // }
 
     /**
      * Devuelve el codigo PIN de la tarjeta

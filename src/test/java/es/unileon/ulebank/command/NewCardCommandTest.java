@@ -33,13 +33,6 @@ public class NewCardCommandTest {
     private Handler accountHandler;
     private CardType cardTypeCredit;
     private CardType cardTypeDebit;
-    private double buyLimitDiary;
-    private double buyLimitMonthly;
-    private double cashLimitDiary;
-    private double cashLimitMonthly;
-    private float commissionEmission;
-    private float commissionMaintenance;
-    private float commissionRenovate;
     private Bank bank;
     private Client client;
     private Account account;
@@ -62,13 +55,6 @@ public class NewCardCommandTest {
         this.client.add(this.account);
         this.cardTypeCredit = CardType.CREDIT;
         this.cardTypeDebit = CardType.DEBIT;
-        this.buyLimitDiary = 400.0;
-        this.buyLimitMonthly = 1000.0;
-        this.cashLimitDiary = 400.0;
-        this.cashLimitMonthly = 1000.0;
-        this.commissionEmission = 0;
-        this.commissionMaintenance = 0;
-        this.commissionRenovate = 0;
     }
 
     @Test
@@ -79,90 +65,49 @@ public class NewCardCommandTest {
     @Test
     public void testCommandNotNull() throws CommandException {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeCredit, this.bankHandler.toString(),
-                this.officeId, this.cardId, this.buyLimitDiary,
-                this.buyLimitMonthly, this.cashLimitDiary,
-                this.cashLimitMonthly, this.commissionEmission,
-                this.commissionMaintenance, this.commissionRenovate);
+                this.cardTypeCredit,
+                this.officeId, this.cardId);
         Assert.assertNotNull(this.test);
     }
 
     @Test
     public void testCommandId() throws CommandException {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeCredit, this.bankHandler.toString(),
-                this.officeId, this.cardId, this.buyLimitDiary,
-                this.buyLimitMonthly, this.cashLimitDiary,
-                this.cashLimitMonthly, this.commissionEmission,
-                this.commissionMaintenance, this.commissionRenovate);
+                this.cardTypeCredit,
+                this.officeId, this.cardId);
         Assert.assertTrue(this.test.getID() != null);
     }
 
     @Test
     public void testCreateCreditCard() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeCredit, this.bankHandler.toString(),
-                this.officeId, this.cardId, this.buyLimitDiary,
-                this.buyLimitMonthly, this.cashLimitDiary,
-                this.cashLimitMonthly, this.commissionEmission,
-                this.commissionMaintenance, this.commissionRenovate);
+                this.cardTypeCredit, 
+                this.officeId, this.cardId);
         this.test.execute();
         final CommandHandler id = (CommandHandler) this.test.getID();
         final CardHandler cardHandler = (CardHandler) id.getId();
         final Card card = this.office.searchClient(this.dni)
                 .searchAccount(this.accountHandler).searchCard(cardHandler);
         Assert.assertEquals(this.cardTypeCredit.toString(), card.getCardType());
-        Assert.assertEquals(this.buyLimitDiary, card.getBuyLimitDiary(), 0.0001);
-        Assert.assertEquals(this.buyLimitMonthly, card.getBuyLimitMonthly(),
-                0.0001);
-        Assert.assertEquals(this.cashLimitDiary, card.getCashLimitDiary(),
-                0.0001);
-        Assert.assertEquals(this.cashLimitMonthly, card.getCashLimitMonthly(),
-                0.0001);
-        Assert.assertEquals(this.commissionEmission,
-                card.getCommissionEmission(0), 0.0001);
-        Assert.assertEquals(this.commissionMaintenance,
-                card.getCommissionMaintenance(0), 0.0001);
-        Assert.assertEquals(this.commissionRenovate,
-                card.getCommissionRenovate(0), 0.0001);
     }
 
     @Test
     public void testCreateDebitCard() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeDebit, this.bankHandler.toString(), this.officeId,
-                this.cardId, this.buyLimitDiary, this.buyLimitMonthly,
-                this.cashLimitDiary, this.cashLimitMonthly,
-                this.commissionEmission, this.commissionMaintenance,
-                this.commissionRenovate);
+                this.cardTypeDebit, this.officeId,
+                this.cardId);
         this.test.execute();
         final CommandHandler id = (CommandHandler) this.test.getID();
         final CardHandler cardHandler = (CardHandler) id.getId();
         final Card card = this.office.searchClient(this.dni)
                 .searchAccount(this.accountHandler).searchCard(cardHandler);
         Assert.assertEquals(this.cardTypeDebit.toString(), card.getCardType());
-        Assert.assertEquals(this.buyLimitDiary, card.getBuyLimitDiary(), 0.0001);
-        Assert.assertEquals(this.buyLimitMonthly, card.getBuyLimitMonthly(),
-                0.0001);
-        Assert.assertEquals(this.cashLimitDiary, card.getCashLimitDiary(),
-                0.0001);
-        Assert.assertEquals(this.cashLimitMonthly, card.getCashLimitMonthly(),
-                0.0001);
-        Assert.assertEquals(this.commissionEmission,
-                card.getCommissionEmission(0), 0.0001);
-        Assert.assertEquals(this.commissionMaintenance,
-                card.getCommissionMaintenance(0), 0.0001);
-        Assert.assertEquals(this.commissionRenovate,
-                card.getCommissionRenovate(0), 0.0001);
     }
 
     public void testUndoNewCreditCardCommand() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeCredit, this.bankHandler.toString(),
-                this.officeId, this.cardId, this.buyLimitDiary,
-                this.buyLimitMonthly, this.cashLimitDiary,
-                this.cashLimitMonthly, this.commissionEmission,
-                this.commissionMaintenance, this.commissionRenovate);
+                this.cardTypeCredit,
+                this.officeId, this.cardId);
         this.test.execute();
         Assert.assertEquals(1, this.office.searchClient(this.dni)
                 .searchAccount(this.accountHandler).getCardAmount());
@@ -173,11 +118,8 @@ public class NewCardCommandTest {
 
     public void testUndoNewDebitCardCommand() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeDebit, this.bankHandler.toString(), this.officeId,
-                this.cardId, this.buyLimitDiary, this.buyLimitMonthly,
-                this.cashLimitDiary, this.cashLimitMonthly,
-                this.commissionEmission, this.commissionMaintenance,
-                this.commissionRenovate);
+                this.cardTypeDebit, this.officeId,
+                this.cardId);
         this.test.execute();
         final CommandHandler id = (CommandHandler) this.test.getID();
         final CardHandler cardHandler = (CardHandler) id.getId();
@@ -187,17 +129,14 @@ public class NewCardCommandTest {
         Assert.assertEquals(0, this.office.searchClient(this.dni)
                 .searchAccount(this.accountHandler).getCardAmount());
         this.office.searchClient(this.dni).searchAccount(this.accountHandler)
-                .searchCard(cardHandler);
+        .searchCard(cardHandler);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testRedoNewCreditCardCommand() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeCredit, this.bankHandler.toString(),
-                this.officeId, this.cardId, this.buyLimitDiary,
-                this.buyLimitMonthly, this.cashLimitDiary,
-                this.cashLimitMonthly, this.commissionEmission,
-                this.commissionMaintenance, this.commissionRenovate);
+                this.cardTypeCredit,
+                this.officeId, this.cardId);
         this.test.execute();
         this.test.undo();
         this.test.redo();
@@ -206,11 +145,8 @@ public class NewCardCommandTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testRedoNewDebitCardCommand() throws Exception {
         this.test = new NewCardCommand(this.office, this.client, this.account,
-                this.cardTypeDebit, this.bankHandler.toString(), this.officeId,
-                this.cardId, this.buyLimitDiary, this.buyLimitMonthly,
-                this.cashLimitDiary, this.cashLimitMonthly,
-                this.commissionEmission, this.commissionMaintenance,
-                this.commissionRenovate);
+                this.cardTypeDebit, this.officeId,
+                this.cardId);
         this.test.execute();
         this.test.undo();
         this.test.redo();

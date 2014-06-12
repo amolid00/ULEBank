@@ -57,10 +57,8 @@ public class CancelCardCommandTest {
                 this.client);
         this.accountHandler = this.account.getID();
         this.client.add(this.account);
-        this.card1 = new DebitCard(this.handler1, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
-        this.card2 = new CreditCard(this.handler2, this.client, this.account,
-                400.0, 1000.0, 400.0, 1000.0, 25, 0, 0);
+        this.card1 = new DebitCard(this.handler1, this.client, this.account);
+        this.card2 = new CreditCard(this.handler2, this.client, this.account);
         this.account.addCard(this.card1);
         this.account.addCard(this.card2);
     }
@@ -89,9 +87,9 @@ public class CancelCardCommandTest {
     public void testCancelDebitCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
-        Assert.assertEquals(2, this.account.getCardAmount());
-        this.test.execute();
         Assert.assertEquals(1, this.account.getCardAmount());
+        this.test.execute();
+        Assert.assertEquals(0, this.account.getCardAmount());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -114,9 +112,9 @@ public class CancelCardCommandTest {
     public void testCancelCreditCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler2, this.office, this.dni,
                 this.accountHandler);
-        Assert.assertEquals(2, this.account.getCardAmount());
-        this.test.execute();
         Assert.assertEquals(1, this.account.getCardAmount());
+        this.test.execute();
+        Assert.assertEquals(0, this.account.getCardAmount());
     }
 
     @Test(expected = UnsupportedOperationException.class)

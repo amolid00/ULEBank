@@ -2,7 +2,6 @@ package es.unileon.ulebank.account;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -245,7 +244,7 @@ public class Account {
             }
             if (!found) {
                 err.append("Cannot remove the titular ").append(id.toString())
-                        .append(" because it doesn't exist");
+                .append(" because it doesn't exist");
             }
         }
         if (err.length() > 1) {
@@ -421,8 +420,8 @@ public class Account {
                         .getInstance().getTime()));
                 final Transaction tNegate = new GenericTransaction(
                         -t.getAmount(), t.getDate(), t.getSubject()
-                                + "Accoun : " + this.getID().toString()
-                                + "id = " + t.getId());
+                        + "Accoun : " + this.getID().toString()
+                        + "id = " + t.getId());
                 this.doTransaction(t);
                 office.getOfficeAccount().doTransaction(tNegate);
                 // TODO
@@ -481,7 +480,7 @@ public class Account {
         if ((this.searchCard(card.getId()) == null) && (card != null)) {
             return  this.cards.add(card);
         }
-       return false;
+        return false;
     }
 
     /**
@@ -504,16 +503,15 @@ public class Account {
      * @throws CardNotFoundException 
      */
     public Card searchCard(Handler cardId) {
-        final Iterator<Card> iterator = this.cards.iterator();
         Card card = null;
+        int i = -1;
 
-        while (iterator.hasNext()) {
-            card = iterator.next();
-
-            if (card.getId().compareTo(cardId) == 0) {
-                break;
+        while ((cards.size() > ++i) && (card == null)) {
+            if (cards.get(i).getId().compareTo(cardId) == 0) {
+                card = cards.get(i);
             }
         }
+
         return card;
     }
 
@@ -532,7 +530,7 @@ public class Account {
     public int getCardAmount() {
         return this.cards.size();
     }
-    
+
     /**
      * Changes balance with received balance
      * @param balance
