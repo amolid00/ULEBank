@@ -53,6 +53,10 @@ public class CardProperties {
      * Edad maxima definida
      */
     private static int maximumAge;
+    /**
+     * Concept to undo payment
+     */
+    private static String undoConcept;
 
     /**
      * Devuelve el limite minimo por defecto
@@ -265,5 +269,21 @@ public class CardProperties {
      */
     public void setMaximumAge(int maximumAge) {
         CardProperties.maximumAge = maximumAge;
+    }
+    
+    /**
+     * Returns undo concept for undo payments
+     * @return
+     */
+    public static String getUndoConcept() {
+        return undoConcept;
+    }
+    
+    /**
+     * Changes undo concept with received String
+     * @param undoConcept
+     */
+    public void setUndoConcept(String undoConcept) {
+        CardProperties.undoConcept = undoConcept;
     }
 }
