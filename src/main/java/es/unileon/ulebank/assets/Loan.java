@@ -111,9 +111,9 @@ public class Loan implements FinancialProduct {
     /**
      * Account where we must charge the different payments of the loan
      */
-    private Account account;
+    private final Account account;
     /**
-     * Client that 
+     * Client that
      */
     protected static Client client;
 
@@ -121,7 +121,7 @@ public class Loan implements FinancialProduct {
      * List where we store the payments for every loans
      */
 
-    private LoanHistory loanHistory;
+    private final LoanHistory loanHistory;
 
     /*
      * internal index used to have the possibility to change the arraylist of
@@ -163,9 +163,9 @@ public class Loan implements FinancialProduct {
      * @throws LoanException
      */
     public Loan(Handler idLoan, double initialCapital, double interest,
-            PaymentPeriod paymentPeriod, int amortizationTime, Account account,Client client,
-            String description) throws LoanException {
-        StringBuilder exceptionMessage = new StringBuilder();
+            PaymentPeriod paymentPeriod, int amortizationTime, Account account,
+            Client client, String description) throws LoanException {
+        final StringBuilder exceptionMessage = new StringBuilder();
 
         this.loanHistory = new LoanHistory();
         try {
@@ -176,7 +176,7 @@ public class Loan implements FinancialProduct {
             this.openningFee = new LoanFee(0, false);
             this.amortizedFee = new LoanFee(0, false);
             this.delayedPaymentFee = new LoanFee(0, false);
-        } catch (InvalidFeeException e) {
+        } catch (final InvalidFeeException e) {
             exceptionMessage.append("Commission is marformed.");
         }
 
@@ -189,7 +189,7 @@ public class Loan implements FinancialProduct {
                     .append("The bank can not lend this amount of money");
         }
 
-        if (interest >= 0 && interest <= 1) {
+        if ((interest >= 0) && (interest <= 1)) {
             this.interest = interest;
             this.setInterestOfBank(interest);
         } else {
@@ -203,14 +203,15 @@ public class Loan implements FinancialProduct {
         this.initialCapital = this.debt;
         this.strategy = new FrenchMethod(this);
         this.account = account;
-        this.client = client;
+        Loan.client = client;
         this.description = description;
         this.payments = this.strategy.doCalculationOfPayments();
         this.loanHistory.addAllPayments(this.payments);
         this.arrayListIndex = 0;
 
-        if (exceptionMessage.length() > 1)
+        if (exceptionMessage.length() > 1) {
             throw new LoanException(exceptionMessage.toString());
+        }
 
         this.creatinngDate = new Date(Time.getInstance().getTime());
         this.debt = this.openningFee.getFee(this.debt);
@@ -230,10 +231,10 @@ public class Loan implements FinancialProduct {
      */
     public Loan(Handler idLoan, double initialCapital,
             InterestRate interestRate, PaymentPeriod paymentPeriod,
-            int amortizationTime, Account account,Client client, String description)
-            throws LoanException {
+            int amortizationTime, Account account, Client client,
+            String description) throws LoanException {
         this(idLoan, initialCapital, interestRate.getInterestRate(),
-                paymentPeriod, amortizationTime, account,client, description);
+                paymentPeriod, amortizationTime, account, client, description);
 
     }
 
@@ -246,12 +247,12 @@ public class Loan implements FinancialProduct {
      */
     /* TODO puede ser cambiado a otra clase utils */
     public Date forwardDate(Date date, PaymentPeriod paymentPeriod) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);// reset the parameter
 
         int month = calendar.get(Calendar.MONTH) + paymentPeriod.getTime();
         int year = calendar.get(Calendar.YEAR);
-        int day = calendar.get(Calendar.DATE);
+        final int day = calendar.get(Calendar.DATE);
         if (month >= 12) {
             year++;
         }
@@ -281,7 +282,7 @@ public class Loan implements FinancialProduct {
      * @throws LoanException
      */
     public double cancelLoan() throws LoanException {
-        StringBuilder msgException = new StringBuilder();
+        final StringBuilder msgException = new StringBuilder();
         double feeCancel = 0;
 
         feeCancel = this.cancelCommission.getFee(this.debt);
@@ -290,7 +291,7 @@ public class Loan implements FinancialProduct {
         // of the customer
         try {
             if (!(this.account.getBalance() < this.debt)) {
-                Transaction transactionCharge = new GenericTransaction(
+                final Transaction transactionCharge = new GenericTransaction(
                         feeCancel, new Date(Time.getInstance().getTime()),
                         "cancel loan");
 
@@ -300,7 +301,7 @@ public class Loan implements FinancialProduct {
             } else {
                 msgException.append("not enough money");
             }
-        } catch (TransactionException transactionException) {
+        } catch (final TransactionException transactionException) {
             msgException.append("Transaction error.\n");
             msgException.append(transactionException.getMessage());
         }
@@ -325,8 +326,8 @@ public class Loan implements FinancialProduct {
      */
     @Deprecated
     public void paid(int index) { // Este metodo se borrara asiq no lo useis
-        if (index >= 0 && index < payments.size()) {
-            ScheduledPayment payment = payments.get(index);
+        if ((index >= 0) && (index < this.payments.size())) {
+            final ScheduledPayment payment = this.payments.get(index);
             if (!payment.isPaid()) {
                 this.debt -= payment.getAmortization();
                 payment.setPaid(true);
@@ -341,9 +342,9 @@ public class Loan implements FinancialProduct {
      * @throws LoanException
      */
     private void paid(ScheduledPayment payment) throws LoanException {
-        StringBuffer exceptionMessage = new StringBuffer();
+        final StringBuffer exceptionMessage = new StringBuffer();
         try {
-            Transaction transaction = new GenericTransaction(
+            final Transaction transaction = new GenericTransaction(
                     payment.getImportOfTerm(), new Date(Time.getInstance()
                             .getTime()), "payment");
 
@@ -352,7 +353,7 @@ public class Loan implements FinancialProduct {
 
             this.account.doTransaction(transaction);
 
-        } catch (TransactionException e) {
+        } catch (final TransactionException e) {
             exceptionMessage.append("Transaction error.\n");
         }
 
@@ -375,11 +376,12 @@ public class Loan implements FinancialProduct {
      */
 
     public void paid() throws LoanException {
-        paid(nextPayment);
+        this.paid(this.nextPayment);
         this.setAmortizationTime(this.getAmortizationTime() - 1);
-        TaskList taskList = TaskList.getInstance();
-        Task task = new Task(this.forwardDate(this.nextPayment.getExpiration(),
-                paymentPeriod), new PaidLoanCommand(new CommandHandler(), this));
+        final TaskList taskList = TaskList.getInstance();
+        final Task task = new Task(this.forwardDate(
+                this.nextPayment.getExpiration(), this.paymentPeriod),
+                new PaidLoanCommand(new CommandHandler(), this));
         taskList.addTask(task);
         this.update();
     }
@@ -396,16 +398,16 @@ public class Loan implements FinancialProduct {
         // we look for the payment
         boolean found = false;
         ScheduledPayment payment = null;
-        for (int i = 0; i < this.payments.size() && !found; i++) {
+        for (int i = 0; (i < this.payments.size()) && !found; i++) {
             payment = this.payments.get(i);
             if (payment.getId().compareTo(handlerId) == 0) {
                 found = true;
             }
         }
 
-        if (payment != null && !payment.isPaid()) {
+        if ((payment != null) && !payment.isPaid()) {
 
-            paid(payment);
+            this.paid(payment);
 
         }
     }
@@ -415,9 +417,11 @@ public class Loan implements FinancialProduct {
      * in time
      */
     public void delayedPayment() {
-        boolean isPaid = isNotPaid();
-        if (isPaid && this.debt > 0)
-            this.debt = this.debt + this.debt * delayedPaymentFee.getFee(this.debt);
+        final boolean isPaid = this.isNotPaid();
+        if (isPaid && (this.debt > 0)) {
+            this.debt = this.debt
+                    + (this.debt * this.delayedPaymentFee.getFee(this.debt));
+        }
 
     }
 
@@ -440,8 +444,8 @@ public class Loan implements FinancialProduct {
      */
 
     public double amortize(double quantity) throws LoanException {
-        StringBuffer exceptionMessage = new StringBuffer();
-        double comission = 0;
+        final StringBuffer exceptionMessage = new StringBuffer();
+        final double comission = 0;
 
         if (!(quantity <= this.debt)) {
             exceptionMessage
@@ -456,7 +460,7 @@ public class Loan implements FinancialProduct {
         // of the customer.
         try {
             if (!(this.account.getBalance() < this.debt)) {
-                Transaction transactionCharge = new GenericTransaction(
+                final Transaction transactionCharge = new GenericTransaction(
                         quantity, new Date(Time.getInstance().getTime()),
                         "liquidate a quantity");
                 transactionCharge.setEffectiveDate(new Date(Time.getInstance()
@@ -465,7 +469,7 @@ public class Loan implements FinancialProduct {
             } else {
                 exceptionMessage.append("not enough money");
             }
-        } catch (TransactionException transactionException) {
+        } catch (final TransactionException transactionException) {
             exceptionMessage.append("Transaction error.\n");
             exceptionMessage.append(transactionException.getMessage());
         }
@@ -480,14 +484,14 @@ public class Loan implements FinancialProduct {
         this.debt = this.amortizedFee.getFee(this.debt);
         this.debt -= quantity;
 
-        setAmortized(this.initialCapital - this.debt);
-        update();
+        this.setAmortized(this.initialCapital - this.debt);
+        this.update();
 
         return comission;
     }
 
     public PaymentPeriod getPaymentPeriod() {
-        return paymentPeriod;
+        return this.paymentPeriod;
     }
 
     public void setPaymentPeriod(PaymentPeriod paymentPeriod) {
@@ -503,7 +507,7 @@ public class Loan implements FinancialProduct {
     }
 
     public int getAmortizationTime() {
-        return amortizationTime;
+        return this.amortizationTime;
     }
 
     public void setAmortizationTime(int amortizationTime) {
@@ -519,12 +523,12 @@ public class Loan implements FinancialProduct {
     }
 
     public double getAmountOfMoney() {
-        return initialCapital;
+        return this.initialCapital;
     }
 
     public void setStrategy(StrategyLoan strategy) {
         this.strategy = strategy;
-        update();
+        this.update();
     }
 
     @Override
@@ -548,8 +552,8 @@ public class Loan implements FinancialProduct {
     public boolean isNotPaid() {
         boolean isNotPaid = false;
 
-        for (int i = 0; i < this.payments.size() && !isNotPaid; i++) {
-            ScheduledPayment payment = this.payments.get(i);
+        for (int i = 0; (i < this.payments.size()) && !isNotPaid; i++) {
+            final ScheduledPayment payment = this.payments.get(i);
             if (!payment.isPaid()) {
                 isNotPaid = true;
             }
@@ -564,21 +568,19 @@ public class Loan implements FinancialProduct {
 
     public void setDebt(double debt) {
         this.debt = debt;
-        update();
+        this.update();
     }
 
     public double getDebt() {
         return this.debt;
     }
 
- 
-
     public StrategyLoan getStrategy() {
         return this.strategy;
     }
 
     public double getAmortized() {
-        return amortized;
+        return this.amortized;
     }
 
     public void setAmountOfMoney(double amountOfMoney) {
@@ -589,20 +591,20 @@ public class Loan implements FinancialProduct {
         return new LoanIterator(this.payments);
     }
 
-
     // TODO MAKE THE DOC IN ENGLISH OF THIS METHOD PLEASE. Not put your ideas
     public void makeNormalPayment(double amount) {
         // lanzo alguna excepcion o que?
         // pongo la condicion de que el pago se haga entre los meses indicados?
-        if (amount == periodFee && payments.size() > 0
-                && arrayListIndex < payments.size()) {
-            ScheduledPayment hesGonnaPay = this.payments.get(arrayListIndex);
+        if ((amount == this.periodFee) && (this.payments.size() > 0)
+                && (this.arrayListIndex < this.payments.size())) {
+            final ScheduledPayment hesGonnaPay = this.payments
+                    .get(this.arrayListIndex);
             hesGonnaPay.setPaid(true);
-            this.debt = debt - amount;
+            this.debt = this.debt - amount;
             // pongo la fecha de hoy, pero deberia dejar que se le pase por
             // parametro?
             hesGonnaPay.setPaymentDate(new Date());
-            arrayListIndex++;
+            this.arrayListIndex++;
         }
 
     }
@@ -613,8 +615,9 @@ public class Loan implements FinancialProduct {
     public void makeAbnormalPayment(double amount) {
         // excepciones
         // pongo la condicion de que el pago se haga entre los meses indicados?
-        if (amount < this.debt && amount > 0) {
-            ScheduledPayment hesGonnaPay = this.payments.get(arrayListIndex);
+        if ((amount < this.debt) && (amount > 0)) {
+            final ScheduledPayment hesGonnaPay = this.payments
+                    .get(this.arrayListIndex);
 
             double interest = 0;
             double amortized = 0;
@@ -628,9 +631,9 @@ public class Loan implements FinancialProduct {
             } else {
                 totalLoan = 0;
             }
-            totalCapital = round(totalLoan, 100);
-            amortized = round(amortized, 100);
-            interest = round(interest, 100);
+            totalCapital = this.round(totalLoan, 100);
+            amortized = this.round(amortized, 100);
+            interest = this.round(interest, 100);
             hesGonnaPay.setAmortization(amortized);
             hesGonnaPay.setInterests(interest);
             hesGonnaPay.setOutstandingCapital(totalCapital);
@@ -639,19 +642,19 @@ public class Loan implements FinancialProduct {
 
             hesGonnaPay.setPaid(true);
             // hesGonnaPay.setOutstandingCapital(outstandingCapital);
-            this.debt = debt - amount;
+            this.debt = this.debt - amount;
             hesGonnaPay.setImportOfTerm(amount);
         }
 
         // borro todos los elementos en adelante porque hay que recalcular
-        int auxSize = this.payments.size();
-        for (int auxInd = arrayListIndex + 1; auxInd < auxSize; auxInd++) {
+        final int auxSize = this.payments.size();
+        for (int auxInd = this.arrayListIndex + 1; auxInd < auxSize; auxInd++) {
             this.payments.remove(this.payments.get(this.payments.size() - 1));
         }
         // se recalcula todo
         this.strategy.doCalculationOfPayments();
         // actualizo el indice del arrayList
-        ++arrayListIndex;
+        ++this.arrayListIndex;
 
     }
 
@@ -672,7 +675,7 @@ public class Loan implements FinancialProduct {
     }
 
     public double getPeriodFee() {
-        return periodFee;
+        return this.periodFee;
     }
 
     public void setAmortized(double amortized) {
@@ -689,17 +692,17 @@ public class Loan implements FinancialProduct {
 
     public void setStudyCommission(FeeStrategy commission) {
         this.studyFee = commission;
-        this.debt = this.studyFee.getFee(this.debt);
-        update();
+        this.debt += this.studyFee.getFee(this.debt);
+        this.update();
     }
 
     public void setOpenningCommission(FeeStrategy commission) {
         this.openningFee = commission;
-        this.debt = this.openningFee.getFee(this.debt);
-        update();
+        this.debt += this.openningFee.getFee(this.debt);
+        this.update();
     }
-    
-    public void setDelayedPaymentFee(FeeStrategy commission){
+
+    public void setDelayedPaymentFee(FeeStrategy commission) {
         this.delayedPaymentFee = commission;
         this.debt = this.delayedPaymentFee.getFee(this.debt);
     }
@@ -713,7 +716,7 @@ public class Loan implements FinancialProduct {
     }
 
     public double getInterestOfBank() {
-        return interestOfBank;
+        return this.interestOfBank;
     }
 
     public void setInterestOfBank(double interestOfBank) {
@@ -721,7 +724,7 @@ public class Loan implements FinancialProduct {
     }
 
     public Date getCreatinngDate() {
-        return creatinngDate;
+        return this.creatinngDate;
     }
 
     public void setCreatinngDate(Date creatinngDate) {
@@ -729,7 +732,7 @@ public class Loan implements FinancialProduct {
     }
 
     public ScheduledPayment getNextPayment() {
-        return nextPayment;
+        return this.nextPayment;
     }
 
     public void setNextPayment(ScheduledPayment nextPayment) {
