@@ -15,6 +15,8 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
@@ -23,9 +25,9 @@ import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.CardHandler;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.DebitCard;
+import es.unileon.ulebank.payments.handler.CardHandler;
 import es.unileon.ulebank.utils.CardProperties;
 
 public class ReplacementCardCommandTest {
@@ -47,7 +49,7 @@ public class ReplacementCardCommandTest {
     @Before
     public void setUp() throws NumberFormatException, CommissionException,
             IOException, InvalidFeeException, MalformedHandlerException,
-            WrongArgsException {
+            WrongArgsException, ClientNotFoundException {
         final CardProperties properties = new CardProperties();
         properties.setCvvSize(3);
         properties.setPinSize(4);
@@ -86,7 +88,7 @@ public class ReplacementCardCommandTest {
     }
 
     @Test
-    public void testCommandNotNull() throws ClientNotFoundException {
+    public void testCommandNotNull() throws CommandException {
         this.test = new ReplacementCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);
         Assert.assertNotNull(this.test);

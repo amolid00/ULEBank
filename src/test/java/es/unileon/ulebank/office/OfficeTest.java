@@ -13,6 +13,7 @@ import es.unileon.ulebank.Employee;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Client;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
 import es.unileon.ulebank.handler.GenericHandler;
@@ -163,7 +164,7 @@ public class OfficeTest {
     }
 
     @Test
-    public void testAddClient() {
+    public void testAddClient() throws ClientNotFoundException {
         final int numberOfAccounts = this.office.getAccounts().size();
         Assert.assertTrue(this.office.addClient(this.titular));
         Assert.assertFalse(this.office.addClient(this.titular));
@@ -173,7 +174,7 @@ public class OfficeTest {
     }
 
     @Test
-    public void testDeleteClient() throws MalformedHandlerException {
+    public void testDeleteClient() throws MalformedHandlerException, ClientNotFoundException {
         final int numberOfAccounts = this.office.getAccounts().size();
         final Client c = new Person(89051755, 'X');
         Assert.assertFalse(this.office.deleteClient(new GenericHandler("..")));
@@ -233,7 +234,7 @@ public class OfficeTest {
 
     @Test
     public void testSearchClinet() throws MalformedHandlerException,
-            WrongArgsException {
+            WrongArgsException, ClientNotFoundException {
         this.office.addClient(this.titular);
         final Client c = new Person(89051755, 'X');
         this.office.addClient(c);

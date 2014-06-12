@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
+import es.unileon.ulebank.payments.handler.CardHandler;
 
 public class CardHandlerTest {
 

@@ -2,8 +2,11 @@ package es.unileon.ulebank.command;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.ClientNotFoundException;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para realizar la cancelacion de la tarjeta
@@ -32,19 +35,28 @@ public class CancelCardCommand implements Command {
      * @throws ClientNotFoundException
      */
     public CancelCardCommand(Handler cardId, Office office, Handler dni,
-            Handler account) throws ClientNotFoundException {
+            Handler account) throws CommandException {
         this.id = new CommandHandler(cardId);
         this.cardId = cardId;
-        this.account = office.searchClient(dni).searchAccount(account);
+        try {
+            this.account = office.searchClient(dni).searchAccount(account);
+        } catch (ClientNotFoundException e) {
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**
      * Realiza la cancelacion de la tarjeta
+     * @throws CommandException 
      */
     @Override
-    public void execute() {
+    public void execute() throws CommandException {
         // Se borra la tarjeta de la lista de tarjetas de la cuenta
-        this.account.removeCard(this.cardId);
+        try {
+            this.account.removeCard(this.cardId);
+        } catch (CardNotFoundException e) {
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**

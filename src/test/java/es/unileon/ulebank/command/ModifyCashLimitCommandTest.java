@@ -10,7 +10,10 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.GenericHandler;
@@ -19,10 +22,10 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.CardHandler;
-import es.unileon.ulebank.payments.CardNotFoundException;
 import es.unileon.ulebank.payments.CreditCard;
-import es.unileon.ulebank.payments.IncorrectLimitException;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
+import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
+import es.unileon.ulebank.payments.handler.CardHandler;
 
 public class ModifyCashLimitCommandTest {
     private Card testCard;
@@ -38,7 +41,7 @@ public class ModifyCashLimitCommandTest {
 
     @Before
     public void setUp() throws CommissionException, InvalidFeeException,
-            MalformedHandlerException, WrongArgsException {
+            MalformedHandlerException, WrongArgsException, ClientNotFoundException {
         final Handler bankHandler = new BankHandler("1234");
         this.bank = new Bank(bankHandler);
         this.handler = new CardHandler(bankHandler, "01", "987654321");

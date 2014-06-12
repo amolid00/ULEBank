@@ -23,6 +23,8 @@ import es.unileon.ulebank.fees.LinearFee;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
+import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
+import es.unileon.ulebank.payments.handler.CardHandler;
 import es.unileon.ulebank.utils.CardProperties;
 
 public class CreditCardTest {

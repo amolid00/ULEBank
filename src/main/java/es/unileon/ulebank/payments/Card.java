@@ -13,6 +13,8 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.fees.FeeStrategy;
 import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.utils.CardProperties;
 
 /**

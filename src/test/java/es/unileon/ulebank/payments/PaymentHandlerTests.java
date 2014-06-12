@@ -24,6 +24,8 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
+import es.unileon.ulebank.payments.handler.CardHandler;
+import es.unileon.ulebank.payments.handler.PaymentHandler;
 
 public class PaymentHandlerTests {
 

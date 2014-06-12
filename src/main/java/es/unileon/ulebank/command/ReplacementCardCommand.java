@@ -6,9 +6,12 @@ import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.ClientNotFoundException;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para la sustitucion de la tarjeta
@@ -75,22 +78,29 @@ public class ReplacementCardCommand implements Command {
      * @param office
      * @param dni
      * @param accountHandler
+     * @throws CommandException 
      * @throws ClientNotFoundException
      */
     public ReplacementCardCommand(Handler cardId, Office office, Handler dni,
-            Handler accountHandler) throws ClientNotFoundException {
+            Handler accountHandler) throws CommandException  {
         this.id = new CommandHandler(cardId);
         this.cardId = cardId;
-        this.account = office.searchClient(dni).searchAccount(accountHandler);
+        try {
+            this.account = office.searchClient(dni).searchAccount(accountHandler);
+        } catch (ClientNotFoundException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**
      * Realiza la sustitucion de la tarjeta
+     * @throws CommandException 
      * 
      * @throws IOException
      */
     @Override
-    public void execute() throws IOException {
+    public void execute() throws CommandException {
         try {
             // Buscamos la tarjeta en la cuenta a la que esta asociada a traves
             // del identificador
@@ -114,8 +124,12 @@ public class ReplacementCardCommand implements Command {
             // Cambiamos la fecha de caducidad por la nueva
             this.card.setExpirationDate(this.newExpirationDate);
             this.executed = true;
-        } catch (final IOException e) {
-            ReplacementCardCommand.LOG.info(e.getMessage());
+        } catch (IOException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        } catch (CardNotFoundException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
     }
 
@@ -126,7 +140,7 @@ public class ReplacementCardCommand implements Command {
      * @throws CommandException
      */
     @Override
-    public void undo() throws IOException, CommandException {
+    public void undo() throws CommandException {
         if (this.executed) {
             try {
                 // Restaura el CVV
@@ -136,12 +150,12 @@ public class ReplacementCardCommand implements Command {
                 // Restaura la fecha de caducidad
                 this.card.setExpirationDate(this.oldExpirationDate);
                 this.undone = true;
-            } catch (final IOException e) {
-                ReplacementCardCommand.LOG.info(e.getMessage());
+            } catch (IOException e) {
+                LOG.info(e.getMessage());
+                throw new CommandException(e.getMessage());
             }
         } else {
-            ReplacementCardCommand.LOG
-                    .info("Can't undo because command has not executed yet.");
+            LOG.info("Can't undo because command has not executed yet.");
             throw new CommandException(
                     "Can't undo because command has not executed yet.");
         }
@@ -154,7 +168,7 @@ public class ReplacementCardCommand implements Command {
      * @throws CommandException
      */
     @Override
-    public void redo() throws IOException, CommandException {
+    public void redo() throws CommandException {
         if (this.undone) {
             try {
                 // Vuelve a cambiar el CVV por el nuevo
@@ -163,12 +177,12 @@ public class ReplacementCardCommand implements Command {
                 this.card.setPin(this.newPin);
                 // Vuelve a cambiar la fecha de caducidad por la nueva
                 this.card.setExpirationDate(this.newExpirationDate);
-            } catch (final IOException e) {
-                ReplacementCardCommand.LOG.info(e.getMessage());
+            } catch (IOException e) {
+                LOG.info(e.getMessage());
+                throw new CommandException(e.getMessage());
             }
         } else {
-            ReplacementCardCommand.LOG
-                    .info("Can't undo because command has not undoned yet.");
+            LOG.info("Can't undo because command has not undoned yet.");
             throw new CommandException(
                     "Can't undo because command has not undoned yet.");
         }

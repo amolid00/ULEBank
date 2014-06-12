@@ -5,6 +5,7 @@ import java.util.Date;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.history.TransferTransaction;
+import es.unileon.ulebank.payments.exceptions.TransferException;
 
 /**
  * Transfer Class
@@ -98,7 +99,7 @@ public class Transfer {
             this.receiverAccount.doTransaction(new TransferTransaction(
                     this.quantity, new Date(), concept, this.receiverAccount,
                     this.senderAccount));
-        } catch (final TransactionException e) {
+        } catch (TransactionException e) {
             throw new TransferException("Denegate Transaction");
         }
     }

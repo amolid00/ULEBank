@@ -20,6 +20,7 @@ import es.unileon.ulebank.history.Transaction;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 import es.unileon.ulebank.time.Time;
 
 /**
@@ -427,7 +428,7 @@ public class Account {
                 office.getOfficeAccount().doTransaction(tNegate);
                 // TODO
                 // Transaction forward transaction to office
-            } catch (final TransactionException e) {
+            } catch (TransactionException e) {
                 this.failedTransactionsHistory.add(t);
             }
         }
@@ -485,8 +486,9 @@ public class Account {
      * Deletes card with received card ID
      * @param cardId
      * @return
+     * @throws CardNotFoundException 
      */
-    public boolean removeCard(Handler cardId) {
+    public boolean removeCard(Handler cardId) throws CardNotFoundException {
         final Card card = this.searchCard(cardId);
         return this.cards.remove(card);
     }
@@ -495,8 +497,9 @@ public class Account {
      * Searches card with received card ID
      * @param cardId
      * @return
+     * @throws CardNotFoundException 
      */
-    public Card searchCard(Handler cardId) {
+    public Card searchCard(Handler cardId) throws CardNotFoundException {
         final Iterator<Card> iterator = this.cards.iterator();
         Card card = null;
 
@@ -510,6 +513,10 @@ public class Account {
             if (card.getId().compareTo(cardId) == 0) {
                 break;
             }
+        }
+        
+        if (card == null) {
+            throw new CardNotFoundException("Card with ID=" + cardId.toString() +" is not in the list.");
         }
 
         return card;

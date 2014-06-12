@@ -1,13 +1,11 @@
 package es.unileon.ulebank.fees;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.exceptions.CommissionException;
+import es.unileon.ulebank.utils.CardProperties;
 
 /**
  * @class StrategyCommissionDebitMaintenance
@@ -40,17 +38,7 @@ public class DebitMaintenanceFee implements FeeStrategy {
     /**
      * Quantity of the default commission
      */
-    private float default_commission;
-
-    /**
-     * String for obtain the maximum age
-     */
-    private static final String AGE = "debit_age";
-
-    /**
-     * String for obtain the default commission
-     */
-    private static final String COMMISSION = "debit_maintenance";
+    private double default_commission;
 
     /**
      * Class constructor
@@ -62,69 +50,16 @@ public class DebitMaintenanceFee implements FeeStrategy {
      * @throws NumberFormatException
      */
     public DebitMaintenanceFee(Client owner, double quantity)
-            throws CommissionException, NumberFormatException, IOException {
+            throws CommissionException {
         this.owner = owner;
-        this.setDefaultCommission();
-        this.setMaximumAge();
+        this.default_commission = CardProperties.getDefaultFee();
+        this.maximum_age = CardProperties.getMaximumAge();
 
         if (quantity >= 0) {
             this.quantity = quantity;
         } else {
             throw new CommissionException("Commission can't been negative.");
         }
-    }
-
-    /**
-     * Setter of maximum_age
-     * 
-     * @throws IOException
-     * @throws NumberFormatException
-     */
-    private void setMaximumAge() throws NumberFormatException, IOException {
-
-        try {
-            final Properties ageProperty = new Properties();
-            ageProperty.load(new FileInputStream(
-                    "src/es/unileon/ulebank/properties/card.properties"));
-
-            /** Obtenemos los parametros definidos en el archivo */
-            this.maximum_age = Integer.parseInt(ageProperty
-                    .getProperty(DebitMaintenanceFee.AGE));
-
-        } catch (final FileNotFoundException e) {
-            throw new FileNotFoundException(
-                    "The file card.properties is not found.");
-        } catch (final IOException e2) {
-            throw new IOException(
-                    "Fail to try open or close file card.properties");
-        }
-    }
-
-    /**
-     * Setter of default_commission
-     * 
-     * @throws IOException
-     * @throws NumberFormatException
-     */
-    private void setDefaultCommission() throws NumberFormatException,
-            IOException {
-
-        try {
-            final Properties commissionProperty = new Properties();
-            commissionProperty.load(new FileInputStream(
-                    "src/es/unileon/ulebank/properties/card.properties"));
-
-            /** Obtenemos los parametros definidos en el archivo */
-            this.default_commission = Float.parseFloat(commissionProperty
-                    .getProperty(DebitMaintenanceFee.COMMISSION));
-        } catch (final FileNotFoundException e) {
-            throw new FileNotFoundException(
-                    "The file card.properties is not found.");
-        } catch (final IOException e2) {
-            throw new IOException(
-                    "Fail to try open or close file card.properties");
-        }
-
     }
 
     @Override

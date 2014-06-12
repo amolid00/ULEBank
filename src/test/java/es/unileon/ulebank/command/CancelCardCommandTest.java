@@ -13,6 +13,8 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
@@ -21,9 +23,9 @@ import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.CardHandler;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.DebitCard;
+import es.unileon.ulebank.payments.handler.CardHandler;
 
 public class CancelCardCommandTest {
     private Handler handler1;
@@ -43,7 +45,7 @@ public class CancelCardCommandTest {
     @Before
     public void setUp() throws NumberFormatException, CommissionException,
             IOException, InvalidFeeException, MalformedHandlerException,
-            WrongArgsException {
+            WrongArgsException, ClientNotFoundException {
         final Handler bankHandler = new BankHandler("1234");
         this.handler1 = new CardHandler(bankHandler, "01", "123456789");
         this.handler2 = new CardHandler(bankHandler, "01", "123456788");
@@ -65,7 +67,7 @@ public class CancelCardCommandTest {
     }
 
     @Test
-    public void testCommandNotNull() throws ClientNotFoundException {
+    public void testCommandNotNull() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
         Assert.assertNotNull(this.test);
@@ -77,7 +79,7 @@ public class CancelCardCommandTest {
     }
 
     @Test
-    public void testCommandId() throws ClientNotFoundException {
+    public void testCommandId() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
         final CommandHandler handler = (CommandHandler) this.test.getID();
@@ -85,7 +87,7 @@ public class CancelCardCommandTest {
     }
 
     @Test
-    public void testCancelDebitCard() throws ClientNotFoundException {
+    public void testCancelDebitCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
         Assert.assertEquals(2, this.account.getCardAmount());
@@ -94,7 +96,7 @@ public class CancelCardCommandTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testUndoCancelDebitCard() throws ClientNotFoundException {
+    public void testUndoCancelDebitCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
         this.test.execute();
@@ -102,7 +104,7 @@ public class CancelCardCommandTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testRedoCancelDebitCard() throws ClientNotFoundException {
+    public void testRedoCancelDebitCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler1, this.office, this.dni,
                 this.accountHandler);
         this.test.execute();
@@ -110,7 +112,7 @@ public class CancelCardCommandTest {
     }
 
     @Test
-    public void testCancelCreditCard() throws ClientNotFoundException {
+    public void testCancelCreditCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler2, this.office, this.dni,
                 this.accountHandler);
         Assert.assertEquals(2, this.account.getCardAmount());
@@ -119,7 +121,7 @@ public class CancelCardCommandTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testUndoCancelCreditCard() throws ClientNotFoundException {
+    public void testUndoCancelCreditCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler2, this.office, this.dni,
                 this.accountHandler);
         this.test.execute();
@@ -127,7 +129,7 @@ public class CancelCardCommandTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testRedoCancelCreditCard() throws ClientNotFoundException {
+    public void testRedoCancelCreditCard() throws CommandException {
         this.test = new CancelCardCommand(this.handler2, this.office, this.dni,
                 this.accountHandler);
         this.test.execute();

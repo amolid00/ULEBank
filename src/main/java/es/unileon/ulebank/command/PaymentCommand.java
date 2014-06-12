@@ -8,14 +8,18 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
+import es.unileon.ulebank.client.ClientNotFoundException;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CardType;
-import es.unileon.ulebank.payments.PaymentException;
 import es.unileon.ulebank.payments.Transfer;
-import es.unileon.ulebank.payments.TransferException;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
+import es.unileon.ulebank.payments.exceptions.TransferException;
 
 /**
  * Payment Command Class
@@ -78,63 +82,76 @@ public class PaymentCommand implements Command {
      * @param amount
      * @param concept
      * @param type
+     * @throws CommandException 
      */
     public PaymentCommand(Handler cardId, Office office, Handler dni,
-            Handler accountHandler, double amount, String concept, CardType type) {
-        this.id = new CommandHandler(cardId);
-        this.cardId = cardId;
-        this.accountSender = office.searchClient(dni).searchAccount(
-                accountHandler);
-        this.amount = amount;
-        this.concept = concept;
+            Handler accountHandler, double amount, String concept, CardType type) throws CommandException {
+        try {
+            this.id = new CommandHandler(cardId);
+            this.cardId = cardId;
+            this.accountSender = office.searchClient(dni).searchAccount(
+                    accountHandler);
+            this.amount = amount;
+            this.concept = concept;
+        } catch (ClientNotFoundException e) {
+            PaymentCommand.LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**
-     * Metodo que ejecuta el pago
+     * Method to execute payment
+     * @throws CommandException 
      */
     @Override
-    public void execute() throws PaymentException, TransactionException,
-            TransactionException {
+    public void execute() throws CommandException {
         try {
             // Search the account for that card
             this.card = this.accountSender.searchCard(this.cardId);
             // Make the payment by the type of the card
             this.card.makeTransaction(this.amount, this.concept);
-        } catch (final TransactionException e) {
+        } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new TransactionException(e.getMessage());
+            throw new CommandException(e.getMessage());
+        } catch (PaymentException e) {
+            PaymentCommand.LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        } catch (CardNotFoundException e) {
+            PaymentCommand.LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
 
     }
 
     /**
-     * Metodo que deshace el pago
+     * Method to undo payment
      */
     @Override
-    public void undo() throws TransferException, TransactionException,
-            IOException {
+    public void undo() throws CommandException {
         try {
             // Make the transfer for revert the payment
             final Transfer revertPayment = new Transfer(this.accountReceiver,
                     this.accountSender, this.amount);
             this.setUndoConcept();
             revertPayment.make(this.undoConcept + this.cardId.toString());
-        } catch (final TransactionException e) {
+        } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new TransactionException(e.getMessage());
+            throw new CommandException(e.getMessage());
+        } catch (TransferException e) {
+            PaymentCommand.LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
-
     }
 
     /**
-     * Metodo que reace el pago
+     * Method to redo payment
      */
     @Override
     public void redo() throws PaymentException, TransactionException {
         try {
             // Make the payment by the type of the card
             this.card.makeTransaction(this.amount, this.concept);
-        } catch (final TransactionException e) {
+        } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
             throw new TransactionException(e.getMessage());
         }
@@ -142,7 +159,7 @@ public class PaymentCommand implements Command {
     }
 
     /**
-     * Metodo que devuelve el identificador del comando
+     * Method that returns command ID
      * 
      * @return command id
      */
@@ -156,7 +173,7 @@ public class PaymentCommand implements Command {
      * 
      * @throws IOException
      */
-    private void setUndoConcept() throws IOException {
+    private void setUndoConcept() throws CommandException {
         try {
             final Properties commissionProperty = new Properties();
             commissionProperty.load(new FileInputStream(
@@ -165,10 +182,10 @@ public class PaymentCommand implements Command {
             /* Obtain the paramentes in card.properties */
             this.undoConcept = commissionProperty
                     .getProperty(PaymentCommand.UNDO_PROPERTY);
-        } catch (final FileNotFoundException e) {
-            throw new FileNotFoundException("File card.properties not found");
-        } catch (final IOException e2) {
-            throw new IOException(
+        } catch (FileNotFoundException e) {
+            throw new CommandException("File card.properties not found");
+        } catch (IOException e2) {
+            throw new CommandException(
                     "Fail in card.properties when try open or close file.");
         }
     }

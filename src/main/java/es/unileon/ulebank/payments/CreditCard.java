@@ -11,6 +11,7 @@ import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.fees.LinearFee;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.history.CardTransaction;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 
 /**
  * @author Israel, Rober dCR Clase que representa la tarjeta de credito

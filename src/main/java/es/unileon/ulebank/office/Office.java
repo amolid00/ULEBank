@@ -9,6 +9,7 @@ import es.unileon.ulebank.Employee;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Client;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Enterprise;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -101,9 +102,9 @@ public class Office {
             this.officeClient = new Enterprise('A', 5881850, '1');
             this.account = new Account(this, bank, this.getNewAccountNumber(),
                     this.officeClient);
-        } catch (final MalformedHandlerException e) {
+        } catch (MalformedHandlerException e) {
             throw new WrongArgsException(e.toString());
-        } catch (final WrongArgsException excep) {
+        } catch (WrongArgsException excep) {
             throw new WrongArgsException(excep.toString());
         }
 
@@ -138,8 +139,9 @@ public class Office {
      * @param client
      *            ( client to add )
      * @return ( true if success, false otherwise )
+     * @throws ClientNotFoundException 
      */
-    public synchronized boolean addClient(Client client) {
+    public synchronized boolean addClient(Client client) throws ClientNotFoundException {
         if ((client != null) && (this.searchClient(client.getId()) == null)) {
             return this.clients.add(client);
         }
@@ -152,8 +154,9 @@ public class Office {
      * @param id
      *            ( client's id)
      * @return (true if success, false otherwise )
+     * @throws ClientNotFoundException 
      */
-    public synchronized boolean deleteClient(Handler id) {
+    public synchronized boolean deleteClient(Handler id) throws ClientNotFoundException {
         if ((id != null) && (this.searchClient(id) != null)) {
             return this.clients.remove(this.searchClient(id));
         }
@@ -208,7 +211,7 @@ public class Office {
         return result;
     }
 
-    public Client searchClient(Handler id) {
+    public Client searchClient(Handler id) throws ClientNotFoundException {
         Client result = null;
         int i = -1;
         while ((++i < this.clients.size()) && (result == null)) {
@@ -216,6 +219,11 @@ public class Office {
                 result = this.clients.get(i);
             }
         }
+        
+        if (result == null) {
+            throw new ClientNotFoundException("Client is not registered");
+        }
+        
         return result;
     }
 

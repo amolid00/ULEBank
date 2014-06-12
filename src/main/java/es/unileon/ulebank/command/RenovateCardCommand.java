@@ -6,9 +6,12 @@ import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.ClientNotFoundException;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para la renovacion de la tarjeta
@@ -67,37 +70,52 @@ public class RenovateCardCommand implements Command {
      * @param office
      * @param dni
      * @param accountHandler
+     * @throws CommandException 
      * @throws ClientNotFoundException
      */
     public RenovateCardCommand(Handler cardId, Office office, Handler dni,
-            Handler accountHandler) throws ClientNotFoundException {
+            Handler accountHandler) throws CommandException {
         this.id = new CommandHandler(cardId);
         this.cardId = cardId;
-        this.account = office.searchClient(dni).searchAccount(accountHandler);
+        try {
+            this.account = office.searchClient(dni).searchAccount(accountHandler);
+        } catch (ClientNotFoundException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**
      * Realiza la renovacion de la tarjeta
      * 
      * @throws IOException
+     * @throws CommandException 
      */
     @Override
-    public void execute() throws IOException {
-        // Buscamos la tarjeta en la cuenta con el identificador de la misma
-        this.card = this.account.searchCard(this.cardId);
-        // Guardamos el CVV para poder deshacer la operacion
-        this.oldCvv = this.card.getCvv();
-        // Guardamos la fecha de caducidad para poder deshacer la operacion
-        this.oldExpirationDate = this.card.getExpirationDate();
-        // Generamos la nueva fecha de caducidad
-        this.newExpirationDate = this.card.generateExpirationDate();
-        // Cambiamos la fecha de caducidad por la nueva
-        this.card.setExpirationDate(this.newExpirationDate);
-        // Generamos el nuevo CVV y lo guardamos
-        this.newCvv = this.card.generateCVV();
-        // Cambiamos el CVV por el nuevo que se genera
-        this.card.setCvv(this.newCvv);
-        this.executed = true;
+    public void execute() throws CommandException {
+        try {
+            // Buscamos la tarjeta en la cuenta con el identificador de la misma
+            this.card = this.account.searchCard(this.cardId);
+            // Guardamos el CVV para poder deshacer la operacion
+            this.oldCvv = this.card.getCvv();
+            // Guardamos la fecha de caducidad para poder deshacer la operacion
+            this.oldExpirationDate = this.card.getExpirationDate();
+            // Generamos la nueva fecha de caducidad
+            this.newExpirationDate = this.card.generateExpirationDate();
+            // Cambiamos la fecha de caducidad por la nueva
+            this.card.setExpirationDate(this.newExpirationDate);
+            // Generamos el nuevo CVV y lo guardamos
+            this.newCvv = this.card.generateCVV();
+            // Cambiamos el CVV por el nuevo que se genera
+            this.card.setCvv(this.newCvv);
+            this.executed = true;
+        } catch (CardNotFoundException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        } catch (IOException e) {
+            LOG.info(e.getMessage());
+            throw new CommandException(e.getMessage());
+        }
     }
 
     /**
@@ -107,16 +125,21 @@ public class RenovateCardCommand implements Command {
      * @throws CommandException
      */
     @Override
-    public void undo() throws IOException, CommandException {
+    public void undo() throws CommandException {
         if (this.executed) {
             // Restaura el antiguo CVV
-            this.card.setCvv(this.oldCvv);
-            // Restaura la antigua fecha de caducidad
-            this.card.setExpirationDate(this.oldExpirationDate);
-            this.undone = true;
+            try {
+                this.card.setCvv(this.oldCvv);
+                // Restaura la antigua fecha de caducidad
+                this.card.setExpirationDate(this.oldExpirationDate);
+                this.undone = true;
+            } catch (IOException e) {
+                LOG.info(e.getMessage());
+                throw new CommandException(e.getMessage());
+            }
+
         } else {
-            RenovateCardCommand.LOG
-                    .info("Can't undo because command has not executed yet.");
+            LOG.info("Can't undo because command has not executed yet.");
             throw new CommandException(
                     "Can't undo because command has not executed yet.");
         }
@@ -130,15 +153,19 @@ public class RenovateCardCommand implements Command {
      * @throws CommandException
      */
     @Override
-    public void redo() throws IOException, CommandException {
+    public void redo() throws CommandException {
         if (this.undone) {
-            // Vuelve a cambiar el CVV por el que se habia generado
-            this.card.setCvv(this.newCvv);
-            // Vuelve a cambiar la fecha de caducidad por la nueva
-            this.card.setExpirationDate(this.newExpirationDate);
+            try {
+                // Vuelve a cambiar el CVV por el que se habia generado
+                this.card.setCvv(this.newCvv);
+                // Vuelve a cambiar la fecha de caducidad por la nueva
+                this.card.setExpirationDate(this.newExpirationDate);
+            } catch (IOException e) {
+                LOG.info(e.getMessage());
+                throw new CommandException(e.getMessage());
+            }
         } else {
-            RenovateCardCommand.LOG
-                    .info("Can't undo because command has not undoned yet.");
+            LOG.info("Can't undo because command has not undoned yet.");
             throw new CommandException(
                     "Can't undo because command has not undoned yet.");
         }

@@ -18,6 +18,7 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
+import es.unileon.ulebank.payments.handler.TransferHandler;
 
 public class TransferHandlerTest {
 

@@ -10,16 +10,19 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
+import es.unileon.ulebank.client.ClientNotFoundException;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.CardHandler;
 import es.unileon.ulebank.payments.CardType;
+import es.unileon.ulebank.payments.handler.CardHandler;
 
 public class NewCardCommandTest {
     private NewCardCommand test;
@@ -45,7 +48,7 @@ public class NewCardCommandTest {
     private final String accountNumber = "0000000000";
 
     @Before
-    public void setUp() throws MalformedHandlerException, WrongArgsException {
+    public void setUp() throws MalformedHandlerException, WrongArgsException, ClientNotFoundException {
         this.bankHandler = new BankHandler("1234");
         this.bank = new Bank(this.bankHandler);
         this.office = new Office(new OfficeHandler("1234"), this.bank);
@@ -75,7 +78,7 @@ public class NewCardCommandTest {
     }
 
     @Test
-    public void testCommandNotNull() throws MalformedHandlerException {
+    public void testCommandNotNull() throws CommandException {
         this.test = new NewCardCommand(this.office, this.client, this.account,
                 this.cardTypeCredit, this.bankHandler.toString(),
                 this.officeId, this.cardId, this.buyLimitDiary,
@@ -86,7 +89,7 @@ public class NewCardCommandTest {
     }
 
     @Test
-    public void testCommandId() throws MalformedHandlerException {
+    public void testCommandId() throws CommandException {
         this.test = new NewCardCommand(this.office, this.client, this.account,
                 this.cardTypeCredit, this.bankHandler.toString(),
                 this.officeId, this.cardId, this.buyLimitDiary,

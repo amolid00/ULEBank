@@ -5,18 +5,18 @@ import java.io.IOException;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.ClientNotFoundException;
+import es.unileon.ulebank.command.exceptions.CommandException;
+import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
-import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.CardHandler;
 import es.unileon.ulebank.payments.CardType;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.DebitCard;
-import es.unileon.ulebank.repository.CardBean;
+import es.unileon.ulebank.payments.handler.CardHandler;
 
 /**
  * @author Israel Comando para la creacion de las tarjetas
@@ -80,16 +80,14 @@ public class NewCardCommand implements Command {
     private final Client client;
 
     /**
-     * Manejador de las operaciones de la tarjeta
-     */
-    // private CardManager manager;
-    /**
-     * Constructor de la clase
-     * 
+     * Constructor del comando que recibe los datos necesarios para crear una tarjeta
      * @param office
-     * @param dni
-     * @param accountHandler
-     * @param type
+     * @param client
+     * @param account
+     * @param cardType
+     * @param string
+     * @param officeId
+     * @param cardId
      * @param buyLimitDiary
      * @param buyLimitMonthly
      * @param cashLimitDiary
@@ -97,37 +95,22 @@ public class NewCardCommand implements Command {
      * @param commissionEmission
      * @param commissionMaintenance
      * @param commissionRenovate
-     * @param limitDebit
      * @throws MalformedHandlerException
-     * @throws WrongArgsException
      */
-    public NewCardCommand(Office office, Client client, Account account,
-            CardBean bean) throws MalformedHandlerException, WrongArgsException {
-        this.office = office;
-        this.account = account;
-        this.client = client;
-        this.cardHandler = new CardHandler(bean.getCardNumber());
-        this.id = new CommandHandler(this.cardHandler);
-        this.cardType = bean.getCardType();
-        this.buyLimitDiary = bean.getBuyLimitDiary();
-        this.buyLimitMonthly = bean.getBuyLimitMonthly();
-        this.cashLimitDiary = bean.getCashLimitDiary();
-        this.cashLimitMonthly = bean.getCashLimitMonthly();
-        this.commissionEmission = bean.getCommissionEmission();
-        this.commissionMaintenance = bean.getCommissionMaintenance();
-        this.commissionRenovate = bean.getCommissionRenovate();
-    }
-
     public NewCardCommand(Office office, Client client, Account account,
             CardType cardType, String string, String officeId, String cardId,
             double buyLimitDiary, double buyLimitMonthly,
             double cashLimitDiary, double cashLimitMonthly,
             double commissionEmission, double commissionMaintenance,
-            double commissionRenovate) throws MalformedHandlerException {
+            double commissionRenovate) throws CommandException {
         this.office = office;
         this.account = account;
         this.client = client;
-        this.cardHandler = new CardHandler(cardId);
+        try {
+            this.cardHandler = new CardHandler(cardId);
+        } catch (MalformedHandlerException e) {
+            throw new CommandException(e.getMessage());
+        }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);
         this.buyLimitDiary = buyLimitDiary;
@@ -141,6 +124,7 @@ public class NewCardCommand implements Command {
 
     /**
      * Realiza la creacion de la tarjeta con todos los parametros necesarios
+     * @throws CommandException 
      * 
      * @throws InvalidFeeException
      * @throws ClientNotFoundException
@@ -148,38 +132,47 @@ public class NewCardCommand implements Command {
      * @throws NumberFormatException
      */
     @Override
-    public void execute() throws CommissionException, NumberFormatException,
-            IOException, InvalidFeeException {
-        if ("CREDIT".equalsIgnoreCase(this.cardType)) {
-            this.card = new CreditCard(this.cardHandler, this.client,
-                    this.account, this.buyLimitDiary, this.buyLimitMonthly,
-                    this.cashLimitDiary, this.cashLimitMonthly,
-                    this.commissionEmission, this.commissionMaintenance,
-                    this.commissionRenovate);
-        } else if ("DEBIT".equalsIgnoreCase(this.cardType)) {
-            this.card = new DebitCard(this.cardHandler, this.client,
-                    this.account, this.buyLimitDiary, this.buyLimitMonthly,
-                    this.cashLimitDiary, this.cashLimitMonthly,
-                    this.commissionEmission, this.commissionMaintenance,
-                    this.commissionRenovate);
-        } else if ("REVOLVING".equalsIgnoreCase(this.cardType)) {
-            this.cardType.equalsIgnoreCase("REVOLVING");
+    public void execute() throws CommandException {
+
+        try {
+            if ("CREDIT".equalsIgnoreCase(this.cardType)) {
+                this.card = new CreditCard(this.cardHandler, this.client,
+                        this.account, this.buyLimitDiary, this.buyLimitMonthly,
+                        this.cashLimitDiary, this.cashLimitMonthly,
+                        this.commissionEmission, this.commissionMaintenance,
+                        this.commissionRenovate);
+            } else if ("DEBIT".equalsIgnoreCase(this.cardType)) {
+                this.card = new DebitCard(this.cardHandler, this.client,
+                        this.account, this.buyLimitDiary, this.buyLimitMonthly,
+                        this.cashLimitDiary, this.cashLimitMonthly,
+                        this.commissionEmission, this.commissionMaintenance,
+                        this.commissionRenovate);
+            } 
+        } catch (InvalidFeeException e) {
+            throw new CommandException(e.getMessage());
+        } catch (NumberFormatException e) {
+            throw new CommandException(e.getMessage());
+        } catch (CommissionException e) {
+            throw new CommandException(e.getMessage());
+        } catch (IOException e) {
+            throw new CommandException(e.getMessage());
         }
 
         if (this.card != null) {
             this.account.addCard(this.card);
-            // this.manager.saveNewCard(card);
         }
     }
 
     /**
      * Deshace la creacion de la tarjeta
+     * @throws CommandException 
      * 
      * @throws ClientNotFoundException
      */
     @Override
-    public void undo() throws ClientNotFoundException {
-        final CancelCardCommand cancel = new CancelCardCommand(
+    public void undo() throws CommandException {
+        CancelCardCommand cancel;
+        cancel = new CancelCardCommand(
                 this.cardHandler, this.office, this.client.getId(),
                 this.account.getID());
         cancel.execute();

@@ -1,4 +1,4 @@
-package es.unileon.ulebank.payments;
+package es.unileon.ulebank.payments.exceptions;
 
 /**
  * @author Israel Esta excepcion se lanza cuando el limite que se introduce para
