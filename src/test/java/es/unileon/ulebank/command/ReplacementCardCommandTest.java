@@ -1,7 +1,5 @@
 package es.unileon.ulebank.command;
 
-import java.io.IOException;
-
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.junit.Assert;
@@ -14,18 +12,15 @@ import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
-import es.unileon.ulebank.exceptions.CommissionException;
-import es.unileon.ulebank.fees.InvalidFeeException;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
-import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.DebitCard;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.payments.handler.CardHandler;
 import es.unileon.ulebank.utils.CardProperties;
 
@@ -46,9 +41,7 @@ public class ReplacementCardCommandTest {
     private final String accountNumber = "0000000000";
 
     @Before
-    public void setUp() throws NumberFormatException, CommissionException,
-    IOException, InvalidFeeException, MalformedHandlerException,
-    WrongArgsException {
+    public void setUp() throws CommandException {
         final CardProperties properties = new CardProperties();
         properties.setCvvSize(3);
         properties.setPinSize(4);
@@ -70,18 +63,10 @@ public class ReplacementCardCommandTest {
         this.card2 = new CreditCard(this.handler2, this.client, this.account);
         this.account.addCard(this.card1);
         this.account.addCard(this.card2);
-        try {
-            this.card1.setCvv("213");
-            this.card2.setCvv("123");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            this.card1.setPin("1234");
-            this.card2.setPin("0000");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        this.card1.setCvv("213");
+        this.card2.setCvv("123");
+        this.card1.setPin("1234");
+        this.card2.setPin("0000");
     }
 
     @Test
@@ -130,7 +115,7 @@ public class ReplacementCardCommandTest {
     }
 
     @Test(expected = CommandException.class)
-    public void testUndoReplacementCreditCardFail() throws CommandException, IOException {
+    public void testUndoReplacementCreditCardFail() throws CommandException {
         this.test = new ReplacementCardCommand(this.handler2, this.office,
                 this.dni, this.accountHandler);
         Assert.assertEquals("123", this.card2.getCvv());
@@ -155,7 +140,7 @@ public class ReplacementCardCommandTest {
         Assert.assertTrue(!this.card2.getPin().equals("0000"));
     }
 
-    @Test(expected = CommandException.class)
+    @Test(expected = PaymentException.class)
     public void testRedoReplacementCreditCardFail() throws Exception {
         this.test = new ReplacementCardCommand(this.handler2, this.office,
                 this.dni, this.accountHandler);
@@ -189,7 +174,7 @@ public class ReplacementCardCommandTest {
         Assert.assertEquals("1234", this.card1.getPin());
     }
 
-    @Test(expected = CommandException.class)
+    @Test(expected = PaymentException.class)
     public void testUndoReplacementDebitCardFail() throws Exception {
         this.test = new ReplacementCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);
@@ -215,7 +200,7 @@ public class ReplacementCardCommandTest {
         Assert.assertTrue(!this.card1.getPin().equals("1234"));
     }
 
-    @Test(expected = CommandException.class)
+    @Test(expected = PaymentException.class)
     public void testRedoReplacementDebitCardFail() throws Exception {
         this.test = new ReplacementCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);

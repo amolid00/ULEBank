@@ -1,7 +1,5 @@
 package es.unileon.ulebank.command;
 
-import java.io.IOException;
-
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.junit.Assert;
@@ -14,18 +12,15 @@ import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.client.PersonHandler;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
-import es.unileon.ulebank.exceptions.CommissionException;
-import es.unileon.ulebank.fees.InvalidFeeException;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
-import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
 import es.unileon.ulebank.payments.DebitCard;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.payments.handler.CardHandler;
 import es.unileon.ulebank.utils.CardProperties;
 
@@ -45,9 +40,7 @@ public class RenovateCardCommandTest {
     private final String accountNumber = "0000000000";
 
     @Before
-    public void setUp() throws NumberFormatException, CommissionException,
-            IOException, InvalidFeeException, MalformedHandlerException,
-            WrongArgsException {
+    public void setUp() throws CommandException {
         CardProperties properties = new CardProperties();
         properties.setCvvSize(3);
         properties.setExpirationYear(3);
@@ -101,7 +94,6 @@ public class RenovateCardCommandTest {
         Assert.assertEquals("04/14", this.card2.getExpirationDate());
         Assert.assertEquals("123", this.card2.getCvv());
         this.test.execute();
-        System.out.println(this.card2.getExpirationDate());
         Assert.assertTrue(!this.card2.getExpirationDate().equals("04/14"));
         Assert.assertTrue(!this.card2.getCvv().equals("123"));
     }
@@ -120,7 +112,7 @@ public class RenovateCardCommandTest {
         Assert.assertEquals("123", this.card2.getCvv());
     }
 
-    @Test(expected = CommandException.class)
+    @Test(expected = PaymentException.class)
     public void testUndoRenovateCreditCardFail() throws Exception {
         this.test = new RenovateCardCommand(this.handler2, this.office,
                 this.dni, this.accountHandler);
@@ -144,8 +136,8 @@ public class RenovateCardCommandTest {
         Assert.assertTrue(!this.card2.getCvv().equals("123"));
     }
 
-    @Test(expected = CommandException.class)
-    public void testRedoRenovateCreditCardFail() throws Exception {
+    @Test(expected = PaymentException.class)
+    public void testRedoRenovateCreditCardFail() throws CommandException {
         this.test = new RenovateCardCommand(this.handler2, this.office,
                 this.dni, this.accountHandler);
         this.test.redo();
@@ -176,8 +168,8 @@ public class RenovateCardCommandTest {
         Assert.assertEquals("213", this.card1.getCvv());
     }
 
-    @Test(expected = CommandException.class)
-    public void testUndoRenovateDebitCardFail() throws Exception {
+    @Test(expected = PaymentException.class)
+    public void testUndoRenovateDebitCardFail() throws CommandException {
         this.test = new RenovateCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);
         Assert.assertEquals("04/14", this.card1.getExpirationDate());
@@ -186,7 +178,7 @@ public class RenovateCardCommandTest {
     }
 
     @Test
-    public void testRedoRenovateDebitCardOk() throws Exception {
+    public void testRedoRenovateDebitCardOk() throws CommandException {
         this.test = new RenovateCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);
         Assert.assertEquals("04/14", this.card1.getExpirationDate());
@@ -202,8 +194,8 @@ public class RenovateCardCommandTest {
         Assert.assertTrue(!this.card1.getCvv().equals("213"));
     }
 
-    @Test(expected = CommandException.class)
-    public void testRedoRenovateDebitCardFail() throws Exception {
+    @Test(expected = PaymentException.class)
+    public void testRedoRenovateDebitCardFail() throws CommandException {
         this.test = new RenovateCardCommand(this.handler1, this.office,
                 this.dni, this.accountHandler);
         this.test.redo();
