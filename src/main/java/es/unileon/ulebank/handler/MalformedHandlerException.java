@@ -3,13 +3,12 @@
 
 package es.unileon.ulebank.handler;
 
-import es.unileon.ulebank.exceptions.CommandException;
 
 /**
  *
  * @author runix
  */
-public class MalformedHandlerException extends CommandException {
+public class MalformedHandlerException extends Exception {
 
     private static final long serialVersionUID = 1L;
 

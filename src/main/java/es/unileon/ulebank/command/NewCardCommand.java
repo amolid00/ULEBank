@@ -2,6 +2,8 @@ package es.unileon.ulebank.command;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.command.handler.CommandHandler;
@@ -20,6 +22,11 @@ import es.unileon.ulebank.payments.handler.CardHandler;
  * @author Israel Comando para la creacion de las tarjetas
  */
 public class NewCardCommand implements Command {
+    /**
+     * Logger de la clase
+     */
+    private static final Logger LOG = Logger
+            .getLogger(NewCardCommand.class.getName());
     /**
      * Tarjeta que se va a crear
      */
@@ -43,7 +50,7 @@ public class NewCardCommand implements Command {
     /**
      * Identificador de la tarjeta
      */
-    private final Handler cardHandler;
+    private Handler cardHandler;
     /**
      * Duegno de la tarjeta
      */
@@ -67,7 +74,7 @@ public class NewCardCommand implements Command {
         try {
             this.cardHandler = new CardHandler(cardId);
         } catch (MalformedHandlerException e) {
-            throw new MalformedHandlerException(e.getMessage());
+            LOG.info(e.getMessage());
         }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);

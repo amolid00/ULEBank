@@ -34,7 +34,7 @@ public class PaymentHandlerTests {
 	private Date paymentDate;
 
 	@Before
-	public void setUp() throws CommandException{
+	public void setUp() throws CommandException, MalformedHandlerException{
 		this.bank = new Bank(new BankHandler("1234"));
 		this.office = new Office(new OfficeHandler("1234"), this.bank);
 		cardHandler = new CardHandler("123401123456789");
