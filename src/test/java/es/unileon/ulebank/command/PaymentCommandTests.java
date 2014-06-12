@@ -151,7 +151,7 @@ public class PaymentCommandTests {
    		this.test = new PaymentCommand(this.handler1, this.office, this.dni,
                    this.accountHandler, 20.00, "Concept");
    		this.test.execute();
-   		Assert.assertEquals(100.00, this.account.getBalance(),0.0);
+   		Assert.assertEquals(80.00, this.account.getBalance(),0.0);
    		this.test.redo();
    	}
 }

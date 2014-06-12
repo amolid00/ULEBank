@@ -5,7 +5,6 @@ import java.util.Date;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.history.TransferTransaction;
-import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.payments.exceptions.TransferException;
 
 /**
@@ -43,7 +42,7 @@ public class Transfer {
      * @throws TransferException
      */
     public Transfer(Account sender, Account receiver, double quantity)
-            throws PaymentException {
+            throws TransferException {
         if (!sender.equals(receiver)) {
             this.senderAccount = sender;
             this.receiverAccount = receiver;
@@ -89,7 +88,8 @@ public class Transfer {
      * @param quantity
      * @throws es.unileon.ulebank.history.TransactionException
      */
-    public void make(String concept) throws PaymentException {
+    public void make(String concept) throws TransferException,
+            TransactionException {
         try {
             // Discount the quantity from sender account
             this.senderAccount.doTransaction(new TransferTransaction(
@@ -100,7 +100,7 @@ public class Transfer {
                     this.quantity, new Date(), concept, this.receiverAccount,
                     this.senderAccount));
         } catch (TransactionException e) {
-            throw new TransactionException("Denegate Transaction");
+            throw new TransferException("Denegate Transaction");
         }
     }
 

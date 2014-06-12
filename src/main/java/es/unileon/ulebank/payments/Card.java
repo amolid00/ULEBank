@@ -81,7 +81,7 @@ public abstract class Card implements Serializable {
     /**
      * Cuenta a la que esta asociada la tarjeta
      */
-    private Account account;
+    protected Account account;
     /**
      * Duegno de la tarjeta
      */

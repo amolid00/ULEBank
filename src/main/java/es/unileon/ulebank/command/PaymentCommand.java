@@ -55,7 +55,7 @@ public class PaymentCommand implements Command {
      * Variable para saber si el comando ha sido deshecho o no
      */
     private boolean undone = false;
-
+    
     /**
      * Class constructor
      * 
@@ -67,6 +67,7 @@ public class PaymentCommand implements Command {
      * @param accountReceiver
      * @param amount
      * @param concept
+     * @param type
      * @throws CommandException 
      */
     public PaymentCommand(Handler cardId, Office office, Handler dni,
@@ -78,7 +79,7 @@ public class PaymentCommand implements Command {
         if (amount != 0.00) {
             this.amount = amount;
         } else {
-            throw new CommandException("Amount neutral.");
+        	throw new CommandException("Amount neutral.");
         }
         this.concept = concept;
     }
@@ -94,55 +95,59 @@ public class PaymentCommand implements Command {
             this.card = this.accountSender.searchCard(this.cardId);
             // Make the payment by the type of the card
             this.card.makeTransaction(this.amount, this.concept);
+            this.executed = true;
         } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new TransactionException(e.getMessage());
+            throw new CommandException(e.getMessage());
         } catch (PaymentException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new PaymentException(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
 
     }
 
     /**
      * Method to undo payment
+     * @throws PaymentException 
      */
     @Override
-    public void undo() throws CommandException {
-        if (this.executed) {
-            try {
+    public void undo() throws CommandException, PaymentException {
+    	if (this.executed) {
+    		try {
                 // Make the payment by the type of the card
-                //this.setUndoConcept();
-                this.card.makeTransaction(-this.amount, "Return payment from " + this.concept);
+    			//this.setUndoConcept();
+    			this.card.makeTransaction(-this.amount, "Return payment from " + this.concept);
                 this.undone = true;
-            } catch (TransactionException e) {
-                PaymentCommand.LOG.info(e.getMessage());
-                throw new TransactionException(e.getMessage());
-            }
-        } else {
-            PaymentCommand.LOG.info("Can't undo because command has not executed yet.");
-            throw new CommandException("Can't undo because command has not executed yet.");
-        }
+    		} catch (TransactionException e) {
+    			PaymentCommand.LOG.info(e.getMessage());
+    			throw new CommandException(e.getMessage());
+    		}
+    	} else {
+    		PaymentCommand.LOG.info("Can't undo because command has not executed yet.");
+    		throw new CommandException("Can't undo because command has not executed yet.");
+    	}
     }
 
     /**
      * Method to redo payment
+     * @throws CommandException 
      */
     @Override
-    public void redo() throws CommandException {
-        if (this.undone) {
-            try {
-                // Make the payment by the type of the card
-                this.card.makeTransaction(this.amount, this.concept);
-                this.undone = false;
-            } catch (TransactionException e) {
-                PaymentCommand.LOG.info(e.getMessage());
-                throw new TransactionException(e.getMessage());
-            }
-        } else {
-            PaymentCommand.LOG.info("Can't undo because command has not undoned yet.");
-            throw new CommandException("Can't undo because command has not undoned yet.");
-        }
+    public void redo() throws PaymentException, TransactionException, CommandException {
+    	if (this.undone) {
+    		try {
+    			// Make the payment by the type of the card
+    			this.card.makeTransaction(this.amount, this.concept);
+    			this.undone = false;
+    		} catch (TransactionException e) {
+    			PaymentCommand.LOG.info(e.getMessage());
+    			throw new TransactionException(e.getMessage());
+    		}
+    	} else {
+    		PaymentCommand.LOG.info("Can't undo because command has not undoned yet.");
+    		throw new CommandException("Can't undo because command has not undoned yet.");
+    	}
+
     }
 
     /**
@@ -154,4 +159,5 @@ public class PaymentCommand implements Command {
     public Handler getID() {
         return this.id;
     }
+
 }
