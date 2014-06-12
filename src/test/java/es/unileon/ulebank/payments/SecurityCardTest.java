@@ -6,15 +6,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import es.unileon.ulebank.client.Person;
-import es.unileon.ulebank.exceptions.CommissionException;
-import es.unileon.ulebank.fees.InvalidFeeException;
-import es.unileon.ulebank.handler.MalformedHandlerException;
+import es.unileon.ulebank.exceptions.CommandException;
+import es.unileon.ulebank.payments.exceptions.SecurityCardException;
 import es.unileon.ulebank.payments.handler.CardHandler;
 import es.unileon.ulebank.utils.CardProperties;
 
@@ -30,7 +27,7 @@ public class SecurityCardTest {
 	public SecurityCard secCard2;
 
 	@Before
-	public void setUp() throws IOException, CommissionException, MalformedHandlerException, InvalidFeeException{
+	public void setUp() throws CommandException{
 		CardProperties properties = new CardProperties();
 		properties.setCvvSize(3);
 		properties.setPinSize(4);

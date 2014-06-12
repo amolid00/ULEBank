@@ -12,11 +12,12 @@ import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.bank.BankHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
-import es.unileon.ulebank.exceptions.TransactionException;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.payments.exceptions.TransferException;
 
 /**
@@ -50,7 +51,7 @@ public class TransferTest {
 	}
 
 	@Test
-	public void transferOk() throws TransferException {
+	public void transferOk() throws PaymentException {
 		this.transfer = new Transfer(this.senderAccount, this.receiverAccount, this.quantity);
 		assertNotNull(this.transfer);
 	}
@@ -61,7 +62,7 @@ public class TransferTest {
 	}
 
 	@Test
-	public void transferMoneyWithBalanceTest() throws TransferException, TransactionException {
+	public void transferMoneyWithBalanceTest() throws PaymentException {
 		this.senderAccount.setBalance(100);
 		this.receiverAccount.setBalance(0);
 		double beforeMoneyReceiver = this.receiverAccount.getBalance();
@@ -78,7 +79,7 @@ public class TransferTest {
 	}
 
 	@Test (expected = TransferException.class)
-	public void transferMoneyWithOutBalanceTest()throws TransferException, TransactionException {
+	public void transferMoneyWithOutBalanceTest()throws PaymentException {
 		this.senderAccount.setBalance(0);
 		this.receiverAccount.setBalance(0);
 		this.transfer = new Transfer(this.senderAccount, this.receiverAccount, this.quantity);
@@ -86,25 +87,25 @@ public class TransferTest {
 	}
 
 	@Test (expected = TransferException.class)
-	public void transferMoneyEqualsAccountTest()throws TransferException, MalformedHandlerException, WrongArgsException {
+	public void transferMoneyEqualsAccountTest()throws CommandException {
 		Account exAccount = new Account(office, bank, accountNumber, client1);
 		this.transfer = new Transfer(exAccount, exAccount, this.quantity);
 	}
 	
 	@Test
-	public void getSenderAccountTest() throws TransferException {
+	public void getSenderAccountTest() throws PaymentException {
 		this.transfer = new Transfer(this.senderAccount, this.receiverAccount, this.quantity);
 		assertEquals(this.transfer.getSenderAccount(), this.senderAccount);		
 	}
 	
 	@Test
-	public void getReceiverAccountTest() throws TransferException {
+	public void getReceiverAccountTest() throws PaymentException {
 		this.transfer = new Transfer(this.senderAccount, this.receiverAccount, this.quantity);
 		assertEquals(this.transfer.getReceiverAccount(), this.receiverAccount);			
 	}
 	
 	@Test
-	public void getQuantityTest() throws TransferException {
+	public void getQuantityTest() throws PaymentException {
 		this.transfer = new Transfer(this.senderAccount, this.receiverAccount, this.quantity);
 		assertEquals(this.transfer.getQuantity(), this.quantity, 0.0);
 	}
