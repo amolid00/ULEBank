@@ -20,7 +20,6 @@ import es.unileon.ulebank.history.Transaction;
 import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 import es.unileon.ulebank.time.Time;
 
 /**
@@ -478,8 +477,11 @@ public class Account {
      * Adds card into the card list
      * @param card
      */
-    public void addCard(Card card) {
-        this.cards.add(card);
+    public boolean addCard(Card card) {
+        if ((this.searchCard(card.getId()) == null) && (card != null)) {
+            return  this.cards.add(card);
+        }
+       return false;
     }
 
     /**
@@ -488,9 +490,11 @@ public class Account {
      * @return
      * @throws CardNotFoundException 
      */
-    public boolean removeCard(Handler cardId) throws CardNotFoundException {
-        final Card card = this.searchCard(cardId);
-        return this.cards.remove(card);
+    public boolean removeCard(Handler cardId) {
+        if ((this.searchCard(cardId) != null) && (cardId != null)) {
+            return  this.cards.remove(this.searchCard(cardId));
+        }
+        return false;
     }
 
     /**
@@ -499,13 +503,9 @@ public class Account {
      * @return
      * @throws CardNotFoundException 
      */
-    public Card searchCard(Handler cardId) throws CardNotFoundException {
+    public Card searchCard(Handler cardId) {
         final Iterator<Card> iterator = this.cards.iterator();
         Card card = null;
-
-        if (this.cards.isEmpty()) {
-            throw new NullPointerException("Card list is empty.");
-        }
 
         while (iterator.hasNext()) {
             card = iterator.next();
@@ -514,11 +514,6 @@ public class Account {
                 break;
             }
         }
-        
-        if (card == null) {
-            throw new CardNotFoundException("Card with ID=" + cardId.toString() +" is not in the list.");
-        }
-
         return card;
     }
 

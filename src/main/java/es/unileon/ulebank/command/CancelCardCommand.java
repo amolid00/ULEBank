@@ -5,7 +5,6 @@ import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para realizar la cancelacion de la tarjeta
@@ -47,11 +46,7 @@ public class CancelCardCommand implements Command {
     @Override
     public void execute() throws CommandException {
         // Se borra la tarjeta de la lista de tarjetas de la cuenta
-        try {
-            this.account.removeCard(this.cardId);
-        } catch (CardNotFoundException e) {
-            throw new CommandException(e.getMessage());
-        }
+        this.account.removeCard(this.cardId);
     }
 
     /**

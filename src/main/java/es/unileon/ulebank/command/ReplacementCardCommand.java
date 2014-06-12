@@ -10,7 +10,6 @@ import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para la sustitucion de la tarjeta
@@ -119,9 +118,6 @@ public class ReplacementCardCommand implements Command {
             this.card.setExpirationDate(this.newExpirationDate);
             this.executed = true;
         } catch (IOException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        } catch (CardNotFoundException e) {
             LOG.info(e.getMessage());
             throw new CommandException(e.getMessage());
         }

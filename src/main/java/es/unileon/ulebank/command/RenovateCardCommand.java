@@ -10,7 +10,6 @@ import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 
 /**
  * @author Israel Comando para la renovacion de la tarjeta
@@ -103,9 +102,6 @@ public class RenovateCardCommand implements Command {
             // Cambiamos el CVV por el nuevo que se genera
             this.card.setCvv(this.newCvv);
             this.executed = true;
-        } catch (CardNotFoundException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
         } catch (IOException e) {
             LOG.info(e.getMessage());
             throw new CommandException(e.getMessage());

@@ -8,7 +8,6 @@ import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.payments.Card;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
 
 /**
@@ -80,7 +79,7 @@ public class ModifyBuyLimitCommand implements Command {
      * @throws CardNotFoundException
      */
     @Override
-    public void execute() throws CardNotFoundException, IncorrectLimitException {
+    public void execute() throws IncorrectLimitException {
         // Buscamos la tarjeta con el identificador de la misma en la lista de
         // tarjetas de la cuenta
         try {

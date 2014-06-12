@@ -20,7 +20,6 @@ import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
-import es.unileon.ulebank.payments.exceptions.CardNotFoundException;
 import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
 import es.unileon.ulebank.payments.handler.CardHandler;
 
@@ -76,8 +75,7 @@ public class ModifyBuyLimitCommandTest {
     }
 
     @Test
-    public void testLimitDiaryModified() throws CardNotFoundException,
-            IncorrectLimitException {
+    public void testLimitDiaryModified() throws IncorrectLimitException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 200.0, "diary");
         Assert.assertEquals(400.0, this.testCard.getBuyLimitDiary(), 0.0001);
@@ -87,7 +85,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = IncorrectLimitException.class)
     public void testLimitDiaryNotModified() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 1100.0, "Diary");
         Assert.assertEquals(400.0, this.testCard.getBuyLimitDiary(), 0.0001);
@@ -96,7 +94,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void testLimitMonthlyModified() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 2000.0, "Monthly");
         Assert.assertEquals(1000.0, this.testCard.getBuyLimitMonthly(), 0.0001);
@@ -106,7 +104,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = IncorrectLimitException.class)
     public void testLimitMonthlyNotModified() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "Monthly");
         Assert.assertEquals(1000.0, this.testCard.getBuyLimitMonthly(), 0.0001);
@@ -114,8 +112,7 @@ public class ModifyBuyLimitCommandTest {
     }
 
     @Test
-    public void testTypeOK() throws IncorrectLimitException, CommandException,
-            CardNotFoundException {
+    public void testTypeOK() throws IncorrectLimitException, CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "DIARY");
         this.test.execute();
@@ -125,7 +122,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void testTypeNotOK() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "");
         this.test.execute();
@@ -141,7 +138,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void undoDiaryTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "diary");
         this.test.execute();
@@ -152,7 +149,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = CommandException.class)
     public void canNotUndoDiaryTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "diary");
         this.test.undo();
@@ -160,7 +157,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void redoDiaryTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "diary");
         this.test.execute();
@@ -173,7 +170,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = CommandException.class)
     public void canNotRedoDiaryTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "diary");
         this.test.execute();
@@ -182,7 +179,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void undoMonthlyTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 3000.0, "monthly");
         this.test.execute();
@@ -193,7 +190,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = CommandException.class)
     public void canNotUndoMonthlyTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 300.0, "monthly");
         this.test.undo();
@@ -201,7 +198,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test
     public void redoMonthlyTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 3000.0, "monthly");
         this.test.execute();
@@ -214,7 +211,7 @@ public class ModifyBuyLimitCommandTest {
 
     @Test(expected = CommandException.class)
     public void canNotRedoMonthlyTest() throws IncorrectLimitException,
-            CommandException, CardNotFoundException {
+            CommandException {
         this.test = new ModifyBuyLimitCommand(this.handler, this.testCard,
                 3000.0, "monthly");
         this.test.execute();
