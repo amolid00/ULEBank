@@ -5,6 +5,7 @@ package es.unileon.ulebank.tasklist;
 import java.util.Date;
 
 import es.unileon.ulebank.command.Command;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 
 /**
@@ -49,7 +50,7 @@ public class Task {
      * 
      * @throws Exception
      */
-    public void execute() throws Exception {
+    public void execute() throws CommandException {
         this.command.execute();
     }
 
@@ -58,7 +59,7 @@ public class Task {
      * 
      * @throws Exception
      */
-    public void undo() throws Exception {
+    public void undo() throws CommandException {
         this.command.undo();
     }
 
@@ -67,7 +68,7 @@ public class Task {
      * 
      * @throws Exception
      */
-    public void redo() throws Exception {
+    public void redo() throws CommandException {
         this.command.redo();
     }
 

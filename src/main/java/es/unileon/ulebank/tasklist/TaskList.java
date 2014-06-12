@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.time.Time;
 
@@ -134,9 +135,9 @@ public class TaskList {
     /**
      *
      * @param id
-     * @throws Exception
+     * @throws CommandException
      */
-    public boolean undoTask(Handler id) throws Exception {
+    public boolean undoTask(Handler id) throws CommandException {
         int i = -1;
         boolean done = false;
         while ((++i < this.tasksDone.size()) && !done) {
@@ -150,10 +151,10 @@ public class TaskList {
     }
 
     /**
-     * @throws Exception
+     * @throws CommandException
      *
      */
-    public synchronized void executeTasks() throws Exception {
+    public synchronized void executeTasks() throws CommandException {
         while (!this.tasks.isEmpty()
                 && (this.tasks.get(0).getEffectiveDate().getTime() <= this.time
                         .getTime())) {

@@ -100,7 +100,7 @@ public class Transfer {
                     this.quantity, new Date(), concept, this.receiverAccount,
                     this.senderAccount));
         } catch (TransactionException e) {
-            throw new TransferException("Denegate Transaction");
+            throw new TransactionException("Denegate Transaction");
         }
     }
 
