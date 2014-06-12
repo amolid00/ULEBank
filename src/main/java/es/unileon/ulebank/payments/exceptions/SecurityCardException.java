@@ -1,4 +1,4 @@
-package es.unileon.ulebank.payments;
+package es.unileon.ulebank.payments.exceptions;
 
 /**
  * SecurityCardException Class
@@ -7,7 +7,7 @@ package es.unileon.ulebank.payments;
  * @date 26/03/2014
  * @brief Exception that is thrown if the security conditions are not accepted
  */
-public class SecurityCardException extends Exception {
+public class SecurityCardException extends PaymentException {
 
     /**
      * Version

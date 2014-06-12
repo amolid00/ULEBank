@@ -7,7 +7,7 @@ package es.unileon.ulebank.payments.exceptions;
  * @date 28/04/2014
  * @brief Exception that is thrown if the transfer conditions are not accepted
  */
-public class TransferException extends Exception {
+public class TransferException extends PaymentException {
 
     /**
      * Version

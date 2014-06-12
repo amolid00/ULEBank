@@ -7,7 +7,7 @@ package es.unileon.ulebank.exceptions;
  * @date 29/04/2014
  * @brief Exception that is thrown if the commission conditions are not accepted
  */
-public class CommissionException extends Exception {
+public class CommissionException extends CommandException {
 
     /**
      * Version

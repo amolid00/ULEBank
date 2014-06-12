@@ -6,11 +6,13 @@
 
 package es.unileon.ulebank.fees;
 
+import es.unileon.ulebank.exceptions.CommandException;
+
 /**
  * 
  * @author roobre
  */
-public class InvalidFeeException extends Exception {
+public class InvalidFeeException extends CommandException {
 
     private static final long serialVersionUID = 1L;
 

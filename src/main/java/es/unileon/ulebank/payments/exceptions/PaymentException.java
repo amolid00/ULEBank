@@ -1,5 +1,7 @@
 package es.unileon.ulebank.payments.exceptions;
 
+import es.unileon.ulebank.exceptions.CommandException;
+
 /**
  * PaymentException Class
  * 
@@ -7,7 +9,7 @@ package es.unileon.ulebank.payments.exceptions;
  * @date 07/05/2014
  * @brief Exception that is thrown if the payment conditions are not accepted
  */
-public class PaymentException extends Exception {
+public class PaymentException extends CommandException {
 
     /**
      * Version
