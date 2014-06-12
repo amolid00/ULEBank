@@ -75,6 +75,7 @@ public class NewCardCommand implements Command {
             this.cardHandler = new CardHandler(cardId);
         } catch (MalformedHandlerException e) {
             LOG.info(e.getMessage());
+            Logger.getLogger(NewCardCommand.class.getName()).log(null, e.getMessage());
         }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);

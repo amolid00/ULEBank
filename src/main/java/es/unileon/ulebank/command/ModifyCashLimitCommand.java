@@ -126,22 +126,14 @@ public class ModifyCashLimitCommand implements Command {
         if (this.executed) {
             // Si el tipo es diario
             if (this.checkTypeLimit(ModifyCashLimitCommand.DIARY)) {
-                try {
-                    // Recuperamos el limite anterior
-                    this.card.setCashLimitDiary(this.oldAmount);
-                    this.undone = true;
-                } catch (IncorrectLimitException e) {
-                    LOG.info(e.getMessage());
-                }
+                // Recuperamos el limite anterior
+                this.card.setCashLimitDiary(this.oldAmount);
+                this.undone = true;
                 // Si el tipo es mensual
             } else if (this.checkTypeLimit(ModifyCashLimitCommand.MONTHLY)) {
-                try {
-                    // Recuperamos el limite anterior
-                    this.card.setCashLimitMonthly(this.oldAmount);
-                    this.undone = true;
-                } catch (IncorrectLimitException e) {
-                    LOG.info(e.getMessage());
-                }
+                // Recuperamos el limite anterior
+                this.card.setCashLimitMonthly(this.oldAmount);
+                this.undone = true;
                 // Si no se indica el tipo de limite a modificar adecuadamente
                 // no va a realizar la operacion
             } else {
@@ -165,24 +157,16 @@ public class ModifyCashLimitCommand implements Command {
         if (this.undone) {
             // Si el tipo es diario
             if (this.checkTypeLimit(ModifyCashLimitCommand.DIARY)) {
-                try {
-                    // Volvemos a cambiar el limite por el que lo habiamos
-                    // cambiado anteriormente
-                    this.card.setCashLimitDiary(this.newAmount);
-                    this.undone = false;
-                } catch (IncorrectLimitException e) {
-                    LOG.info(e.getMessage());
-                }
+                // Volvemos a cambiar el limite por el que lo habiamos
+                // cambiado anteriormente
+                this.card.setCashLimitDiary(this.newAmount);
+                this.undone = false;
                 // Si el tipo es mensual
             } else if (this.checkTypeLimit(ModifyCashLimitCommand.MONTHLY)) {
-                try {
-                    // Volvemos a cambiar el limite por el que lo habiamos
-                    // cambiado anteriormente
-                    this.card.setCashLimitMonthly(this.newAmount);
-                    this.undone = false;
-                } catch (IncorrectLimitException e) {
-                    LOG.info(e.getMessage());
-                }
+                // Volvemos a cambiar el limite por el que lo habiamos
+                // cambiado anteriormente
+                this.card.setCashLimitMonthly(this.newAmount);
+                this.undone = false;
                 // Si no se indica el tipo de limite a modificar adecuadamente
                 // no va a realizar la operacion
             } else {

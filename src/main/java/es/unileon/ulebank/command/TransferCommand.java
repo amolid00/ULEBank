@@ -93,10 +93,10 @@ public class TransferCommand implements Command {
             this.executed = true;
         } catch (TransferException e) {
         	TransferCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransferException(e.getMessage());
         } catch (TransactionException e) {
         	TransferCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransactionException(e.getMessage());
         }
     }
 
@@ -114,10 +114,10 @@ public class TransferCommand implements Command {
                 this.undone = true;
             } catch (TransferException e) {
             	TransferCommand.LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransferException(e.getMessage());
             } catch (TransactionException e) {
             	TransferCommand.LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransactionException(e.getMessage());
             }
         } else {
         	TransferCommand.LOG.info("Can't undo because command has not executed yet.");
@@ -139,10 +139,10 @@ public class TransferCommand implements Command {
                 this.undone = false;
             } catch (TransferException e) {
             	TransferCommand.LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransferException(e.getMessage());
             } catch (TransactionException e) {
             	TransferCommand.LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransactionException(e.getMessage());
             }
         } else {
         	TransferCommand.LOG.info("Can't undo because command has not undoned yet.");
