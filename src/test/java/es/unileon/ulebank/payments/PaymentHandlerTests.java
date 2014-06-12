@@ -18,6 +18,7 @@ import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
+import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.office.OfficeHandler;
 import es.unileon.ulebank.payments.handler.CardHandler;
@@ -34,7 +35,7 @@ public class PaymentHandlerTests {
 	private Date paymentDate;
 
 	@Before
-	public void setUp() throws CommandException, MalformedHandlerException{
+	public void setUp() throws CommandException, MalformedHandlerException, WrongArgsException{
 		this.bank = new Bank(new BankHandler("1234"));
 		this.office = new Office(new OfficeHandler("1234"), this.bank);
 		cardHandler = new CardHandler("123401123456789");

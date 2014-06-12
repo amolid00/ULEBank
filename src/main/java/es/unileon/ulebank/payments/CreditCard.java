@@ -1,5 +1,6 @@
 package es.unileon.ulebank.payments;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class CreditCard extends Card {
      */
     public CreditCard(Handler cardId, Client owner, Account account) throws PaymentException {
         super(cardId, CardType.CREDIT.toString(), account, owner);
+        transactionList = new ArrayList<CardTransaction>();
     }
 
     /**

@@ -13,6 +13,8 @@ import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.handler.MalformedHandlerException;
+import es.unileon.ulebank.history.conditions.WrongArgsException;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
 import es.unileon.ulebank.payments.CreditCard;
@@ -34,7 +36,7 @@ public class ModifyBuyLimitCommandTest {
     private final String accountNumber = "0000000000";
 
     @Before
-    public void setUp() throws CommandException {
+    public void setUp() throws CommandException, MalformedHandlerException, WrongArgsException {
         CardProperties properties = new CardProperties();
         properties.setMinimumLimit(200.0);
         final Handler bankHandler = new BankHandler("1234");

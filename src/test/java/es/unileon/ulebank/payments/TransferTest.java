@@ -87,7 +87,7 @@ public class TransferTest {
 	}
 
 	@Test (expected = TransferException.class)
-	public void transferMoneyEqualsAccountTest()throws CommandException, MalformedHandlerException {
+	public void transferMoneyEqualsAccountTest()throws CommandException, MalformedHandlerException, WrongArgsException {
 		Account exAccount = new Account(office, bank, accountNumber, client1);
 		this.transfer = new Transfer(exAccount, exAccount, this.quantity);
 	}

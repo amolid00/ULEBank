@@ -43,6 +43,9 @@ public class PaymentHandler implements Handler {
     public PaymentHandler(Handler handler, Date date)
             throws MalformedHandlerException {
         this.id = this.obtainInitials(handler) + this.obtainFinals(date);
+        System.out.println(this.obtainInitials(handler));
+        System.out.println(this.obtainFinals(date));
+        System.out.println(this.id.length());
         if (this.id.length() != PaymentHandler.LENGTH) {
             throw new MalformedHandlerException(
                     "Length of payment handler incorrect.");
@@ -87,7 +90,11 @@ public class PaymentHandler implements Handler {
      */
     private String obtainFinals(Date date) {
         final SimpleDateFormat format = new SimpleDateFormat("MMyyHHmmSS");
-        return format.format(date);
+        if (format.format(date).length() < 11) {
+        	return "0" + format.format(date);
+        } else {
+            return format.format(date);
+        }
     }
 
     /**

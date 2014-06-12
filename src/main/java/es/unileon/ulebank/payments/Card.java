@@ -21,7 +21,6 @@ import es.unileon.ulebank.utils.CardProperties;
 /**
  * @author Israel
  */
-// @MappedSuperclass
 public abstract class Card implements Serializable {
     /**
      * Version
@@ -543,18 +542,6 @@ public abstract class Card implements Serializable {
     public Account getAccount() {
         return this.account;
     }
-
-    // /**
-    // * Method that adds new transaction in the list
-    // * @param transaction
-    // * @throws TransactionException
-    // */
-    // public void addTransaction(Transaction transaction) throws
-    // TransactionException{
-    // //Si devuelve false la transaccion ya esta incluida
-    // if (!this.transactionHistory.add(transaction))
-    // throw new TransactionException("Transacion already exists.");
-    // }
 
     /**
      * Method that makes the payment
