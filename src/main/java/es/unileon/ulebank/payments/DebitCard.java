@@ -7,6 +7,7 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 
 /**
  * @author Israel, Rober dCR Clase que representa una tarjeta de Debito
@@ -36,8 +37,7 @@ public class DebitCard extends Card {
      * @throws IOException
      * @throws InvalidFeeException
      */
-    public DebitCard(Handler cardId, Client owner, Account account) throws NumberFormatException,
-            CommissionException, IOException, InvalidFeeException {
+    public DebitCard(Handler cardId, Client owner, Account account) throws PaymentException {
         super(cardId, CardType.DEBIT.toString(), account, owner);
     }
 

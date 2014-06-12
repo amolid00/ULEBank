@@ -13,6 +13,7 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.fees.FeeStrategy;
 import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.payments.exceptions.IncorrectLengthException;
 import es.unileon.ulebank.payments.exceptions.IncorrectLimitException;
 import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.utils.CardProperties;
@@ -212,7 +213,7 @@ public abstract class Card implements Serializable {
      * @param pin
      * @throws IOException
      */
-    public void setPin(String pin) throws IOException {
+    public void setPin(String pin) throws PaymentException {
         // Comprobamos que el String recibido contiene solo numeros
         if (this.checkStringNumber(pin)) {
             // Si el pin tiene el tamagno adecuado lo cambiamos
@@ -220,11 +221,11 @@ public abstract class Card implements Serializable {
                 this.pin = pin;
                 // Sino lanzamos una excepcion
             } else {
-                throw new IOException("Incorrect length");
+                throw new IncorrectLengthException("Incorrect length");
             }
             // Sino lanzamos una excepcion ya que solo puede haber numeros
         } else {
-            throw new IOException("The pin must only contain numbers");
+            throw new NumberFormatException("The pin must only contain numbers");
         }
     }
 
@@ -429,7 +430,7 @@ public abstract class Card implements Serializable {
      * @param cvv
      * @throws IOException
      */
-    public void setCvv(String cvv) throws IOException {
+    public void setCvv(String cvv) throws PaymentException {
         // Comprueba que el String contenga solo numeros
         if (this.checkStringNumber(cvv)) {
             // Si el tamagno del cvv es correcto se cambia
@@ -437,11 +438,11 @@ public abstract class Card implements Serializable {
                 this.cvv = cvv;
                 // sino se lanza una excepcion
             } else {
-                throw new IOException("Incorrect length");
+                throw new IncorrectLengthException("Incorrect length");
             }
             // sino se lanza una excepcion
         } else {
-            throw new IOException("The cvv must only contains numbers");
+            throw new NumberFormatException("The cvv must only contains numbers");
         }
     }
 

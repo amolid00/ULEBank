@@ -46,7 +46,7 @@ public class CreditCard extends Card {
      * @throws CommissionException
      * @throws InvalidFeeException
      */
-    public CreditCard(Handler cardId, Client owner, Account account) throws InvalidFeeException {
+    public CreditCard(Handler cardId, Client owner, Account account) throws PaymentException {
         super(cardId, CardType.CREDIT.toString(), account, owner);
     }
 
@@ -70,7 +70,7 @@ public class CreditCard extends Card {
      */
     @Override
     public void makeTransaction(double quantity, String payConcept)
-            throws PaymentException, TransactionException {
+            throws PaymentException {
         // Agyadimos la transaccion a la lista
         final CardTransaction transaction = new CardTransaction(quantity,
                 new Date(), payConcept);
