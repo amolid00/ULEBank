@@ -4,9 +4,8 @@ import java.io.IOException;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
-import es.unileon.ulebank.exceptions.CommissionException;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -56,17 +55,9 @@ public class NewCardCommand implements Command {
      * @param client
      * @param account
      * @param cardType
-     * @param string
      * @param officeId
      * @param cardId
-     * @param buyLimitDiary
-     * @param buyLimitMonthly
-     * @param cashLimitDiary
-     * @param cashLimitMonthly
-     * @param commissionEmission
-     * @param commissionMaintenance
-     * @param commissionRenovate
-     * @throws MalformedHandlerException
+     * @throws CommandException
      */
     public NewCardCommand(Office office, Client client, Account account,
             CardType cardType, String officeId, String cardId) throws CommandException {
@@ -76,7 +67,7 @@ public class NewCardCommand implements Command {
         try {
             this.cardHandler = new CardHandler(cardId);
         } catch (MalformedHandlerException e) {
-            throw new CommandException(e.getMessage());
+            throw new MalformedHandlerException(e.getMessage());
         }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);
@@ -102,14 +93,8 @@ public class NewCardCommand implements Command {
                 this.card = new DebitCard(this.cardHandler, this.client,
                         this.account);
             } 
-        } catch (InvalidFeeException e) {
-            throw new CommandException(e.getMessage());
         } catch (NumberFormatException e) {
-            throw new CommandException(e.getMessage());
-        } catch (CommissionException e) {
-            throw new CommandException(e.getMessage());
-        } catch (IOException e) {
-            throw new CommandException(e.getMessage());
+            throw new NumberFormatException(e.getMessage());
         }
 
         if (this.card != null) {

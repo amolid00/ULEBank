@@ -2,6 +2,7 @@
  group.*/
 package es.unileon.ulebank.command;
 
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 
 /**
@@ -17,20 +18,20 @@ public interface Command {
     public Handler getID();
 
     /**
-     * @throws Exception
+     * @throws CommandException
      *
      */
-    public void execute() throws Exception;
+    public void execute() throws CommandException;
 
     /**
-     * @throws Exception
+     * @throws CommandException
      *
      */
-    public void undo() throws Exception;
+    public void undo() throws CommandException;
 
     /**
-     * @throws Exception
+     * @throws CommandException
      *
      */
-    public void redo() throws Exception;
+    public void redo() throws CommandException;
 }

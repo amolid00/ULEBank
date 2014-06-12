@@ -3,8 +3,8 @@ package es.unileon.ulebank.command;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
@@ -88,10 +88,10 @@ public class TransferCommand implements Command {
             this.undo = true;
         } catch (TransferException e) {
             LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransferException(e.getMessage());
         } catch (TransactionException e) {
             LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransactionException(e.getMessage());
         }
     }
 
@@ -110,10 +110,10 @@ public class TransferCommand implements Command {
                 this.undo = false;
             } catch (TransferException e) {
                 LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransferException(e.getMessage());
             } catch (TransactionException e) {
                 LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransactionException(e.getMessage());
             }
         }
     }
@@ -133,10 +133,10 @@ public class TransferCommand implements Command {
                 this.redo = false;
             } catch (TransferException e) {
                 LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransferException(e.getMessage());
             } catch (TransactionException e) {
                 LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
+                throw new TransactionException(e.getMessage());
             }
         }
 

@@ -5,11 +5,12 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 
 /**
  * @author Israel Comando para la sustitucion de la tarjeta
@@ -94,33 +95,28 @@ public class ReplacementCardCommand implements Command {
      */
     @Override
     public void execute() throws CommandException {
-        try {
-            // Buscamos la tarjeta en la cuenta a la que esta asociada a traves
-            // del identificador
-            this.card = this.account.searchCard(this.cardId);
-            // Guardamos el PIN anterior
-            this.oldPin = this.card.getPin();
-            // Generamos el nuevo PIN y lo almacenamos
-            this.newPin = this.card.generatePinCode();
-            // Cambiamos el PIN por el nuevo
-            this.card.setPin(this.newPin);
-            // Guardamos el anterior CVV
-            this.oldCvv = this.card.getCvv();
-            // Generamos un CVV nuevo y lo guardamos
-            this.newCvv = this.card.generateCVV();
-            // Cambiamos el CVV por el nuevo
-            this.card.setCvv(this.newCvv);
-            // Guardamos la anterior fecha de caducidad
-            this.oldExpirationDate = this.card.getExpirationDate();
-            // Generamos la nueva fecha de caducidad y la almacenamos
-            this.newExpirationDate = this.card.generateExpirationDate();
-            // Cambiamos la fecha de caducidad por la nueva
-            this.card.setExpirationDate(this.newExpirationDate);
-            this.executed = true;
-        } catch (IOException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        }
+        // Buscamos la tarjeta en la cuenta a la que esta asociada a traves
+        // del identificador
+        this.card = this.account.searchCard(this.cardId);
+        // Guardamos el PIN anterior
+        this.oldPin = this.card.getPin();
+        // Generamos el nuevo PIN y lo almacenamos
+        this.newPin = this.card.generatePinCode();
+        // Cambiamos el PIN por el nuevo
+        this.card.setPin(this.newPin);
+        // Guardamos el anterior CVV
+        this.oldCvv = this.card.getCvv();
+        // Generamos un CVV nuevo y lo guardamos
+        this.newCvv = this.card.generateCVV();
+        // Cambiamos el CVV por el nuevo
+        this.card.setCvv(this.newCvv);
+        // Guardamos la anterior fecha de caducidad
+        this.oldExpirationDate = this.card.getExpirationDate();
+        // Generamos la nueva fecha de caducidad y la almacenamos
+        this.newExpirationDate = this.card.generateExpirationDate();
+        // Cambiamos la fecha de caducidad por la nueva
+        this.card.setExpirationDate(this.newExpirationDate);
+        this.executed = true;
     }
 
     /**
@@ -132,21 +128,16 @@ public class ReplacementCardCommand implements Command {
     @Override
     public void undo() throws CommandException {
         if (this.executed) {
-            try {
-                // Restaura el CVV
-                this.card.setCvv(this.oldCvv);
-                // Restaura el codigo PIN
-                this.card.setPin(this.oldPin);
-                // Restaura la fecha de caducidad
-                this.card.setExpirationDate(this.oldExpirationDate);
-                this.undone = true;
-            } catch (IOException e) {
-                LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
-            }
+            // Restaura el CVV
+            this.card.setCvv(this.oldCvv);
+            // Restaura el codigo PIN
+            this.card.setPin(this.oldPin);
+            // Restaura la fecha de caducidad
+            this.card.setExpirationDate(this.oldExpirationDate);
+            this.undone = true;
         } else {
             LOG.info("Can't undo because command has not executed yet.");
-            throw new CommandException(
+            throw new PaymentException(
                     "Can't undo because command has not executed yet.");
         }
     }
@@ -160,20 +151,15 @@ public class ReplacementCardCommand implements Command {
     @Override
     public void redo() throws CommandException {
         if (this.undone) {
-            try {
-                // Vuelve a cambiar el CVV por el nuevo
-                this.card.setCvv(this.newCvv);
-                // Vuelve a cambiar el PIN por el nuevo
-                this.card.setPin(this.newPin);
-                // Vuelve a cambiar la fecha de caducidad por la nueva
-                this.card.setExpirationDate(this.newExpirationDate);
-            } catch (IOException e) {
-                LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
-            }
+            // Vuelve a cambiar el CVV por el nuevo
+            this.card.setCvv(this.newCvv);
+            // Vuelve a cambiar el PIN por el nuevo
+            this.card.setPin(this.newPin);
+            // Vuelve a cambiar la fecha de caducidad por la nueva
+            this.card.setExpirationDate(this.newExpirationDate);
         } else {
             LOG.info("Can't undo because command has not undoned yet.");
-            throw new CommandException(
+            throw new PaymentException(
                     "Can't undo because command has not undoned yet.");
         }
     }

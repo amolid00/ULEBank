@@ -1,15 +1,10 @@
 package es.unileon.ulebank.command;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
@@ -18,6 +13,7 @@ import es.unileon.ulebank.payments.CardType;
 import es.unileon.ulebank.payments.Transfer;
 import es.unileon.ulebank.payments.exceptions.PaymentException;
 import es.unileon.ulebank.payments.exceptions.TransferException;
+import es.unileon.ulebank.utils.CardProperties;
 
 /**
  * Payment Command Class
@@ -31,10 +27,6 @@ public class PaymentCommand implements Command {
      * Logger Class
      */
     private static final Logger LOG = Logger.getLogger(PaymentCommand.class);
-    /**
-     * Concept when undo the command
-     */
-    private static final String UNDO_PROPERTY = "concept_undo_payment";
     /**
      * String for add in the concept when makes the undo method
      */
@@ -97,7 +89,7 @@ public class PaymentCommand implements Command {
      * @throws CommandException 
      */
     @Override
-    public void execute() throws CommandException {
+    public void execute() throws PaymentException {
         try {
             // Search the account for that card
             this.card = this.accountSender.searchCard(this.cardId);
@@ -105,10 +97,10 @@ public class PaymentCommand implements Command {
             this.card.makeTransaction(this.amount, this.concept);
         } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransactionException(e.getMessage());
         } catch (PaymentException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new PaymentException(e.getMessage());
         }
 
     }
@@ -117,19 +109,19 @@ public class PaymentCommand implements Command {
      * Method to undo payment
      */
     @Override
-    public void undo() throws CommandException {
+    public void undo() throws PaymentException {
         try {
             // Make the transfer for revert the payment
             final Transfer revertPayment = new Transfer(this.accountReceiver,
                     this.accountSender, this.amount);
-            this.setUndoConcept();
+            undoConcept = CardProperties.getUndoConcept();
             revertPayment.make(this.undoConcept + this.cardId.toString());
         } catch (TransactionException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            throw new TransactionException(e.getMessage());
         } catch (TransferException e) {
             PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+           throw new TransferException(e.getMessage());
         }
     }
 
@@ -157,27 +149,4 @@ public class PaymentCommand implements Command {
     public Handler getID() {
         return this.id;
     }
-
-    /**
-     * Setter of undoConcept
-     * 
-     * @throws IOException
-     */
-    private void setUndoConcept() throws CommandException {
-        try {
-            final Properties commissionProperty = new Properties();
-            commissionProperty.load(new FileInputStream(
-                    "src/es/unileon/ulebank/properties/card.properties"));
-
-            /* Obtain the paramentes in card.properties */
-            this.undoConcept = commissionProperty
-                    .getProperty(PaymentCommand.UNDO_PROPERTY);
-        } catch (FileNotFoundException e) {
-            throw new CommandException("File card.properties not found");
-        } catch (IOException e2) {
-            throw new CommandException(
-                    "Fail in card.properties when try open or close file.");
-        }
-    }
-
 }

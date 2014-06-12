@@ -1,8 +1,8 @@
 package es.unileon.ulebank.command;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 
@@ -44,7 +44,7 @@ public class CancelCardCommand implements Command {
      * @throws CommandException 
      */
     @Override
-    public void execute() throws CommandException {
+    public void execute() {
         // Se borra la tarjeta de la lista de tarjetas de la cuenta
         this.account.removeCard(this.cardId);
     }

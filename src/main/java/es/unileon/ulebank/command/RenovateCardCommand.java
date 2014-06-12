@@ -5,11 +5,12 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.command.exceptions.CommandException;
 import es.unileon.ulebank.command.handler.CommandHandler;
+import es.unileon.ulebank.exceptions.CommandException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Card;
+import es.unileon.ulebank.payments.exceptions.PaymentException;
 
 /**
  * @author Israel Comando para la renovacion de la tarjeta
@@ -86,7 +87,6 @@ public class RenovateCardCommand implements Command {
      */
     @Override
     public void execute() throws CommandException {
-        try {
             // Buscamos la tarjeta en la cuenta con el identificador de la misma
             this.card = this.account.searchCard(this.cardId);
             // Guardamos el CVV para poder deshacer la operacion
@@ -102,10 +102,6 @@ public class RenovateCardCommand implements Command {
             // Cambiamos el CVV por el nuevo que se genera
             this.card.setCvv(this.newCvv);
             this.executed = true;
-        } catch (IOException e) {
-            LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
-        }
     }
 
     /**
@@ -118,19 +114,14 @@ public class RenovateCardCommand implements Command {
     public void undo() throws CommandException {
         if (this.executed) {
             // Restaura el antiguo CVV
-            try {
-                this.card.setCvv(this.oldCvv);
-                // Restaura la antigua fecha de caducidad
-                this.card.setExpirationDate(this.oldExpirationDate);
-                this.undone = true;
-            } catch (IOException e) {
-                LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
-            }
+            this.card.setCvv(this.oldCvv);
+            // Restaura la antigua fecha de caducidad
+            this.card.setExpirationDate(this.oldExpirationDate);
+            this.undone = true;
 
         } else {
             LOG.info("Can't undo because command has not executed yet.");
-            throw new CommandException(
+            throw new PaymentException(
                     "Can't undo because command has not executed yet.");
         }
 
@@ -145,18 +136,13 @@ public class RenovateCardCommand implements Command {
     @Override
     public void redo() throws CommandException {
         if (this.undone) {
-            try {
-                // Vuelve a cambiar el CVV por el que se habia generado
-                this.card.setCvv(this.newCvv);
-                // Vuelve a cambiar la fecha de caducidad por la nueva
-                this.card.setExpirationDate(this.newExpirationDate);
-            } catch (IOException e) {
-                LOG.info(e.getMessage());
-                throw new CommandException(e.getMessage());
-            }
+            // Vuelve a cambiar el CVV por el que se habia generado
+            this.card.setCvv(this.newCvv);
+            // Vuelve a cambiar la fecha de caducidad por la nueva
+            this.card.setExpirationDate(this.newExpirationDate);
         } else {
             LOG.info("Can't undo because command has not undoned yet.");
-            throw new CommandException(
+            throw new PaymentException(
                     "Can't undo because command has not undoned yet.");
         }
     }
