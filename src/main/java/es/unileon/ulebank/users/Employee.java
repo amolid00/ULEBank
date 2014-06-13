@@ -1,14 +1,29 @@
 package es.unileon.ulebank.users;
 
-import es.unileon.ulebank.office.Office;
-import es.unileon.ulebank.handler.Handler;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 
- * @author dorian
+ * @author Patricia
+ *
  */
-public class Employee {
+@Entity
+@Table(name = "Employees")
+public class Employee implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Id of the employee
+	 */
+	@Id
+	@Column(name = "employeeID")
+	private String employeeID;
 	/**
 	 * Name of the employee
 	 */
@@ -26,112 +41,94 @@ public class Employee {
 	 */
 	private float salary;
 	/**
-	 * Office which belong
+	 * Office where the employee works
 	 */
-	private Office office;
-	/**
-	 * Identifier of the employee
-	 */
-	private Handler idEmployee;
+	private String idOffice;
 
 	/**
-	 * Create a new employee with all data
-	 * 
+	 * Creates a new employee
+	 *
 	 * @param name
-	 *            his/her name
+	 * 
 	 * @param surname
-	 *            his/her surname
+	 * 
 	 * @param idOffice
-	 *            the office, can be null
+	 * 
 	 * @param idEmployee
-	 *            the identifier of the employee
+	 * 
 	 */
 	public Employee(String name, String surname, String address, float salary,
-			Office idOffice, Handler idEmployee) {
-		// hacer comprobaciones
-		this.name = name;
-		this.surname = surname;
-		this.address = address;
-		this.salary = salary;
-		this.office = idOffice;
-		this.idEmployee = idEmployee;
+			String idOffice, String idEmployee) {
+
+		if (name != null && name.length() > 0 && surname != null
+				&& surname.length() > 0 && address != null && salary > 0
+				&& idEmployee != null) {
+			this.name = name;
+			this.surname = surname;
+			this.address = address;
+			this.salary = salary;
+			this.idOffice = idOffice;
+			this.employeeID = idEmployee;
+		}
+	}
+
+	public Employee() {
 	}
 
 	/**
-	 * Create a new employee without office
-	 * 
-	 * @param name
-	 *            his/her name
-	 * @param surname
-	 *            his/her surname
-	 * @param salary
-	 *            his/her salary
-	 * @param idEmployee
-	 *            the identifier of the employee
-	 */
-	public Employee(String name, String surname, String address, float salary,
-			Handler idEmployee) {
-		this(name, surname, address, salary, null, idEmployee);
-	}
-
-	/**
-	 * Get the name of the employee
-	 * 
-	 * @return the employee's name
+	 * Returns the name of the employee
+	 *
+	 * @return name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
-	 * change the name of the employee
-	 * 
+	 * Sets the employee's name
+	 *
 	 * @param name
-	 *            the new name
+	 * 
 	 */
 	public void setName(String name) {
-		if (name != null) {
-			if (name.length() > 0) {
-				this.name = name;
-			}
+		if ((name != null) && (name.length() > 0)) {
+			this.name = name;
 		}
 	}
 
 	/**
-	 * Get the surname of the employee
-	 * 
-	 * @return the employee's surname
+	 * Returns the surname of the employee
+	 *
+	 * @return surname
 	 */
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
 
 	/**
-	 * Change the surname of the employee
-	 * 
+	 * Sets the employee's surname
+	 *
 	 * @param surname
-	 *            the new surname
+	 * 
 	 */
 	public void setSurname(String surname) {
-		if (surname != null) {
-			if (surname.length() > 0) {
-				this.surname = surname;
-			}
+		if ((surname != null) && (surname.length() > 0)) {
+			this.surname = surname;
 		}
 	}
 
 	/**
 	 * Returns the address of the employee
-	 * 
+	 *
 	 * @return address
 	 */
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	/**
 	 * Sets the address of the employee
-	 * 
+	 *
 	 * @param address
 	 */
 	public void setAddress(String address) {
@@ -139,19 +136,19 @@ public class Employee {
 	}
 
 	/**
-	 * Get the salary of the employee
-	 * 
-	 * @return the employee's salary
+	 * Returns the salary of the employee
+	 *
+	 * @return salary
 	 */
 	public float getSalary() {
-		return salary;
+		return this.salary;
 	}
 
 	/**
-	 * Change the salary of the employee
-	 * 
+	 * Sets the salary of the employee
+	 *
 	 * @param salary
-	 *            the new salary
+	 * 
 	 */
 	public void setSalary(float salary) {
 		if (salary > 0) {
@@ -160,51 +157,65 @@ public class Employee {
 	}
 
 	/**
-	 * Get the the office where the employee works
-	 * 
-	 * @return the office or null if not exists
+	 * Returns the id of the office where the employee works
+	 *
+	 * @return office
 	 */
-	public Office getOffice() {
-		return office;
+	public String getIDOffice() {
+		return this.idOffice;
 	}
 
 	/**
-	 * Set the office
-	 * 
+	 * Sets the id of the office
+	 *
 	 * @param idOffice
 	 */
-	public void setOffice(Office idOffice) {
-		this.office = idOffice;
+	public void setIDOffice(String idOffice) {
+		this.idOffice = idOffice;
+
 	}
 
 	/**
-	 * Get the identifier of the employee
-	 * 
-	 * @return a handler that identify the employee
+	 * Returns the id of the employee
+	 *
+	 * @return idEmployee
 	 */
-	public Handler getIdEmployee() {
-		return idEmployee;
+	public String getIdEmployee() {
+		return this.employeeID;
 	}
 
 	/**
-	 * Set the identifier of the employee
-	 * 
+	 * Sets the id of the employee
+	 *
 	 * @param idEmployee
-	 *            the new identifier, can't be null
+	 * 
 	 */
-	public void setIdEmployee(Handler idEmployee) {
+	public void setIdEmployee(String idEmployee) {
 		if (idEmployee != null) {
-			this.idEmployee = idEmployee;
+			this.employeeID = idEmployee;
 		}
 	}
 
 	/**
-	 * Tell if this employee is an admin
-	 * 
+	 * Checks if the employee is an admin
+	 *
 	 * @return true if is an admin
 	 */
 	public boolean isAdmin() {
 		return false;
 	}
 
+	/**
+	 * toString method
+	 */
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("ID: " + this.getIdEmployee());
+		buffer.append("Name: " + this.getName());
+		buffer.append("Surname: " + this.getSurname());
+		buffer.append("Address: " + address + ";");
+		buffer.append("Office: " + this.getIDOffice());
+		buffer.append("Salary: " + this.getSalary());
+		return buffer.toString();
+	}
 }
