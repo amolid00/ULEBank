@@ -292,7 +292,7 @@ public class Loan implements FinancialProduct {
         try {
             if (!(this.account.getBalance() < this.debt)) {
                 final Transaction transactionCharge = new GenericTransaction(
-                        feeCancel, new Date(Time.getInstance().getTime()),
+                        -(feeCancel+this.debt), new Date(Time.getInstance().getTime()),
                         "cancel loan");
 
                 transactionCharge.setEffectiveDate(new Date(Time.getInstance()
@@ -345,7 +345,7 @@ public class Loan implements FinancialProduct {
         final StringBuffer exceptionMessage = new StringBuffer();
         try {
             final Transaction transaction = new GenericTransaction(
-                    payment.getImportOfTerm(), new Date(Time.getInstance()
+                   - payment.getImportOfTerm(), new Date(Time.getInstance()
                             .getTime()), "payment");
 
             transaction
@@ -445,7 +445,7 @@ public class Loan implements FinancialProduct {
 
     public double amortize(double quantity) throws LoanException {
         final StringBuffer exceptionMessage = new StringBuffer();
-        final double comission = 0;
+        final double comission = this.amortizedFee.getFee(quantity);
 
         if (!(quantity <= this.debt)) {
             exceptionMessage
@@ -461,7 +461,7 @@ public class Loan implements FinancialProduct {
         try {
             if (!(this.account.getBalance() < this.debt)) {
                 final Transaction transactionCharge = new GenericTransaction(
-                        quantity, new Date(Time.getInstance().getTime()),
+                       -( quantity + comission), new Date(Time.getInstance().getTime()),
                         "liquidate a quantity");
                 transactionCharge.setEffectiveDate(new Date(Time.getInstance()
                         .getTime()));
@@ -719,6 +719,9 @@ public class Loan implements FinancialProduct {
 
     public void setNextPayment(ScheduledPayment nextPayment) {
         this.nextPayment = nextPayment;
+    }
+    public Account getAccount() {
+        return account;
     }
 
 }

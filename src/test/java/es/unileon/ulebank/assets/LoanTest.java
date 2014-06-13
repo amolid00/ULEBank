@@ -139,6 +139,7 @@ public class LoanTest {
         assertEquals(100000, this.loanCancel.getDebt(), 0);
         this.loanCancel.cancelLoan();
         assertEquals(0, this.loanCancel.getDebt(), 0);
+        assertEquals(this.loanCancel.getAccount().getBalance(),0,0.1);
     }
 
     @Test
