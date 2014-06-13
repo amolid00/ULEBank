@@ -134,7 +134,7 @@ public class LoanTest {
         transaction.setEffectiveDate(new Date());
         this.commercialAccount1.doTransaction(transaction);
         assertEquals(100000, this.loanCancel.getDebt(), 0);
-        this.loanCancel.cancelLoan(); 
+        this.loanCancel.cancelLoan();
         assertEquals(0, this.loanCancel.getDebt(), 0);
     }
 

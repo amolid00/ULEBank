@@ -155,7 +155,7 @@ public class FrenchMethodTest {
 
     @Test
     public void openingAndStudyComissionTest() {
-        Assert.assertEquals(10474.02, this.testLoanOpening2
+        Assert.assertEquals(10474.32, this.testLoanOpening2
                 .doCalculationOfPayments().get(0).getImportOfTerm(), 0.01);
         Assert.assertEquals(9800.69, this.testLoanOpening2
                 .doCalculationOfPayments().get(0).getAmortization(), 0.01);

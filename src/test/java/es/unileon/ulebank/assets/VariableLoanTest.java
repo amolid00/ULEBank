@@ -75,12 +75,12 @@ public class VariableLoanTest {
 	}
 	
 
-//	@After
-//	public void tearDown() throws Exception {
-//		Time.getInstance().setTime(System.currentTimeMillis());
+	@After
+	public void tearDown() throws Exception {
+		Time.getInstance().setTime(System.currentTimeMillis());
 //		TaskList.DeleteTaskList();
-//		
-//	}
+		
+	}
 
 	@Test
 	public void testVariableLoan() throws Exception {
