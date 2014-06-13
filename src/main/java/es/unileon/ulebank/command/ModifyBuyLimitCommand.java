@@ -1,8 +1,9 @@
 package es.unileon.ulebank.command;
 
-import javax.security.auth.login.AccountNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
+import javax.security.auth.login.AccountNotFoundException;
 
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommandException;
@@ -20,6 +21,22 @@ public class ModifyBuyLimitCommand implements Command {
      */
     private static final Logger LOG = Logger
             .getLogger(ModifyBuyLimitCommand.class.getName());
+    /**
+     *  String of Limit type not defined
+     */
+    private static final String NOT_DEFINED_TYPE = "Limit type not defined";
+    /**
+     * String of incorrect limit error
+     */
+    private static final String INCORRECT_LIMIT = "Diary limit must been lower tha monthly limit";
+    /**
+     * String of incorrect undo error
+     */
+    private static final String ERROR_UNDO = "Can't undo because command has not undoned yet.";
+    /**
+     * String of incorrect redo error
+     */
+    private static final String ERROR_REDO = "Can't redo because command has not undoned yet.";
     /**
      * String of type diary limit
      */
@@ -103,12 +120,11 @@ public class ModifyBuyLimitCommand implements Command {
                 // Si no se indica el tipo de limite a modificar adecuadamente
                 // no va a realizar la operacion
             } else {
-                LOG.info("Limit type not defined");
+            	LOG.log(Level.SEVERE, NOT_DEFINED_TYPE);
             }
         } catch (IncorrectLimitException e) {
-            LOG.info(e.getMessage());
-            throw new IncorrectLimitException(
-                    "Diary limit must been lower tha monthly limit");
+            LOG.log(Level.SEVERE, INCORRECT_LIMIT);
+            throw new IncorrectLimitException(ModifyBuyLimitCommand.INCORRECT_LIMIT);
         }
     }
 
@@ -122,23 +138,30 @@ public class ModifyBuyLimitCommand implements Command {
         // Si el tipo es diario
         if (this.executed) {
             if (this.checkTypeLimit(ModifyBuyLimitCommand.DIARY)) {
-                // Recuperamos el limite anterior
-                this.card.setBuyLimitDiary(this.oldAmount);
-                this.undone = true;
+                try {
+                    // Recuperamos el limite anterior
+                    this.card.setBuyLimitDiary(this.oldAmount);
+                    this.undone = true;
+                } catch (IncorrectLimitException e) {
+                    LOG.info(e.getMessage());
+                }
                 // Si el tipo es mensual
             } else if (this.checkTypeLimit(ModifyBuyLimitCommand.MONTHLY)) {
-                // Recuperamos el limite anterior
-                this.card.setBuyLimitMonthly(this.oldAmount);
-                this.undone = true;
+                try {
+                    // Recuperamos el limite anterior
+                    this.card.setBuyLimitMonthly(this.oldAmount);
+                    this.undone = true;
+                } catch (IncorrectLimitException e) {
+                    LOG.info(e.getMessage());
+                }
                 // Si no se indica el tipo de limite a modificar adecuadamente
                 // no va a realizar la operacion
             } else {
-                LOG.info("Limit type not defined");
+            	LOG.log(Level.SEVERE, NOT_DEFINED_TYPE);
             }
         } else {
-            LOG.info("Can't undo because command has not executed yet.");
-            throw new PaymentException(
-                    "Can't undo because command has not executed yet.");
+        	LOG.log(Level.SEVERE, ERROR_UNDO);
+            throw new PaymentException(ModifyBuyLimitCommand.ERROR_UNDO);
         }
 
     }
@@ -153,25 +176,32 @@ public class ModifyBuyLimitCommand implements Command {
         if (this.undone) {
             // Si el tipo es diario
             if (this.checkTypeLimit(ModifyBuyLimitCommand.DIARY)) {
-                // Volvemos a cambiar el limite por el que lo habiamos
-                // cambiado anteriormente
-                this.card.setBuyLimitDiary(this.newAmount);
-                this.undone = false;
+                try {
+                    // Volvemos a cambiar el limite por el que lo habiamos
+                    // cambiado anteriormente
+                    this.card.setBuyLimitDiary(this.newAmount);
+                    this.undone = false;
+                } catch (IncorrectLimitException e) {
+                    LOG.info(e.getMessage());
+                }
                 // Si el tipo es mensual
             } else if (this.checkTypeLimit(ModifyBuyLimitCommand.MONTHLY)) {
-                // Volvemos a cambiar el limite por el que lo habiamos
-                // cambiado anteriormente
-                this.card.setBuyLimitMonthly(this.newAmount);
-                this.undone = false;
+                try {
+                    // Volvemos a cambiar el limite por el que lo habiamos
+                    // cambiado anteriormente
+                    this.card.setBuyLimitMonthly(this.newAmount);
+                    this.undone = false;
+                } catch (IncorrectLimitException e) {
+                    LOG.info(e.getMessage());
+                }
                 // Si no se indica el tipo de limite a modificar adecuadamente
                 // no va a realizar la operacion
             } else {
-                LOG.info("Limit type not defined");
+            	LOG.log(Level.SEVERE, NOT_DEFINED_TYPE);
             }
         } else {
-            LOG.info("Can't undo because command has not undoned yet.");
-            throw new PaymentException(
-                    "Can't undo because command has not undoned yet.");
+        	LOG.log(Level.SEVERE, ERROR_REDO);
+             throw new PaymentException(ModifyBuyLimitCommand.ERROR_REDO);
         }
     }
 

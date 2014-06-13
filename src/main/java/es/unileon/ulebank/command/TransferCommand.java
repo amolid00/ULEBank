@@ -1,11 +1,10 @@
 package es.unileon.ulebank.command;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommandException;
-import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.office.Office;
 import es.unileon.ulebank.payments.Transfer;
@@ -75,6 +74,7 @@ public class TransferCommand implements Command {
         if (amount > 0.00) {
             this.amount = amount;
         } else {
+        	LOG.info("Amount negative or neutral.");
         	throw new CommandException("Amount negative or neutral.");
         }
 
@@ -92,11 +92,8 @@ public class TransferCommand implements Command {
             transfer.make(this.concept);
             this.executed = true;
         } catch (TransferException e) {
-        	TransferCommand.LOG.info(e.getMessage());
-            throw new TransferException(e.getMessage());
-        } catch (TransactionException e) {
-        	TransferCommand.LOG.info(e.getMessage());
-            throw new TransactionException(e.getMessage());
+        	LOG.severe(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
     }
 
@@ -113,14 +110,11 @@ public class TransferCommand implements Command {
                 transfer.make("Return transfer " + this.concept);
                 this.undone = true;
             } catch (TransferException e) {
-            	TransferCommand.LOG.info(e.getMessage());
-                throw new TransferException(e.getMessage());
-            } catch (TransactionException e) {
-            	TransferCommand.LOG.info(e.getMessage());
-                throw new TransactionException(e.getMessage());
+            	LOG.severe(e.getMessage());
+                throw new CommandException(e.getMessage());
             }
         } else {
-        	TransferCommand.LOG.info("Can't undo because command has not executed yet.");
+        	LOG.severe("Can't undo because command has not executed yet.");
         	throw new CommandException("Can't undo because command has not executed yet.");
         }
     }
@@ -138,14 +132,11 @@ public class TransferCommand implements Command {
                 transfer.make(this.concept);
                 this.undone = false;
             } catch (TransferException e) {
-            	TransferCommand.LOG.info(e.getMessage());
-                throw new TransferException(e.getMessage());
-            } catch (TransactionException e) {
-            	TransferCommand.LOG.info(e.getMessage());
-                throw new TransactionException(e.getMessage());
+            	LOG.severe(e.getMessage());
+                throw new CommandException(e.getMessage());
             }
         } else {
-        	TransferCommand.LOG.info("Can't undo because command has not undoned yet.");
+        	LOG.severe("Can't undo because command has not undoned yet.");
             throw new CommandException(
                     "Can't undo because command has not undoned yet.");
         }

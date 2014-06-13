@@ -1,8 +1,7 @@
 package es.unileon.ulebank.command;
 
 import java.io.IOException;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.command.handler.CommandHandler;
@@ -136,7 +135,7 @@ public class ReplacementCardCommand implements Command {
             this.card.setExpirationDate(this.oldExpirationDate);
             this.undone = true;
         } else {
-            LOG.info("Can't undo because command has not executed yet.");
+            LOG.severe("Can't undo because command has not executed yet.");
             throw new PaymentException(
                     "Can't undo because command has not executed yet.");
         }
@@ -158,7 +157,7 @@ public class ReplacementCardCommand implements Command {
             // Vuelve a cambiar la fecha de caducidad por la nueva
             this.card.setExpirationDate(this.newExpirationDate);
         } else {
-            LOG.info("Can't undo because command has not undoned yet.");
+            LOG.severe("Can't undo because command has not undoned yet.");
             throw new PaymentException(
                     "Can't undo because command has not undoned yet.");
         }

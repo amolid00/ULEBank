@@ -1,5 +1,8 @@
 package es.unileon.ulebank.command;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.command.handler.CommandHandler;
 import es.unileon.ulebank.exceptions.CommandException;
@@ -10,6 +13,11 @@ import es.unileon.ulebank.office.Office;
  * @author Israel Comando para realizar la cancelacion de la tarjeta
  */
 public class CancelCardCommand implements Command {
+	 /**
+     * Logger de la clase
+     */
+    private static final Logger LOG = Logger
+            .getLogger(CancelCardCommand.class.getName());
     /**
      * Identificador del comando
      */
@@ -46,7 +54,11 @@ public class CancelCardCommand implements Command {
     @Override
     public void execute() {
         // Se borra la tarjeta de la lista de tarjetas de la cuenta
-        this.account.removeCard(this.cardId);
+        if (this.account.removeCard(this.cardId)) {
+        	LOG.log(Level.INFO, "Card cancelled successfully.");
+        } else {
+        	LOG.log(Level.SEVERE, "Card cannot cancelled.");
+        }
     }
 
     /**

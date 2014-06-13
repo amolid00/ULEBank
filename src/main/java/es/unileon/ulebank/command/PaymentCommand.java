@@ -1,6 +1,7 @@
 package es.unileon.ulebank.command;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.command.handler.CommandHandler;
@@ -22,7 +23,7 @@ public class PaymentCommand implements Command {
     /**
      * Logger Class
      */
-    private static final Logger LOG = Logger.getLogger(PaymentCommand.class);
+    private static final Logger LOG = Logger.getLogger(PaymentCommand.class.getName());
     /**
      * Command Identifier
      */
@@ -79,6 +80,7 @@ public class PaymentCommand implements Command {
         if (amount != 0.00) {
             this.amount = amount;
         } else {
+        	LOG.log(Level.SEVERE, "Amount neutral.");
         	throw new CommandException("Amount neutral.");
         }
         this.concept = concept;
@@ -97,10 +99,10 @@ public class PaymentCommand implements Command {
             this.card.makeTransaction(this.amount, this.concept);
             this.executed = true;
         } catch (TransactionException e) {
-            PaymentCommand.LOG.info(e.getMessage());
-            throw new CommandException(e.getMessage());
+            LOG.log(Level.SEVERE, e.getMessage());
+            throw new TransactionException(e.getMessage());
         } catch (PaymentException e) {
-            PaymentCommand.LOG.info(e.getMessage());
+        	LOG.log(Level.SEVERE, e.getMessage());
             throw new CommandException(e.getMessage());
         }
 
@@ -115,15 +117,14 @@ public class PaymentCommand implements Command {
     	if (this.executed) {
     		try {
                 // Make the payment by the type of the card
-    			//this.setUndoConcept();
     			this.card.makeTransaction(-this.amount, "Return payment from " + this.concept);
                 this.undone = true;
     		} catch (TransactionException e) {
-    			PaymentCommand.LOG.info(e.getMessage());
-    			throw new CommandException(e.getMessage());
+    			 LOG.log(Level.SEVERE, e.getMessage());
+    			throw new TransactionException(e.getMessage());
     		}
     	} else {
-    		PaymentCommand.LOG.info("Can't undo because command has not executed yet.");
+    		 LOG.log(Level.SEVERE, "Can't undo because command has not executed yet.");
     		throw new CommandException("Can't undo because command has not executed yet.");
     	}
     }
@@ -140,11 +141,11 @@ public class PaymentCommand implements Command {
     			this.card.makeTransaction(this.amount, this.concept);
     			this.undone = false;
     		} catch (TransactionException e) {
-    			PaymentCommand.LOG.info(e.getMessage());
+    			LOG.severe(e.getMessage());
     			throw new TransactionException(e.getMessage());
     		}
     	} else {
-    		PaymentCommand.LOG.info("Can't undo because command has not undoned yet.");
+    		LOG.severe("Can't undo because command has not undoned yet.");
     		throw new CommandException("Can't undo because command has not undoned yet.");
     	}
 
