@@ -42,12 +42,12 @@ public class GermanMethodTest {
     public void setUp() throws LINCMalformedException, CommissionException,
             LoanException, MalformedHandlerException, WrongArgsException {
 
-        this.bank = new Bank(new GenericHandler("1234"));
-        this.office = new Office(new GenericHandler("1234"), bank);
-        this.commercialAccount = new Account(office, bank, "0000000000",
-                authorized1);
-        this.authorizedHandler1 = new GenericHandler("Miguel");
-        this.authorized1 = new Person(71560136, 'Y');
+         this.bank = new Bank(new GenericHandler("1234"));
+         this.office = new Office(new GenericHandler("1234"), this.bank);
+         this.authorizedHandler1 = new GenericHandler("Miguel");
+         this.authorized1 = new Person(71560136, 'Y');
+         this.commercialAccount = new Account(this.office, this.bank,
+                 "0000000000", this.authorized1);
 
         this.linc1 = new LoanIdentificationNumberCode("LN", "ES");
         this.linc2 = new LoanIdentificationNumberCode("LN", "NZ");
@@ -65,6 +65,7 @@ public class GermanMethodTest {
                 this.authorized1, description2);
         this.germanMethod1 = new GermanMethod(this.loan1);
         this.germanMethod2 = new GermanMethod(this.loan2);
+        
 
         this.germanMethod1.doCalculationOfPayments();
         this.germanMethod2.doCalculationOfPayments();
