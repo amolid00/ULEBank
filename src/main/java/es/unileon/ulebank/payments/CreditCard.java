@@ -6,9 +6,7 @@ import java.util.List;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.exceptions.CommissionException;
 import es.unileon.ulebank.exceptions.TransactionException;
-import es.unileon.ulebank.fees.InvalidFeeException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.history.CardTransaction;
 import es.unileon.ulebank.payments.exceptions.PaymentException;
@@ -31,21 +29,13 @@ public class CreditCard extends Card {
      */
     private List<CardTransaction> transactionList;
 
-    /**
+	/**
      * Constructor de la clase que crea una tarjeta de Credito
      * 
      * @param cardId
      * @param owner
      * @param account
-     * @param buyLimitDiary
-     * @param buyLimitMonthly
-     * @param cashLimitDiary
-     * @param cashLimitMonthly
-     * @param commissionEmission
-     * @param commissionMaintenance
-     * @param commissionRenovate
-     * @throws CommissionException
-     * @throws InvalidFeeException
+     * @throws PaymentException
      */
     public CreditCard(Handler cardId, Client owner, Account account) throws PaymentException {
         super(cardId, CardType.CREDIT.toString(), account, owner);
@@ -138,4 +128,22 @@ public class CreditCard extends Card {
 
         return amount;
     }
+    
+    /**
+     * Method that obtain the list of transactions
+     * 
+     * @return
+     */
+    public List<CardTransaction> getTransactionList() {
+		return transactionList;
+	}
+
+    /**
+     * Method to set the transaction list
+     * 
+     * @param transactionList
+     */
+	public void setTransactionList(List<CardTransaction> transactionList) {
+		this.transactionList = transactionList;
+	}
 }

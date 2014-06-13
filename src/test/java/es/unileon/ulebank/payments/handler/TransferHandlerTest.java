@@ -1,4 +1,4 @@
-package es.unileon.ulebank.payments;
+package es.unileon.ulebank.payments.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

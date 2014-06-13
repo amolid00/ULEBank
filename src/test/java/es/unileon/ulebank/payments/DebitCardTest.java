@@ -31,10 +31,11 @@ import es.unileon.ulebank.utils.CardProperties;
 public class DebitCardTest {
 
 	DebitCard testCard;
-	DebitCard test;
+	DebitCard testCard2;
 	Handler handler;
 	private Office office;
 	private Bank bank;
+	private Account account;
 	private String accountNumber = "0000000000";
 
 	@Before
@@ -48,7 +49,7 @@ public class DebitCardTest {
 		this.office = new Office(new GenericHandler("1234"), this.bank);
 		this.handler = new CardHandler(new BankHandler("1234"), "01", "987654321");
 		Client client = new Person(71451559, 'N');
-		Account account = new Account(office, bank, accountNumber, client);
+		account = new Account(office, bank, accountNumber, client);
 		FeeStrategy commissionEmission = new LinearFee(0, 25);
 		FeeStrategy commissionMaintenance = new LinearFee(0, 0);
 		FeeStrategy commissionRenovate = new LinearFee(0, 0);
@@ -60,6 +61,14 @@ public class DebitCardTest {
         testCard.setCommissionEmission(commissionEmission);
         testCard.setCommissionMaintenance(commissionMaintenance);
         testCard.setCommissionRenovate(commissionRenovate);
+		testCard2 = new DebitCard(handler, client, account);
+		testCard2.setBuyLimitMonthly(1000.0);
+		testCard2.setBuyLimitDiary(400.0);
+		testCard2.setCashLimitMonthly(1000.0);
+		testCard2.setCashLimitDiary(400.0);
+		testCard2.setCommissionEmission(commissionEmission);
+		testCard2.setCommissionMaintenance(commissionMaintenance);
+		testCard2.setCommissionRenovate(commissionRenovate);
 	}
 
 	@Test
@@ -69,7 +78,8 @@ public class DebitCardTest {
 
 	@Test
 	public void cardNotOk() {
-		assertNull(test);
+		testCard = null;
+		assertNull(testCard);
 	}
 
 	@Test
@@ -120,9 +130,21 @@ public class DebitCardTest {
 	}
 
 	@Test
-	public void testSetPin() throws PaymentException {
-		testCard.setPin("9876");
-		assertEquals("9876", testCard.getPin());
+	public void testSetPinOK() throws PaymentException {
+		testCard.setPin("1357");
+		assertEquals("1357", testCard.getPin());
+	}
+	
+	@Test (expected = IncorrectLengthException.class)
+	public void testSetPinFailLength() throws PaymentException {
+		testCard.setPin("135");
+		assertEquals("1357", testCard.getPin());
+	}
+	
+	@Test (expected = NumberFormatException.class)
+	public void testSetPinFailFormat() throws PaymentException {
+		testCard.setPin("13f7");
+		assertEquals("1357", testCard.getPin());
 	}
 
 	@Test
@@ -305,6 +327,19 @@ public class DebitCardTest {
 	@Test
 	public void testGetCardNumber(){
 		assertEquals("1234 0198 7654 3212", testCard.getId().toString());
+	}
+	
+	@Test
+	public void testMakeTransactionWithBalance() throws PaymentException{
+		account.setBalance(1000.00);
+		
+		testCard.makeTransaction(200.00, "Test makeTransaction");
+		assertEquals(800.00, this.account.getBalance(), 0.0001);
+	}
+	
+	@Test (expected = PaymentException.class)
+	public void testMakeTransactionWithoutBalance() throws PaymentException{
+		testCard.makeTransaction(200.00, "Test makeTransaction");
 	}
 
 }

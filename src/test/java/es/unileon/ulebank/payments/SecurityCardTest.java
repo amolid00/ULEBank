@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +30,7 @@ public class SecurityCardTest {
 	public SecurityCard secCard2;
 
 	@Before
-	public void setUp() throws CommandException, MalformedHandlerException{
+	public void setUp() throws CommandException, MalformedHandlerException, NumberFormatException, IOException{
 		CardProperties properties = new CardProperties();
 		properties.setCvvSize(3);
 		properties.setPinSize(4);
@@ -57,7 +59,7 @@ public class SecurityCardTest {
 	}
 
 	@Test
-	public void checkCoordinateTest() throws SecurityCardException {
+	public void checkCoordinateTest() throws SecurityCardException, SecurityCardException {
 		Integer[][] auxSec = this.secCard.deliverSecurityCard("0000");
 		assertFalse(this.secCard.checkCoordinates(0, 0, auxSec[0][0]+1));
 		assertTrue(this.secCard.checkCoordinates(0, 0, auxSec[0][0]));
