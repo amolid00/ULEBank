@@ -2,6 +2,8 @@ package es.unileon.ulebank.assets.strategy.loan;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,10 +56,12 @@ public class ProgressiveMethodTest {
 		this.description1 = "Compra BMW-M3";
 		this.description2 = "Compra moto";
 		
-		this.loan1 = new Loan(this.financialProduct1, 100000, 0.08,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description1);
-		this.loan2 = new Loan(this.financialProduct2, 50000, 0.1,
-				PaymentPeriod.MONTHLY, 10, this.commercialAccount,this.authorized1,description2);
+		 this.loan2 = new Loan(this.financialProduct1, 100000, 0.08,
+	                PaymentPeriod.MONTHLY, 10, this.commercialAccount,
+	                this.authorized1, this.description1);
+	        this.loan1 = new Loan(this.financialProduct2, 50000, 0.1,
+	                PaymentPeriod.MONTHLY, 10, this.commercialAccount,
+	                this.authorized1, this.description2);
 		this.progressiveMethod1 = new ProgressiveMethod(loan1, 5);
 		this.progressiveMethod2 = new ProgressiveMethod(loan2, 5);
 
@@ -82,10 +86,10 @@ public class ProgressiveMethodTest {
 		LoanIterator loanIterator1 = this.loan1.iterator();
 		LoanIterator loanIterator2 = this.loan2.iterator();
 		while (loanIterator1.hasNext()) {
-			assertEquals(10003.67, loanIterator1.next().getImportOfTerm(), 0.1);
+			assertEquals(5232.02, loanIterator1.next().getImportOfTerm(), 0.1);
 		}
 		while (loanIterator2.hasNext()) {
-			assertEquals(5002.29, loanIterator2.next().getImportOfTerm(), 0.1);
+			assertEquals(10370.32, loanIterator2.next().getImportOfTerm(), 0.1);
 		}
 	}
 
@@ -135,148 +139,148 @@ public class ProgressiveMethodTest {
 	@Test
 	public void testInterests() {
 		LoanIterator loanIterator1 = this.loan1.iterator();
-		assertEquals(6.67, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(6.0, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(5.33, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(4.67, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(4.0, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(3.33, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(2.67, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(2.0, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(1.33, loanIterator1.next().getInterests(), 0.1);
-		assertEquals(0.67, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(416.67, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(376.54, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(336.08, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(295.28, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(254.14, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(212.65, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(170.83, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(128.65, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(86.12, loanIterator1.next().getInterests(), 0.1);
+		assertEquals(43.24, loanIterator1.next().getInterests(), 0.1);
 
 		LoanIterator loanIterator2 = this.loan2.iterator();
-		assertEquals(4.17, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(3.75, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(3.33, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(2.92, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(2.5, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(2.08, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(1.67, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(1.25, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(0.83, loanIterator2.next().getInterests(), 0.1);
-		assertEquals(0.42, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(666.67, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(601.98, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(536.85, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(471.3, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(405.3, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(338.87, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(271.99, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(204.67, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(136.9, loanIterator2.next().getInterests(), 0.1);
+		assertEquals(68.68, loanIterator2.next().getInterests(), 0.1);
 
 	}
 
 	@Test
 	public void testCapital() {
 		LoanIterator loanIterator1 = this.loan1.iterator();
-		assertEquals(90003.0, loanIterator1.next().getOutstandingCapital(), 0.1);
-		assertEquals(80005.33, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(45184.65, loanIterator1.next().getOutstandingCapital(), 0.1);
+		assertEquals(40329.17, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(70006.99, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(35433.22, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(60007.99, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(30496.48, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(50008.32, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(25518.6, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(40007.99, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(20499.23, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(30006.98, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(15438.04, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(20005.31, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(10334.67, loanIterator1.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(10002.98, loanIterator1.next().getOutstandingCapital(),
+		assertEquals(5188.77, loanIterator1.next().getOutstandingCapital(),
 				0.1);
 		assertEquals(0, loanIterator1.next().getOutstandingCapital(), 0.1);
 
 		LoanIterator loanIterator2 = this.loan2.iterator();
-		assertEquals(45001.87, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(90296.35, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(40003.33, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(80528.0, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(35004.38, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(70694.53, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(30005.01, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(60795.51, loanIterator2.next().getOutstandingCapital(),
+				0.1);	
+		assertEquals(50830.5, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(25005.22, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(40799.05, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(20005.01, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(30700.72, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(15004.39, loanIterator2.next().getOutstandingCapital(),
+		assertEquals(20535.07, loanIterator2.next().getOutstandingCapital(),
 				0.1);
-		assertEquals(10003.35, loanIterator2.next().getOutstandingCapital(),
-				0.1);
-		assertEquals(5001.89, loanIterator2.next().getOutstandingCapital(), 0.1);
-		assertEquals(0, loanIterator2.next().getOutstandingCapital(), 0.1);
+		assertEquals(10301.65, loanIterator2.next().getOutstandingCapital(), 0.1);
+		assertEquals(0.01, loanIterator2.next().getOutstandingCapital(), 0.1);
 
 	}
 
 	@Test
 	public void firstPaymentFirstLoanTest() {
-		assertEquals(12219.63, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(202.73, progressiveMethod1.doCalculationOfPayments()
 				.get(0).getAmortization(), 0.01);
-		assertEquals(4219.63,
+		assertEquals(202.73,
 				progressiveMethod1.doCalculationOfPayments().get(0)
 						.getAmortization(), 0.01);
-		assertEquals(8000, progressiveMethod1.doCalculationOfPayments().get(0)
+		assertEquals(4.17, progressiveMethod1.doCalculationOfPayments().get(0)
 				.getInterests(), 0.01);
-		assertEquals(95780.37, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(49797.27, progressiveMethod1.doCalculationOfPayments()
 				.get(0).getOutstandingCapital(), 0.01);
 	}
 
 	@Test
 	public void firstPaymentSecondLoanTest() {
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(0)
+		assertEquals(827.45, progressiveMethod2.doCalculationOfPayments().get(0)
 				.getImportOfTerm(), 0.01);
-		assertEquals(0.0, progressiveMethod2.doCalculationOfPayments().get(0)
+		assertEquals(820.78, progressiveMethod2.doCalculationOfPayments().get(0)
 				.getAmortization(), 0.01);
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(0)
+		assertEquals(6.67, progressiveMethod2.doCalculationOfPayments().get(0)
 				.getInterests(), 0.01);
-		assertEquals(92000, progressiveMethod2.doCalculationOfPayments().get(0)
+		assertEquals(99179.22, progressiveMethod2.doCalculationOfPayments().get(0)
 				.getOutstandingCapital(), 0.01);
 	}
 
 	@Test
 	public void middlePaymentFirstLoanTest() {
-		assertEquals(14853.04, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(206.9, progressiveMethod1.doCalculationOfPayments()
 				.get(4).getImportOfTerm(), 0.01);
-		assertEquals(8693.49,
+		assertEquals(202.8,
 				progressiveMethod1.doCalculationOfPayments().get(4)
 						.getAmortization(), 0.01);
-		assertEquals(6159.55,
+		assertEquals(4.1,
 				progressiveMethod1.doCalculationOfPayments().get(4)
 						.getInterests(), 0.01);
-		assertEquals(68300.91, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(48986.17, progressiveMethod1.doCalculationOfPayments()
 				.get(4).getOutstandingCapital(), 0.01);
 	}
 
 	@Test
 	public void middlePaymentSecondLoanTest() {
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(4)
+		assertEquals(827.45, progressiveMethod2.doCalculationOfPayments().get(4)
 				.getImportOfTerm(), 0.01);
-		assertEquals(0.0, progressiveMethod2.doCalculationOfPayments().get(4)
+		assertEquals(821.0, progressiveMethod2.doCalculationOfPayments().get(4)
 				.getAmortization(), 0.01);
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(4)
+		assertEquals(6.45, progressiveMethod2.doCalculationOfPayments().get(4)
 				.getInterests(), 0.01);
-		assertEquals(92000, progressiveMethod2.doCalculationOfPayments().get(4)
+		assertEquals(95895.54, progressiveMethod2.doCalculationOfPayments().get(4)
 				.getOutstandingCapital(), 0.01);
 	}
 
 	@Test
 	public void lastPaymentTest() {
-		assertEquals(18956.66, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(206.9, progressiveMethod1.doCalculationOfPayments()
 				.get(9).getImportOfTerm(), 0.01);
-		assertEquals(17552.46, progressiveMethod1.doCalculationOfPayments()
+		assertEquals(202.89, progressiveMethod1.doCalculationOfPayments()
 				.get(9).getAmortization(), 0.01);
-		assertEquals(1404.20,
+		assertEquals(4.01,
 				progressiveMethod1.doCalculationOfPayments().get(9)
 						.getInterests(), 0.01);
-		assertEquals(0.0, progressiveMethod1.doCalculationOfPayments().get(9)
+		assertEquals(47971.91, progressiveMethod1.doCalculationOfPayments().get(9)
 				.getOutstandingCapital(), 0.01);
 	}
 
 	@Test
 	public void lastPaymentSecondLoanTest() {
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(9)
+		assertEquals(827.45, progressiveMethod2.doCalculationOfPayments().get(9)
 				.getImportOfTerm(), 0.01);
-		assertEquals(0.0, progressiveMethod2.doCalculationOfPayments().get(9)
+		assertEquals(821.28, progressiveMethod2.doCalculationOfPayments().get(9)
 				.getAmortization(), 0.01);
-		assertEquals(8000, progressiveMethod2.doCalculationOfPayments().get(9)
+		assertEquals(6.17, progressiveMethod2.doCalculationOfPayments().get(9)
 				.getInterests(), 0.01);
-		assertEquals(92000, progressiveMethod2.doCalculationOfPayments().get(9)
+		assertEquals(91789.7, progressiveMethod2.doCalculationOfPayments().get(9)
 				.getOutstandingCapital(), 0.01);
 	}
 

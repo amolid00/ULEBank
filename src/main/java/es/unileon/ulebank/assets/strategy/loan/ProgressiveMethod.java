@@ -11,10 +11,10 @@ import es.unileon.ulebank.time.Time;
 /**
  * Implementation of strategy for calculated all fee of the loan following the
  * progressive method
+ *
+ * v1.1 Initial version
  * 
- * ************************* Formulate of the reason * *************************
- * 
- * v1.0 Initial version
+ * @autor danny
  **/
 
 public class ProgressiveMethod implements StrategyLoan {
@@ -65,51 +65,17 @@ public class ProgressiveMethod implements StrategyLoan {
 	 * Method used to calculating the fees of loan
 	 * 
 	 **/
+	
 	public double calculateMonthlyFee() {
 		double fee = 0;
 		double interesEf = this.calculateInterestEf();
-		int numFee = (this.loan.getAmortizationTime() / this.loan
-				.getPaymentPeriod().getTime());
-
-		double fracc = this.loan.getAmountOfMoney()
-				* ((1 + interesEf - this.reason) / 1 - (Math.pow(
-						(this.reason / 1 + interesEf), numFee)));
+		int numFee = (this.loan.getAmortizationTime() / this.loan.getPaymentPeriod().getTime());
+		double fracc = this.loan.getAmountOfMoney() * (interesEf-reason) / (1 - Math.pow(((1+reason)/(1+interesEf)), numFee));
 		fee = this.loan.getAmountOfMoney() * fracc;
 		return fee;
 	}
 
-	/**
-	 * Method used to calculating the effective interest of do the fees
-	 * 
-	 * @return Double with the value of this effective interest
-	 **/
-	// TODO Delete for Dani if this method do not be used
-	// private void calculateInterest() {
-	// int monthToAdd = 12 / this.loan.getPaymentPeriod().getPeriod();
-	//
-	// double fee = this.calculateMonthlyFee();
-	// double interestEf = this.calculateInterestEf();
-	// double interest = 0;
-	// double amortized = 0;
-	// double totalCapital = fee * this.loan.getAmortizationTime();
-	// for (int i = 0; i < this.loan.getAmortizationTime(); i++) {
-	// totalCapital -= fee;
-	// interest = totalCapital * interestEf;
-	// amortized = fee - interest;
-	// totalCapital = round(totalCapital, 100);
-	// fee = round(fee, 100);
-	// amortized = round(amortized, 100);
-	// interest = round(interest, 100);
-	//
-	// this.payments.add(new ScheduledPayment(this.dateWrap.getDate(),
-	// totalCapital, fee, interest, amortized,
-	// new ScheduledPaymentHandler(this.loan.getId(), this.loan
-	// .getLinkedAccount().getTitulars(), this.dateWrap
-	// .getDate())));
-	// this.dateWrap.updateDate();
-	// }
-	// }
-
+	
 	/**
 	 * Used method to round.
 	 * 
@@ -128,6 +94,8 @@ public class ProgressiveMethod implements StrategyLoan {
 	 * Method used to calculating the fees of loan and give dates for perform
 	 * this payments
 	 **/
+	
+	/***/
 	@Override
 	public ArrayList<ScheduledPayment> doCalculationOfPayments() {
 		ArrayList<ScheduledPayment> paymentsProgressive = new ArrayList<ScheduledPayment>();
