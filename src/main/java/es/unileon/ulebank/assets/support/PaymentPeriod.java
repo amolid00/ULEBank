@@ -32,4 +32,16 @@ public enum PaymentPeriod {
 		return this.period;
 	}
 	
+	public static PaymentPeriod getPeriodFromString(String myPeriod) {
+		if(myPeriod != null) {
+			for(PaymentPeriod period : PaymentPeriod.values()) {
+				if(myPeriod.equalsIgnoreCase(period.toString())){
+					return period;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 }

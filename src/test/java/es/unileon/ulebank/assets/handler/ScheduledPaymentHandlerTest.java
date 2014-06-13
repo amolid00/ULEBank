@@ -58,7 +58,7 @@ public class ScheduledPaymentHandlerTest {
 	
 	@Test
 	public void testScheduledPaymentHandler() {
-		String expected = "MG-4-2014-CA-P4YRK-0-Miguel-Antonio-2014-6-20";
+		String expected = "MG-4-2014-CA-P4YRK-0-71560136Y-71557005A-2014-6-20";
 		assertEquals(expected, this.scheduledPaymentHandler.toString());
 	}
 }
