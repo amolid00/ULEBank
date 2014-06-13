@@ -1,8 +1,8 @@
 package es.unileon.ulebank.command;
 
 import java.io.IOException;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
@@ -74,8 +74,7 @@ public class NewCardCommand implements Command {
         try {
             this.cardHandler = new CardHandler(cardId);
         } catch (MalformedHandlerException e) {
-            LOG.info(e.getMessage());
-            Logger.getLogger(NewCardCommand.class.getName()).log(null, e.getMessage());
+            LOG.log(Level.SEVERE, e.getMessage());
         }
         this.cardType = cardType.toString();
         this.id = new CommandHandler(this.cardHandler);
@@ -102,6 +101,7 @@ public class NewCardCommand implements Command {
                         this.account);
             } 
         } catch (NumberFormatException e) {
+        	LOG.log(Level.SEVERE, e.getMessage());
             throw new NumberFormatException(e.getMessage());
         }
 
