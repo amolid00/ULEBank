@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import es.unileon.ulebank.bank.Bank;
-import es.unileon.ulebank.client.Address;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -19,15 +18,14 @@ public class CreateEnterpriseCommandTest {
     private CreateEnterpriseCommand createEnterpriseCommand;
     private Office office;
     private Bank bank;
-    private Address address;
+    private String address;
 
     @Before
     public void setUp() throws MalformedHandlerException, WrongArgsException {
 
         this.bank = new Bank(new GenericHandler("1234"));
         this.office = new Office(new GenericHandler("1234"), this.bank);
-        this.address = new Address("Street", 4, 2, 'A', "Locality", "Province",
-                24000);
+        this.address = "calle";
 
         this.createEnterpriseCommand = new CreateEnterpriseCommand(this.office,
                 "enterpriseName", this.address, 6582297, 'Q', 'E', new Date(),

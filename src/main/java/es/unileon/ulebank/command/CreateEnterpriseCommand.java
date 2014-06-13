@@ -6,8 +6,6 @@ package es.unileon.ulebank.command;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import es.unileon.ulebank.client.Address;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Enterprise;
 import es.unileon.ulebank.handler.Handler;
@@ -20,7 +18,7 @@ import es.unileon.ulebank.office.Office;
  */
 public class CreateEnterpriseCommand implements Command {
     private final String enterpriseName;
-    private final Address address;
+    private final String address;
     private final int cifNumber;
     private final char cifLetter;
     private final char cifControl;
@@ -44,7 +42,7 @@ public class CreateEnterpriseCommand implements Command {
      * @param commandId
      */
     public CreateEnterpriseCommand(Office office, String enterpriseName,
-            Address address, int cifNumber, char cifLetter, char cifControl,
+            String address, int cifNumber, char cifLetter, char cifControl,
             Date effectiveDate, Handler commandId) {
         this.state = CreateEnterpriseCommand.STATE_NORMAL;
         this.enterpriseName = enterpriseName;

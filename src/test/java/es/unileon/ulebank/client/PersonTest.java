@@ -31,7 +31,7 @@ public class PersonTest {
 
     @Test
     public void testGetAndSetAddress() {
-        final Address address = new Address("", 2, 2, '2', "LE", "LE", 24007);
+        final String address = "anselmo";
         this.dni.setAddress(address);
         this.foreign.setAddress(address);
         Assert.assertEquals(this.dni.getAddress(), address);

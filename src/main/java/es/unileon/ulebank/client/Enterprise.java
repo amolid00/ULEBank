@@ -30,7 +30,7 @@ public class Enterprise extends Client {
     /**
      * 
      */
-    private Address address;
+    private String address;
 
     /**
      * 
@@ -51,7 +51,7 @@ public class Enterprise extends Client {
      * @param address
      */
     public Enterprise(char cifLetter, int cifNumber, char cifControl,
-            String enterpriseName, Address address)
+            String enterpriseName, String address)
             throws MalformedHandlerException {
         super(new EnterpriseHandler(cifLetter, cifNumber, cifControl));
         this.authorizedPersons = new ArrayList<Person>();
@@ -125,7 +125,7 @@ public class Enterprise extends Client {
      * 
      * @return
      */
-    public Address getAddress() {
+    public String getAddress() {
         return this.address;
     }
 
@@ -133,7 +133,7 @@ public class Enterprise extends Client {
      * 
      * @param address
      */
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

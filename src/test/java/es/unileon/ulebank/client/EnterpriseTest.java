@@ -18,17 +18,15 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
 public class EnterpriseTest {
 
     private Enterprise enterprise, enterprise1;
-    private Address address, address1;
+    private String address, address1;
     private Person persona;
     private PersonHandler personHandler;
 
     @Before
     public void setUp() throws MalformedHandlerException {
         this.enterprise = new Enterprise('A', 5881850, '1');
-        this.address = new Address("Gran V�a", 11, 2, 'B', "Madrid", "Madrid",
-                28013);
-        this.address1 = new Address("Calle Spooner", 10, 1, 'A', "Quahog",
-                "Rhode Island", 12345);
+        this.address = "Calle anselmo";
+        this.address1 = "Calle anselmito";
         this.enterprise1 = new Enterprise('A', 5881850, '1',
                 "Universidad de Le�n", this.address);
         this.persona = new Person(84431140, 'A');

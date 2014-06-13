@@ -5,8 +5,6 @@ package es.unileon.ulebank.command;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import es.unileon.ulebank.client.Address;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
@@ -21,7 +19,7 @@ public class CreateClientCommand implements Command {
     private final String name;
     private final String surnames;
     private final String civilState;
-    private final Address address;
+    private final String address;
     private final String profession;
     private final char foreingLetter;
     private final int dniNumber;
@@ -55,7 +53,7 @@ public class CreateClientCommand implements Command {
      * @param commandId
      */
     public CreateClientCommand(Office office, String name, String surnames,
-            Address address, String civilState, int phoneNumber1,
+            String address, String civilState, int phoneNumber1,
             int phoneNumber2, String profession, Date birthDate,
             char foreingLetter, int dniNumber, char dniLetter, Handler commandId) {
         this.name = name;

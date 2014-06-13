@@ -26,7 +26,7 @@ public class Person extends Client {
     /**
      * address of the person
      */
-    private Address address;
+    private String address;
 
     /**
      * marritage state of the person
@@ -116,7 +116,7 @@ public class Person extends Client {
      * 
      * @return the address of the person
      */
-    public Address getAddress() {
+    public String getAddress() {
         return this.address;
     }
 
@@ -125,7 +125,7 @@ public class Person extends Client {
      * 
      * @param address
      */
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
