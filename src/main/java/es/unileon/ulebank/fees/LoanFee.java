@@ -15,7 +15,7 @@ public class LoanFee implements FeeStrategy {
 		if(isPercent){
 			this.isPercent = isPercent;
 			
-			if(commission < 0 && commission > 1 ){
+			if(commission < 0 || commission > 1 ){
 				throw new InvalidFeeException();
 			}
 			
@@ -33,7 +33,7 @@ public class LoanFee implements FeeStrategy {
 			return this.commission * value;
 		}
 		
-		return this.commission + value;
+		return this.commission;
 	}
 
 }

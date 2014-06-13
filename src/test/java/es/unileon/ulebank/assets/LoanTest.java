@@ -20,6 +20,8 @@ import es.unileon.ulebank.assets.support.PaymentPeriod;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Person;
 import es.unileon.ulebank.exceptions.TransactionException;
+import es.unileon.ulebank.fees.InvalidFeeException;
+import es.unileon.ulebank.fees.LoanFee;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 import es.unileon.ulebank.history.GenericTransaction;
@@ -94,6 +96,7 @@ public class LoanTest {
         this.genericLoan = new Loan(new FinancialProductHandler("LN", "ES"),
                 200000, 0.15, PaymentPeriod.MONTHLY, 23,
                 this.commercialAccount1, this.authorized2, description3);
+        
 
         this.loanAmortize = new Loan(new FinancialProductHandler("LN", "ES"),
                 168000, 0.20, PaymentPeriod.ANNUAL, 72,
@@ -192,6 +195,32 @@ public class LoanTest {
         // assertEquals(this.genericLoan.getDebt(),184486.19,1);
 
     }
+    
+    @Test
+    public void testFee() throws InvalidFeeException{
+      LoanFee studyFee=new LoanFee(0.0001,true);
+      LoanFee oppeningFee=new LoanFee(10, false);
+      LoanFee cancelFee=new LoanFee(0.01, true);
+      LoanFee mofifyFee=new LoanFee(0.14, true);
+      System.out.println(this.genericLoan.getDebt());
+      this.genericLoan.setStudyCommission(studyFee);
+      assertEquals(this.genericLoan.getDebt(),200020.0,0.1);
+      this.genericLoan.setCancelCommission(cancelFee);
+      this.genericLoan.setModifyCommission(mofifyFee);
+      this.genericLoan.setOpenningCommission(oppeningFee);
+      assertEquals(this.genericLoan.getDebt(),200030.0,0.1);
+      
+     }
+     @Test(expected=InvalidFeeException.class)
+     public void testWrongFee() throws InvalidFeeException{
+      LoanFee studiComision=new LoanFee(1000000000,true);
+     }
+     @Test(expected=InvalidFeeException.class)
+     public void testWrongFeeLess0() throws InvalidFeeException{
+      LoanFee studiComision=new LoanFee(-3,true);
+     }
+
+    
 
     @Test
     public void forwadDates() throws ParseException {
@@ -220,7 +249,7 @@ public class LoanTest {
     @After
     public void tearDown() {
         Time.getInstance().forwardDays(600);
-        // TaskList.DeleteTaskList();
+        //TaskList.DeleteTaskList();
 
         Time.getInstance().setTime(Calendar.getInstance().getTimeInMillis());
 

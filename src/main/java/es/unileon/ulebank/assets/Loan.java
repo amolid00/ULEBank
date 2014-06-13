@@ -214,8 +214,8 @@ public class Loan implements FinancialProduct {
         }
 
         this.creatinngDate = new Date(Time.getInstance().getTime());
-        this.debt = this.openningFee.getFee(this.debt);
-        this.debt = this.studyFee.getFee(this.debt);
+        this.debt += this.openningFee.getFee(this.debt);
+        this.debt += this.studyFee.getFee(this.debt);
 
     }
 
@@ -481,7 +481,7 @@ public class Loan implements FinancialProduct {
 
         // Si la transaccion se realizo con exito descontamos el dinero de la
         // deuda
-        this.debt = this.amortizedFee.getFee(this.debt);
+        this.debt += this.amortizedFee.getFee(this.debt);
         this.debt -= quantity;
 
         this.setAmortized(this.initialCapital - this.debt);
@@ -591,25 +591,7 @@ public class Loan implements FinancialProduct {
         return new LoanIterator(this.payments);
     }
 
-    // TODO MAKE THE DOC IN ENGLISH OF THIS METHOD PLEASE. Not put your ideas
-    public void makeNormalPayment(double amount) {
-        // lanzo alguna excepcion o que?
-        // pongo la condicion de que el pago se haga entre los meses indicados?
-        if ((amount == this.periodFee) && (this.payments.size() > 0)
-                && (this.arrayListIndex < this.payments.size())) {
-            final ScheduledPayment hesGonnaPay = this.payments
-                    .get(this.arrayListIndex);
-            hesGonnaPay.setPaid(true);
-            this.debt = this.debt - amount;
-            // pongo la fecha de hoy, pero deberia dejar que se le pase por
-            // parametro?
-            hesGonnaPay.setPaymentDate(new Date());
-            this.arrayListIndex++;
-        }
-
-    }
-
-    // TODO MAKE THE DOC IN ENGLISH OF THIS METHOD PLEASE. Not put your ideas
+ 
 
     // metodo de pago de cantidades diferentes a la mensual calculada
     public void makeAbnormalPayment(double amount) {
