@@ -16,7 +16,7 @@ public class BagSimulatorTest {
     
     @Before
     public void setUp() throws InvalidBuyableException{
-            bagSimulator = bagSimulator.getInstance();
+            bagSimulator = BagSimulator.getInstance();
     }
     
     @Test
@@ -24,14 +24,15 @@ public class BagSimulatorTest {
         assertNotNull(bagSimulator);
     }
     
-//    @Test
-//    public void 
-
-//    @Test
-//    public void getEnterpriseHandlerTest() throws MalformedHandlerException, InvalidBuyableException {
-//        Enterprise enterprise = bagSimulator.getEnterpriseHandler(new EnterpriseHandler("GOOG"));
-//        assertTrue(enterprise != null);
-//        assertEquals("GOOG", enterprise.getId().toString());
-//    }
+    @Test
+    public void getEnterpriseHandlerTest() throws InvalidBuyableException, MalformedHandlerException{
+        Enterprise enterprise = bagSimulator.getEnterpriseHandler(new EnterpriseHandler("GOOG"));
+        Enterprise enterprise2 =  new Enterprise(new EnterpriseHandler("GOOG"), 300, 10000);
+        assertEquals(enterprise2.getBuyableParticipations(), enterprise.getBuyableParticipations());
+        assertEquals(enterprise2.getParticipations(), enterprise.getParticipations());
+        assertTrue(enterprise2.getPPP() == enterprise.getPPP());
+        assertTrue(enterprise2.getPrice() == enterprise.getPrice());
+    }
+    
 
 }

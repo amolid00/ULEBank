@@ -33,7 +33,7 @@ public class BagSimulator {
         }
     }
     
-    public BagSimulator getInstance() throws InvalidBuyableException {
+    public static BagSimulator getInstance() throws InvalidBuyableException {
         if (BagSimulator.instance == null) {
             BagSimulator.instance = new BagSimulator();
         }
