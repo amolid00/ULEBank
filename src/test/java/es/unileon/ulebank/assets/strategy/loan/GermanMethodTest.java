@@ -88,7 +88,7 @@ public class GermanMethodTest {
     @Test
     public void testAmortization() {
         LoanIterator loanIterator1 = this.loan1.iterator();
-        assertEquals(9997.0, loanIterator1.next().getAmortization(), 0.1);
+        assertEquals(9703.65, loanIterator1.next().getAmortization(), 0.1);
         assertEquals(9997.67, loanIterator1.next().getAmortization(), 0.1);
         assertEquals(9998.34, loanIterator1.next().getAmortization(), 0.1);
         assertEquals(9999.0, loanIterator1.next().getAmortization(), 0.1);
@@ -162,7 +162,7 @@ public class GermanMethodTest {
     @Test
     public void testCapital() {
         LoanIterator loanIterator1 = this.loan1.iterator();
-        assertEquals(90003.0, loanIterator1.next().getOutstandingCapital(), 0.1);
+        assertEquals(90296.35, loanIterator1.next().getOutstandingCapital(), 0.1);
         assertEquals(80005.33, loanIterator1.next().getOutstandingCapital(),
                 0.1);
         assertEquals(70006.99, loanIterator1.next().getOutstandingCapital(),
