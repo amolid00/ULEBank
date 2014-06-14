@@ -1,22 +1,25 @@
 package es.unileon.ulebank.assets.handler;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import es.unileon.ulebank.handler.Handler;
+import javax.persistence.Column;
+import javax.persistence.Id;
 
-public class CommandHandler implements Handler {
+import es.unileon.ulebank.handler.Handler;
+import es.unileon.ulebank.time.Time;
+
+public class CommandHandler implements Handler, Serializable {
 	
 	private String id;
-	private UUID uuid;
+	private String uuid;
 	private long time;
-	private Date date;
 	
 	public CommandHandler() {
-		this.uuid = UUID.randomUUID();
-		this.date = new Date();
-		this.time = this.date.getTime();
-		this.id = this.uuid.toString() + "-" + this.time;
+		this.uuid = UUID.randomUUID().toString();
+		this.time = Time.getInstance().getTime();
+		this.id = this.uuid + "-" + this.time;
 	}
 	
 	
@@ -29,5 +32,22 @@ public class CommandHandler implements Handler {
 	public String toString() {
 		return this.id.toString();
 	}
+
+
+
+    @Override
+    @Id
+    @Column(name = "id", unique = true, nullable = false, length = 64)
+    public String getId() {
+        return this.id;
+    }
+
+
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+        
+    }
 
 }

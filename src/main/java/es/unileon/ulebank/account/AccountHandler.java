@@ -2,6 +2,7 @@
  group.*/
 package es.unileon.ulebank.account;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +14,7 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
  *
  * @author runix
  */
-public class AccountHandler implements Handler {
+public class AccountHandler implements Handler, Serializable{
     /**
      * the number of digits ( account number )
      */
@@ -47,6 +48,10 @@ public class AccountHandler implements Handler {
      * The id
      */
     private String id;
+    
+    public AccountHandler(){
+        
+    }
 
     /**
      * Create a new AccountHandler
