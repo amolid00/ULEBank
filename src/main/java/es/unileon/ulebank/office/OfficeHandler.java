@@ -1,5 +1,7 @@
 package es.unileon.ulebank.office;
 
+import java.io.Serializable;
+
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 
@@ -8,21 +10,29 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
  * @author Patricia
  * 
  */
-public class OfficeHandler implements Handler {
+public class OfficeHandler implements Handler, Serializable {
 
-    private String numberOffice;
+    /**
+     * Serial version UID
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Id of the office
+     */
+    private String id;
 
     public OfficeHandler(int number) throws MalformedHandlerException {
 
         if (number >= 0) {
 
             if (Integer.toString(number).length() == 4) {
-                this.numberOffice = Integer.toString(number);
+                this.id = Integer.toString(number);
             } else {
                 if (Integer.toString(number).length() < 4) {
-                    this.numberOffice = Integer.toString(number);
-                    while (this.numberOffice.length() <= 4) {
-                        this.numberOffice = 0 + this.numberOffice;
+                    this.id = Integer.toString(number);
+                    while (this.id.length() <= 4) {
+                        this.id = 0 + this.id;
                     }
                 } else {
                     throw new MalformedHandlerException(
@@ -45,7 +55,7 @@ public class OfficeHandler implements Handler {
 
         if (Integer.parseInt(numberOffice) >= 0) {
             if (numberOffice.length() == 4) {
-                this.numberOffice = numberOffice;
+                this.id = numberOffice;
             } else {
                 if (numberOffice.length() < 4) {
                     while (numberOffice.length() <= 4) {
@@ -62,18 +72,25 @@ public class OfficeHandler implements Handler {
         }
     }
 
-    public int getIdOffice() {
-        return Integer.parseInt(this.numberOffice);
+    public OfficeHandler() {
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
     public int compareTo(Handler another) {
-        return this.numberOffice.compareTo(another.toString());
+        return this.id.compareTo(another.toString());
     }
 
     @Override
     public String toString() {
-        return this.numberOffice;
+        return this.id;
     }
 
 }

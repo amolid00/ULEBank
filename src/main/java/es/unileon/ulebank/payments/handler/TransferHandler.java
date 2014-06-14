@@ -1,5 +1,6 @@
 package es.unileon.ulebank.payments.handler;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -12,28 +13,24 @@ import es.unileon.ulebank.handler.Handler;
  * @date 9/04/2014
  * @brief Identifier of Transfer
  */
-public class TransferHandler implements Handler {
+public class TransferHandler implements Handler, Serializable {
 
+    /**
+     * Serial Version UID
+     */
+    private static final long serialVersionUID = 1L;
     /**
      * Identifier of the handler
      */
-    private final String id;
+    private String id;
     /**
      * Date of the transfer
      */
     private String date;
     /**
-     * Sender account of the transfer
-     */
-    private final String sender;
-    /**
-     * Receiver account of the transfer
-     */
-    private final String receiver;
-    /**
      * Calendar for obtain the date of the transfer
      */
-    private final Calendar calendar;
+    private Calendar calendar;
 
     /**
      * Class constructor
@@ -42,11 +39,13 @@ public class TransferHandler implements Handler {
      * @param receiver
      */
     public TransferHandler(String sender, String receiver) {
-        this.sender = sender.substring(sender.length() / 2);
-        this.receiver = receiver.substring(receiver.length() / 2);
         this.calendar = new GregorianCalendar();
         this.setDateCode();
-        this.id = this.sender + this.receiver + this.date;
+        this.id = sender.substring(sender.length() / 2)
+                + receiver.substring(receiver.length() / 2) + this.date;
+    }
+
+    public TransferHandler() {
     }
 
     /**
@@ -74,6 +73,11 @@ public class TransferHandler implements Handler {
      */
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

@@ -1,5 +1,6 @@
 package es.unileon.ulebank.payments.handler;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,8 +15,12 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
  * @brief Identifier of Payment formed by the 4 last numbers of Card Handler,
  *        and 11 numbers of the month, year and complete hour.
  */
-public class PaymentHandler implements Handler {
+public class PaymentHandler implements Handler, Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /**
      * Length of the command identifier
      */
@@ -31,7 +36,7 @@ public class PaymentHandler implements Handler {
     /**
      * Command Identifier
      */
-    private final String id;
+    private String id;
 
     /**
      * Class constructor
@@ -50,6 +55,9 @@ public class PaymentHandler implements Handler {
             throw new MalformedHandlerException(
                     "Length of payment handler incorrect.");
         }
+    }
+
+    public PaymentHandler() {
     }
 
     /**
@@ -91,7 +99,7 @@ public class PaymentHandler implements Handler {
     private String obtainFinals(Date date) {
         final SimpleDateFormat format = new SimpleDateFormat("MMyyHHmmSS");
         if (format.format(date).length() < 11) {
-        	return "0" + format.format(date);
+            return "0" + format.format(date);
         } else {
             return format.format(date);
         }
@@ -114,6 +122,11 @@ public class PaymentHandler implements Handler {
      */
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
 }
