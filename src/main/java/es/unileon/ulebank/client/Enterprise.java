@@ -3,6 +3,31 @@
 
 package es.unileon.ulebank.client;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,12 +40,16 @@ import es.unileon.ulebank.handler.MalformedHandlerException;
  * 
  * @author Gonzalo Nicolás Barreales
  */
+@Entity
+@Table(name = "CLIENTS", catalog = "ULEBANK_FINAL")
+@DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "Enterprise")
 public class Enterprise extends Client {
 
     /**
      * 
      */
-    private final List<Person> authorizedPersons;
+    private List<Person> authorizedPersons;
 
     /**
      * 
@@ -109,6 +138,7 @@ public class Enterprise extends Client {
      * 
      * @return
      */
+    @Column(name = "enterprise_name", length = 32)
     public String getEnterpriseName() {
         return this.enterpriseName;
     }
@@ -125,8 +155,17 @@ public class Enterprise extends Client {
      * 
      * @return
      */
+    @Column(name = "address", nullable = false, length = 256)
     public String getAddress() {
         return this.address;
+    }
+
+    public List<Person> getAuthorizedPersons() {
+        return authorizedPersons;
+    }
+
+    public void setAuthorizedPersons(List<Person> authorizedPersons) {
+        this.authorizedPersons = authorizedPersons;
     }
 
     /**

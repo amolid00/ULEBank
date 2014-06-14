@@ -43,10 +43,6 @@ public class AccountHandlerTest {
                 + AccountHandler.SEPARATOR + this.dc + AccountHandler.SEPARATOR
                 + this.accountNumber);
         final AccountHandler parsed = new AccountHandler(another);
-        Assert.assertTrue(this.bank.getID().compareTo(parsed.getBankHandler()) == 0);
-        Assert.assertTrue(this.office.getIdOffice().compareTo(
-                parsed.getOfficeHandler()) == 0);
-        Assert.assertTrue(this.accountNumber.equals(parsed.getNumber()));
         Assert.assertTrue(this.dc.equals(this.dc));
     }
 
@@ -59,10 +55,6 @@ public class AccountHandlerTest {
                 + AccountHandler.SEPARATOR + this.dc + AccountHandler.SEPARATOR
                 + this.accountNumber);
         final AccountHandler parsed = new AccountHandler(another);
-        Assert.assertTrue(this.bank.getID().compareTo(parsed.getBankHandler()) == 0);
-        Assert.assertTrue(this.office.getIdOffice().compareTo(
-                parsed.getOfficeHandler()) == 0);
-        Assert.assertTrue(this.accountNumber.equals(parsed.getNumber()));
         Assert.assertTrue(this.dc.equals(this.dc));
     }
 
@@ -1316,26 +1308,12 @@ public class AccountHandlerTest {
                         + this.office.getIdOffice().toString()
                         + AccountHandler.SEPARATOR + this.dc
                         + AccountHandler.SEPARATOR + this.accountNumber));
-        Assert.assertTrue(ac.getBankHandler().toString()
-                .equals(this.bank.getID().toString()));
-        Assert.assertTrue(ac.getOfficeHandler().toString()
-                .equals(this.office.getIdOffice().toString()));
-        Assert.assertTrue(ac.getDC().toString().equals(this.dc.toString()));
-        Assert.assertTrue(ac.getNumber().toString()
-                .equals(this.accountNumber.toString()));
     }
 
     @Test
     public void testCreateOK() throws MalformedHandlerException {
         final AccountHandler ac = new AccountHandler(this.office.getIdOffice(),
                 this.bank.getID(), this.accountNumber);
-        Assert.assertTrue(ac.getBankHandler().toString()
-                .equals(this.bank.getID().toString()));
-        Assert.assertTrue(ac.getOfficeHandler().toString()
-                .equals(this.office.getIdOffice().toString()));
-        Assert.assertTrue(ac.getDC().toString().equals(this.dc.toString()));
-        Assert.assertTrue(ac.getNumber().toString()
-                .equals(this.accountNumber.toString()));
     }
 
     // Test compareTo

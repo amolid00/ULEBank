@@ -42,25 +42,11 @@ public class AccountHandler implements Handler {
      * Separator of the fields
      */
     public static final String SEPARATOR = "-";
-    /**
-     * The account number, the number of digits of this number is given by {
-     *
-     * @see ACCOUNT_NUMBER_LENGHT
-     */
-    private final String accountNumber;
 
     /**
-     * The office identifier
+     * The id
      */
-    private final Handler officeHandler;
-    /**
-     * The bank identifier
-     */
-    private final Handler bankHandler;
-    /**
-     * The control digits
-     */
-    private final String dc;
+    private String id;
 
     /**
      * Create a new AccountHandler
@@ -125,11 +111,14 @@ public class AccountHandler implements Handler {
         if (errors.length() > 1) {
             throw new MalformedHandlerException(errors.toString());
         }
-        this.officeHandler = office;
-        this.bankHandler = bank;
-        this.accountNumber = accountNumber;
-        this.dc = AccountHandler.calculateDC(office.toString(),
-                bank.toString(), accountNumber + "");
+
+        this.id = office.toString()
+                + AccountHandler.SEPARATOR
+                + bank.toString()
+                + AccountHandler.SEPARATOR
+                + AccountHandler.calculateDC(office.toString(),
+                        bank.toString(), accountNumber + "")
+                + AccountHandler.SEPARATOR + accountNumber;
     }
 
     /**
@@ -141,7 +130,10 @@ public class AccountHandler implements Handler {
         this(AccountHandler.getField(another, 1), AccountHandler.getField(
                 another, 0), AccountHandler.getField(another, 3).toString());
         final StringBuilder error = new StringBuilder();
-        if (!AccountHandler.getField(another, 2).toString().equals(this.dc)) {
+        String dc = calculateDC(AccountHandler.getField(another, 1).toString(),
+                AccountHandler.getField(another, 0).toString(), AccountHandler
+                        .getField(another, 3).toString());
+        if (!AccountHandler.getField(another, 2).toString().equals(dc)) {
             error.append("Wrong control digits");
         }
         if (error.length() > 0) {
@@ -149,36 +141,12 @@ public class AccountHandler implements Handler {
         }
     }
 
-    /**
-     *
-     * @return
-     */
-    public Handler getBankHandler() {
-        return this.bankHandler;
+    public String getId() {
+        return id;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Handler getOfficeHandler() {
-        return this.officeHandler;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getNumber() {
-        return this.accountNumber;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getDC() {
-        return this.dc;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -192,9 +160,7 @@ public class AccountHandler implements Handler {
      */
     @Override
     public String toString() {
-        return this.bankHandler.toString() + AccountHandler.SEPARATOR
-                + this.officeHandler.toString() + AccountHandler.SEPARATOR
-                + this.dc + AccountHandler.SEPARATOR + this.accountNumber;
+        return this.id;
     }
 
     private static Handler getField(Handler another, int number)

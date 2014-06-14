@@ -16,16 +16,10 @@ GRANT ALL ON ULEBANK_FINAL.* TO root@localhost IDENTIFIED BY 'toor';
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
---
--- Base de datos: `Ulebank_Final`
---
-
 -- --------------------------------------------------------
 
 --
@@ -215,6 +209,18 @@ CREATE TABLE IF NOT EXISTS `FEE_CASES` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `GENERIC_HANDLER`
+--
+
+CREATE TABLE IF NOT EXISTS `GENERIC_HANDLER` (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `discriminator` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `HISTORY`
 --
 
@@ -328,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `PACK` (
   `amount` bigint(20) NOT NULL,
   `price` double DEFAULT NULL,
   `date` timestamp NULL DEFAULT NULL,
-  `discriminartor` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `discriminartor` char(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`,`account_number`),
   KEY `account_number` (`account_number`)
@@ -361,18 +367,18 @@ CREATE TABLE IF NOT EXISTS `SCHEDULEDPAYMENTS` (
 --
 
 CREATE TABLE IF NOT EXISTS `TRANSACTIONS` (
-  `id` varchar(32) COLLATE utf8_bin NOT NULL,
+  `id` varchar(64) COLLATE utf8_bin NOT NULL,
   `amount` double NOT NULL,
-  `subject` varchar(32) COLLATE utf8_bin NOT NULL,
+  `subject` varchar(64) COLLATE utf8_bin NOT NULL,
   `effective_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `extra_information` varchar(32) COLLATE utf8_bin NOT NULL,
-  `direct_debit_id` varchar(32) COLLATE utf8_bin DEFAULT NULL,
-  `related` varchar(32) COLLATE utf8_bin NOT NULL,
-  `sender_account` varchar(32) COLLATE utf8_bin NOT NULL,
-  `pack` int(11) NOT NULL,
-  `operator` varchar(32) COLLATE utf8_bin NOT NULL,
-  `discriminator` varchar(20) COLLATE utf8_bin NOT NULL,
+  `extra_information` varchar(64) COLLATE utf8_bin NOT NULL,
+  `direct_debit_id` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `related` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `sender_account` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `pack` int(11) DEFAULT NULL,
+  `operator` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `discriminator` varchar(20) COLLATE utf8_bin NOT NULL ,
   PRIMARY KEY (`id`),
   KEY `pack` (`pack`),
   KEY `direct_debit_id` (`direct_debit_id`)
@@ -383,43 +389,59 @@ CREATE TABLE IF NOT EXISTS `TRANSACTIONS` (
 --
 
 --
+-- Filtros para la tabla `ACCOUNTS`
+--
+ALTER TABLE `ACCOUNTS`
+  ADD CONSTRAINT `ACCOUNTS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `ACCOUNTS_AUTHORIZEDS`
 --
 ALTER TABLE `ACCOUNTS_AUTHORIZEDS`
-  ADD CONSTRAINT `fk_ClientId` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_Account` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_Account` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ClientId` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ACCOUNTS_CLIENTS`
 --
 ALTER TABLE `ACCOUNTS_CLIENTS`
-  ADD CONSTRAINT `ACCOUNTS_CLIENTS_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ACCOUNTS_CLIENTS_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ACCOUNTS_CLIENTS_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ACCOUNTS_CLIENTS_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `BUYABLE`
 --
 ALTER TABLE `BUYABLE`
-  ADD CONSTRAINT `BUYABLE_ibfk_2` FOREIGN KEY (`fee_id`) REFERENCES `FEES` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `BUYABLE_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `EMPLOYEE` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `BUYABLE_ibfk_3` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `BUYABLE_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `EMPLOYEE` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `BUYABLE_ibfk_2` FOREIGN KEY (`fee_id`) REFERENCES `FEES` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `CARDS`
 --
 ALTER TABLE `CARDS`
-  ADD CONSTRAINT `CARDS_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `CARDS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `CARDS_ibfk_3` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `CARDS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `CARDS_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `CLIENTS`
+--
+ALTER TABLE `CLIENTS`
+  ADD CONSTRAINT `CLIENTS_ibfk_1` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `DIRECT_DEBIT`
 --
 ALTER TABLE `DIRECT_DEBIT`
+  ADD CONSTRAINT `DIRECT_DEBIT_ibfk_2` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `DIRECT_DEBIT_ibfk_1` FOREIGN KEY (`account_direct_debit_id`) REFERENCES `ACCOUNT_DIRECT_DEBITS` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `EMPLOYEE`
 --
 ALTER TABLE `EMPLOYEE`
+  ADD CONSTRAINT `EMPLOYEE_ibfk_2` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `EMPLOYEE_ibfk_1` FOREIGN KEY (`office_id`) REFERENCES `OFFICES` (`office_id`) ON UPDATE CASCADE;
 
 --
@@ -435,11 +457,17 @@ ALTER TABLE `FEE_CASES`
   ADD CONSTRAINT `FEE_CASES_ibfk_1` FOREIGN KEY (`liquidation_fee_id`) REFERENCES `LIQUIDATION_FEE` (`liquidation_fee_id`) ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `HISTORY`
+--
+ALTER TABLE `HISTORY`
+  ADD CONSTRAINT `HISTORY_ibfk_1` FOREIGN KEY (`history_id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `HISTORY_TRANSACTIONS`
 --
 ALTER TABLE `HISTORY_TRANSACTIONS`
-  ADD CONSTRAINT `HISTORY_TRANSACTIONS_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `TRANSACTIONS` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `HISTORY_TRANSACTIONS_ibfk_1` FOREIGN KEY (`history_id`) REFERENCES `HISTORY` (`history_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `HISTORY_TRANSACTIONS_ibfk_1` FOREIGN KEY (`history_id`) REFERENCES `HISTORY` (`history_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `HISTORY_TRANSACTIONS_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `TRANSACTIONS` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `LIQUIDATION_FEE`
@@ -451,34 +479,38 @@ ALTER TABLE `LIQUIDATION_FEE`
 -- Filtros para la tabla `LOANS`
 --
 ALTER TABLE `LOANS`
-  ADD CONSTRAINT `LOANS_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `LOANS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `LOANS_ibfk_3` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `LOANS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `LOANS_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `CLIENTS` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `OFFICES`
 --
 ALTER TABLE `OFFICES`
+  ADD CONSTRAINT `OFFICES_ibfk_2` FOREIGN KEY (`office_id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `OFFICES_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `PACK`
 --
 ALTER TABLE `PACK`
-  ADD CONSTRAINT `PACK_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `PACK_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `BUYABLE` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `PACK_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `BUYABLE` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `PACK_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNTS` (`account_number`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `SCHEDULEDPAYMENTS`
 --
 ALTER TABLE `SCHEDULEDPAYMENTS`
+  ADD CONSTRAINT `SCHEDULEDPAYMENTS_ibfk_2` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `SCHEDULEDPAYMENTS_ibfk_1` FOREIGN KEY (`id_loan`) REFERENCES `LOANS` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `TRANSACTIONS`
 --
 ALTER TABLE `TRANSACTIONS`
-  ADD CONSTRAINT `TRANSACTIONS_ibfk_2` FOREIGN KEY (`direct_debit_id`) REFERENCES `DIRECT_DEBIT` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `TRANSACTIONS_ibfk_1` FOREIGN KEY (`pack`) REFERENCES `PACK` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `TRANSACTIONS_ibfk_3` FOREIGN KEY (`id`) REFERENCES `GENERIC_HANDLER` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `TRANSACTIONS_ibfk_1` FOREIGN KEY (`pack`) REFERENCES `PACK` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `TRANSACTIONS_ibfk_2` FOREIGN KEY (`direct_debit_id`) REFERENCES `DIRECT_DEBIT` (`id`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

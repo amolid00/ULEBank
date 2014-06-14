@@ -3,9 +3,35 @@
 
 package es.unileon.ulebank.client;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.handler.Handler;
@@ -15,17 +41,20 @@ import es.unileon.ulebank.handler.Handler;
  * 
  * @author Gonzalo Nicolas Barreales
  */
+@Entity
+@Table(name = "CLIENTS", catalog = "ULEBANK_FINAL")
+@DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
 public class Client {
 
     /**
      * Identifier of the client
      */
-    private final Handler id;
+    private Handler id;
 
     /**
      * Accounts where the client appear
      */
-    private final List<Account> accounts;
+    private List<Account> accounts;
 
     /**
      * Constructor of client. Receive the id and initilize the list of accounts
@@ -35,6 +64,10 @@ public class Client {
     protected Client(Handler clientHandler) {
         this.accounts = new ArrayList<Account>();
         this.id = clientHandler;
+    }
+
+    public Client() {
+        this.accounts = new ArrayList<Account>();
     }
 
     /**
@@ -117,6 +150,8 @@ public class Client {
      * 
      * @return
      */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "ACCOUNTS_CLIENTS", catalog = "ULEBANK_FINAL", joinColumns = { @JoinColumn(name = "client_id", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "account_number", nullable = false, updatable = false) })
     public List<Account> getAccounts() {
         return this.accounts;
     }
@@ -124,6 +159,9 @@ public class Client {
     /**
      * @return id of the client
      */
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = false)
     public Handler getId() {
         return this.id;
     }

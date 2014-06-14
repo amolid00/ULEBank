@@ -19,24 +19,24 @@ public class EnterpriseHandler implements Handler {
     /**
      * 
      */
-    char entityLetter;
+    private char entityLetter;
 
     /**
      * Two digits to identify the province
      */
-    int provinceCode;
+    private int provinceCode;
 
     /**
      * Five digits imposed by the Administration in function of the provice
      */
-    int registrationCode;
+    private int registrationCode;
 
     /**
      * The control code is a number if the entity letter is K, Q or S, and is a
      * number if the entitity letter is A, B, E or H With the rest of the entity
      * letters, the control code can be a number or a letter
      */
-    char controlCode;
+    private char controlCode;
 
     /**
      * 
