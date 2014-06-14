@@ -165,4 +165,8 @@ public class Client {
     public Handler getId() {
         return this.id;
     }
+    
+    public String toString(){
+        return this.id.toString();
+    }
 }

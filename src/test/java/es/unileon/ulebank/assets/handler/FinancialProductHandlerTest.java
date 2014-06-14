@@ -8,6 +8,7 @@ import org.junit.Test;
 import es.unileon.ulebank.assets.handler.FinancialProductHandler;
 import es.unileon.ulebank.assets.handler.LoanIdentificationNumberCode;
 import es.unileon.ulebank.assets.handler.exceptions.LINCMalformedException;
+import es.unileon.ulebank.handler.MalformedHandlerException;
 
 public class FinancialProductHandlerTest {
 	
@@ -15,7 +16,7 @@ public class FinancialProductHandlerTest {
 	private FinancialProductHandler financialProduct1, financialProduct2;
 	
 	@Before
-	public void setUp() throws LINCMalformedException {
+	public void setUp() throws LINCMalformedException, MalformedHandlerException {
 		this.linc1 = new LoanIdentificationNumberCode("LN", "ES");
 		this.linc2 = new LoanIdentificationNumberCode("LN", "NZ");
 		
@@ -46,7 +47,7 @@ public class FinancialProductHandlerTest {
 	}
 	
 	@Test(expected = LINCMalformedException.class)
-	public void testLINCMalformed() throws LINCMalformedException {
+	public void testLINCMalformed() throws LINCMalformedException, MalformedHandlerException {
 		new FinancialProductHandler(new LoanIdentificationNumberCode("NOT", "ES"));
 	}
 

@@ -1,18 +1,27 @@
 package es.unileon.ulebank.assets.handler;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 
 
+
+
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.handler.*;
 
-public class ScheduledPaymentHandler implements Handler {
+public class ScheduledPaymentHandler implements Handler, Serializable {
 	
-	private StringBuffer id;
+	private String id ="";
 	
+	/**
+	 * Empty constructor to persist
+	 */
+    public ScheduledPaymentHandler(){
+        
+    }
 	/**
 	 * List of clients of the account, the date of the payment and
 	 * the loan ID
@@ -22,27 +31,23 @@ public class ScheduledPaymentHandler implements Handler {
 	 * @param clients
 	 * @param datePayment
 	 */
+	
 	public ScheduledPaymentHandler(Handler loanId, List<Client> clients, Date datePayment) {
-		this.id = new StringBuffer();
+		this.id += loanId.toString() + "-"; 
 		
-		this.id.append(loanId.toString());
-		this.id.append("-");
 		
 		for(Client client : clients){
-			this.id.append(client.getId());
-			this.id.append("-");
+			this.id+= client.toString() + "-";
+		    
 		}
 		
 		long time =  datePayment.getTime();
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(time);
 		
-		
-		this.id.append(cal.get(Calendar.YEAR));
-		this.id.append("-");
-		this.id.append(cal.get(Calendar.MONTH));
-		this.id.append("-");
-		this.id.append(cal.get(Calendar.DATE));
+		this.id += cal.get(Calendar.YEAR) + "-";
+		this.id += cal.get(Calendar.MONTH) + "-";
+		this.id += cal.get(Calendar.DATE);
 	}
 	
 	@Override
@@ -54,5 +59,16 @@ public class ScheduledPaymentHandler implements Handler {
 	public String toString() {
 		return this.id.toString();
 	}
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+        
+    }
 	
 }

@@ -1,19 +1,30 @@
 package es.unileon.ulebank.assets.handler;
 
+import java.io.Serializable;
+
 import es.unileon.ulebank.assets.handler.exceptions.LINCMalformedException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 
-public class FinancialProductHandler implements Handler {
+public class FinancialProductHandler implements Handler, Serializable {
 	
 	/**
 	 * Loan identification number.
 	 */
-	private LoanIdentificationNumberCode loanIdentification;
+    
+
+	private String id;
+	
+	/**
+	 * Empty constructor to persistence
+	 */
+	public FinancialProductHandler(){
+	    
+	}
 	
 	public FinancialProductHandler(String type, String countryCode) throws MalformedHandlerException{
 		try {
-			this.loanIdentification = new LoanIdentificationNumberCode(type, countryCode);
+			this.id = new LoanIdentificationNumberCode(type, countryCode).toString();
 		} catch (LINCMalformedException e) {
 			throw new MalformedHandlerException(e.getMessage());
 		}
@@ -23,19 +34,29 @@ public class FinancialProductHandler implements Handler {
 	 * Handler which is passed an instance of the class LoanIdentificationNumberCode responsible 
 	 * for generating the identification number.
 	 * @param linc Instance of LoanIdentificationNumberCode
+	 * @throws MalformedHandlerException 
 	 */
-	@Deprecated
-	public FinancialProductHandler(LoanIdentificationNumberCode linc) {
-		this.loanIdentification = linc;
+	public FinancialProductHandler(LoanIdentificationNumberCode linc) throws MalformedHandlerException {
+		this(linc.getType(), linc.getCountryCode());
 	}
 	
 	
 	public int compareTo(Handler anotherHandler) {
-		return this.loanIdentification.toString().compareTo(anotherHandler.toString());
+		return this.id.compareTo(anotherHandler.toString());
 	}
 	
 	@Override
 	public String toString() {
-		return this.loanIdentification.toString();
+		return this.id;
 	}
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;  
+    }
 }

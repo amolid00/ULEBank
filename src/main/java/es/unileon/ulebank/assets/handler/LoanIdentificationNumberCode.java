@@ -1,12 +1,14 @@
 package es.unileon.ulebank.assets.handler;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
 import es.unileon.ulebank.assets.handler.exceptions.LINCMalformedException;
+import es.unileon.ulebank.handler.Handler;
 
-public class LoanIdentificationNumberCode {
+public class LoanIdentificationNumberCode implements Handler, Serializable{
 
 	/**
 	 * It's the type of Loan, Mortgage, etc Length 2 characters (letters).
@@ -38,7 +40,13 @@ public class LoanIdentificationNumberCode {
 	
 	public enum PermittedTypes{LN, MG}; //permitted types
 	
-	
+	private String id; 
+	/**
+	 * Constructor empty to persist
+	 */
+	public LoanIdentificationNumberCode(){
+	    
+	}
 	/**
 	 * The constructor receives the type, if is a loan or mortgage and the country code.
 	 * 
@@ -86,6 +94,8 @@ public class LoanIdentificationNumberCode {
 		this.countryCode = countryCode;
 		this.randomCharacters = randomCharacters(5);
 		this.checkDigit = doCheckDigit(this.type + this.date + this.countryCode +this.randomCharacters);
+		this.id = this.type + "-" + this.date + "-" + this.countryCode + "-" + this.randomCharacters + "-" + this.checkDigit; 
+	    
 	}
 	
 	/**
@@ -169,6 +179,18 @@ public class LoanIdentificationNumberCode {
 
 	@Override
 	public String toString() {
-		return this.type + "-" + this.date + "-" + this.countryCode + "-" + this.randomCharacters + "-" + this.checkDigit;
+		return this.id;
 	}
+    @Override
+    public int compareTo(Handler another) {
+        return this.id.compareTo(another.toString());
+    }
+    @Override
+    public String getId() {
+        return this.id;
+    }
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 }

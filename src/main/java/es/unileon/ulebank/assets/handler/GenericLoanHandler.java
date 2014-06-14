@@ -2,18 +2,26 @@ package es.unileon.ulebank.assets.handler;
 
 
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.handler.MalformedHandlerException;
 
-public class GenericLoanHandler implements Handler  {
+public class GenericLoanHandler implements Handler, Serializable {
 	
 	private String codeCheckDigit;
 	
 	private String id;
 	
-	public GenericLoanHandler(final String id) throws MalformedHandlerException {
+	/**
+	 * Empty constructor to persist
+	 */
+	public GenericLoanHandler(){
+	    
+	}
+	
+	public GenericLoanHandler(String id) throws MalformedHandlerException {
 		
 		String[] loanID = id.split("-");
 		
@@ -100,6 +108,17 @@ public class GenericLoanHandler implements Handler  {
 	public String toString() {
 		return this.id;
 	}
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+        
+    }
 	
 	
 }
