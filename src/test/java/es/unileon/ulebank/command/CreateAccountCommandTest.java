@@ -46,8 +46,7 @@ public class CreateAccountCommandTest {
                 this.office, this.bank, new Date(System.currentTimeMillis()),
                 new GenericHandler(""), titular);
         command.execute();
-        Assert.assertEquals(((AccountHandler) this.office.getAccounts().get(0)
-                .getID()).getNumber(), "0000000000", "0000000000");
+        Assert.assertEquals(this.office.getAccounts().size(), 1);
     }
 
     @Test
