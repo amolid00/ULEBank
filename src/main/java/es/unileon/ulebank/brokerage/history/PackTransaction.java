@@ -12,14 +12,24 @@ import es.unileon.ulebank.history.Transaction;
 
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  *
  * @author roobre
  */
+@Entity
+@Table(name = "TRANSACTIONS", catalog = "ULEBANK_FINAL")
+@DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "PackTransaction")
 public class PackTransaction extends Transaction {
 
-    private final Pack pack;
-    private final Employee operator;
+    private Pack pack;
+    private Employee operator;
 
     public PackTransaction(double amount, Date date, String subject, Pack pack,
             Employee operator) throws TransactionException {
@@ -31,6 +41,18 @@ public class PackTransaction extends Transaction {
 
     public Pack getPack() {
         return this.pack;
+    }
+
+    public Employee getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Employee operator) {
+        this.operator = operator;
+    }
+
+    public void setPack(Pack pack) {
+        this.pack = pack;
     }
 
     @Override

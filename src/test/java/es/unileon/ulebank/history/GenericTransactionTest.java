@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.exceptions.TransactionException;
 
 public class GenericTransactionTest {
@@ -31,7 +30,7 @@ public class GenericTransactionTest {
                 this.subject);
         this.genericWithExtraInfo = new GenericTransaction(this.amount,
                 this.date, this.subject,
-                new DetailedInformation(this.extraInfo));
+                new String(this.extraInfo));
         this.generic.setEffectiveDate(this.effectiveDate);
         this.genericWithExtraInfo.setEffectiveDate(this.effectiveDate);
     }
@@ -39,23 +38,23 @@ public class GenericTransactionTest {
     @Test(expected = TransactionException.class)
     public void testNullSubject() throws TransactionException {
         new GenericTransaction(this.amount, this.date, null,
-                new DetailedInformation(this.extraInfo));
+                new String(this.extraInfo));
     }
 
     @Test(expected = TransactionException.class)
     public void testNullDate() throws TransactionException {
         new GenericTransaction(this.amount, null, this.subject,
-                new DetailedInformation(this.extraInfo));
+                new String(this.extraInfo));
     }
 
     @Test(expected = TransactionException.class)
     public void testNullSubjectNullDate() throws TransactionException {
         new GenericTransaction(this.amount, null, null,
-                new DetailedInformation(this.extraInfo));
+                new String(this.extraInfo));
     }
 
     @Test(expected = TransactionException.class)
-    public void testNullSubjectNullDetailedInformation()
+    public void testNullSubjectNullString()
             throws TransactionException {
         new GenericTransaction(this.amount, this.date, this.subject, null);
     }
@@ -63,7 +62,7 @@ public class GenericTransactionTest {
     @Test(expected = TransactionException.class)
     public void testEmptySubject() throws TransactionException {
         new GenericTransaction(this.amount, this.date, "",
-                new DetailedInformation(this.extraInfo));
+                new String(this.extraInfo));
     }
 
     @Test
@@ -108,12 +107,12 @@ public class GenericTransactionTest {
     }
 
     @Test
-    public void testGetDetailedInformation() {
+    public void testGetString() {
         Assert.assertEquals(
-                "".equals(this.generic.getDetailedInformation().toString()),
+                "".equals(this.generic.getExtraInformation().toString()),
                 true);
         Assert.assertEquals(this.extraInfo.equals(this.genericWithExtraInfo
-                .getDetailedInformation().toString()), true);
+                .getExtraInformation().toString()), true);
     }
 
     @Test

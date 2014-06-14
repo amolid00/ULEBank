@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.history.GenericTransaction;
 import es.unileon.ulebank.history.Transaction;
@@ -131,6 +130,6 @@ public class IteratorSubjectTest {
     public Transaction getTransaction(String subject)
             throws TransactionException {
         return new GenericTransaction(0, new Date(), subject,
-                new DetailedInformation());
+                " nothing ");
     }
 }

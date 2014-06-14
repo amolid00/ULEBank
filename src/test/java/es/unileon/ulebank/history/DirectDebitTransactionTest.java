@@ -96,7 +96,7 @@ public class DirectDebitTransactionTest {
     @Test
     public void testGetDetailedInformation() {
         Assert.assertEquals(
-                "".equals(this.transaction.getDetailedInformation().toString()),
+                "".equals(this.transaction.getExtraInformation().toString()),
                 true);
     }
 

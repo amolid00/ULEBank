@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.history.GenericTransaction;
@@ -131,6 +130,6 @@ public class CommandFilterTransactionByAmountsTest {
     public Transaction getTransaction(double amount)
             throws TransactionException {
         return new GenericTransaction(amount, new Date(), "subject",
-                new DetailedInformation());
+                " dada");
     }
 }

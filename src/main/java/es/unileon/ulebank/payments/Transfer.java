@@ -93,12 +93,10 @@ public class Transfer {
         try {
             // Discount the quantity from sender account
             this.senderAccount.doTransaction(new TransferTransaction(
-                    -this.quantity, new Date(), concept, this.receiverAccount,
-                    this.senderAccount));
+                    -this.quantity, new Date(), concept, this.receiverAccount));
             // Add the money to receiver account
             this.receiverAccount.doTransaction(new TransferTransaction(
-                    this.quantity, new Date(), concept, this.receiverAccount,
-                    this.senderAccount));
+                    this.quantity, new Date(), concept, this.receiverAccount));
         } catch (TransactionException e) {
             throw new TransferException("Denegate Transaction");
         }

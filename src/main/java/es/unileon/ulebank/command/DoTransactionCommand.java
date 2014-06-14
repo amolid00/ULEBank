@@ -9,7 +9,6 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.Handler;
 import es.unileon.ulebank.history.GenericTransaction;
@@ -26,7 +25,7 @@ public class DoTransactionCommand implements Command {
     private final double amount;
     private final Date date;
     private final String subject;
-    private final DetailedInformation extraInformation;
+    private final String extraInformation;
     private Transaction transaction;
     private final Office office;
     private final Handler destine;
@@ -40,7 +39,7 @@ public class DoTransactionCommand implements Command {
      * @param commandId
      */
     public DoTransactionCommand(Office office, double amount, Handler destine,
-            Date date, String subject, DetailedInformation info,
+            Date date, String subject, String info,
             Handler commandId) {
         this.amount = amount;
         this.date = date;

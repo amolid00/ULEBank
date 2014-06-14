@@ -2,6 +2,12 @@ package es.unileon.ulebank.history;
 
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.payments.exceptions.TransferException;
@@ -13,6 +19,10 @@ import es.unileon.ulebank.payments.exceptions.TransferException;
  * @date 8/05/2014
  * @brief Class that allows all monetary transactions with accounts
  */
+@Entity
+@Table(name = "TRANSACTIONS", catalog = "ULEBANK_FINAL")
+@DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "TransferTransaction")
 public class TransferTransaction extends GenericTransaction {
 
     /**
@@ -32,16 +42,13 @@ public class TransferTransaction extends GenericTransaction {
      * @throws TransactionException
      */
     public TransferTransaction(double amount, Date date, String subject,
-            Account senderAccount, Account receiverAccount)
-            throws TransferException, TransactionException {
+            Account senderAccount) throws TransferException,
+            TransactionException {
         super(amount, date, subject);
+    }
 
-        if (!senderAccount.equals(receiverAccount)) {
-            this.senderAccount = senderAccount;
-        } else {
-            throw new TransferException(
-                    "Sender Account number and Receiver Account number are the same.");
-        }
+    public TransferTransaction() {
+
     }
 
     /**
@@ -53,4 +60,7 @@ public class TransferTransaction extends GenericTransaction {
         return this.senderAccount;
     }
 
+    public void setSenderAccount(Account senderAccount) {
+        this.senderAccount = senderAccount;
+    }
 }

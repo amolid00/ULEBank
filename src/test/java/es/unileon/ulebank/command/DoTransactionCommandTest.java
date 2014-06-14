@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.client.Person;
@@ -30,7 +29,7 @@ public class DoTransactionCommandTest {
     private Client authorized;
     private String subject;
     private Date date;
-    private DetailedInformation info;
+    private String info;
 
     @Before
     public void setUp() throws MalformedHandlerException, WrongArgsException {
@@ -43,7 +42,7 @@ public class DoTransactionCommandTest {
         this.office.addAccount(this.account);
         this.date = new Date();
         this.subject = "subject";
-        this.info = new DetailedInformation();
+        this.info = "info ";
         this.command = new DoTransactionCommand(this.office, this.amount,
                 this.account.getID(), this.date, this.subject, this.info,
                 this.commandId);
@@ -55,7 +54,7 @@ public class DoTransactionCommandTest {
         final Transaction t = this.account.getHistory().getIterator().next();
         Assert.assertEquals(t.getAmount(), this.amount, Math.pow(10, -10));
         Assert.assertEquals(this.date, t.getDate());
-        Assert.assertEquals(this.info, t.getDetailedInformation());
+        Assert.assertEquals(this.info, t.getExtraInformation());
         Assert.assertEquals(this.subject, t.getSubject());
     }
 
@@ -66,7 +65,7 @@ public class DoTransactionCommandTest {
         final Transaction t = this.account.getHistory().getIterator().next();
         Assert.assertEquals(t.getAmount(), this.amount, Math.pow(10, -10));
         Assert.assertEquals(this.date, t.getDate());
-        Assert.assertEquals(this.info, t.getDetailedInformation());
+        Assert.assertEquals(this.info, t.getExtraInformation());
         Assert.assertEquals(this.subject, t.getSubject());
     }
 
@@ -87,7 +86,7 @@ public class DoTransactionCommandTest {
         final Transaction t = this.account.getHistory().getIterator().next();
         Assert.assertEquals(t.getAmount(), this.amount, Math.pow(10, -10));
         Assert.assertEquals(this.date, t.getDate());
-        Assert.assertEquals(this.info, t.getDetailedInformation());
+        Assert.assertEquals(this.info, t.getExtraInformation());
         Assert.assertEquals(this.subject, t.getSubject());
     }
 }

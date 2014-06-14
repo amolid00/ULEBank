@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.unileon.ulebank.account.DetailedInformation;
 import es.unileon.ulebank.exceptions.TransactionException;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
@@ -132,7 +131,7 @@ public class CommandFilterTransactionByDatesTest {
     public Transaction getTransaction(long timestamp)
             throws TransactionException {
         final Transaction t = new GenericTransaction(0, new Date(), "subject",
-                new DetailedInformation());
+                " dasd");
         t.setEffectiveDate(new Date(timestamp));
         return t;
     }
